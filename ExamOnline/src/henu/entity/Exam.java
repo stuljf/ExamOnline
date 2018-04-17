@@ -2,6 +2,9 @@ package henu.entity;
 
 import java.util.Date;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Exam {
     private Integer id;
 
@@ -12,8 +15,18 @@ public class Exam {
     private Date endtime;
 
     private String state;
+    
+    private String t_id;
 
-    public Integer getId() {
+    public String getT_id() {
+		return t_id;
+	}
+
+	public void setT_id(String t_id) {
+		this.t_id = t_id;
+	}
+
+	public Integer getId() {
         return id;
     }
 

@@ -1,5 +1,8 @@
 package henu.entity;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Teacher {
     private String id;
 
