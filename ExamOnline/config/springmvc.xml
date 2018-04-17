@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p"
-    xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
-    xsi:schemaLocation=" 
+	xsi:schemaLocation=" 
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
@@ -14,21 +13,27 @@
 
 	<!-- 组件扫描 -->
 	<context:component-scan base-package="henu.controller" />
-	
+    
+    <!-- 配置资源映射，对拦截的静态资源进行处理（转发器的URLPattern是“/”，会覆盖Servlet默认的映射） -->
+    <mvc:resources location="/WEB-INF/bootstrap/" mapping="/bootstrap/**"/>
+    <mvc:resources location="/WEB-INF/css/" mapping="/css/**"/>
+    <mvc:resources location="/WEB-INF/js/" mapping="/js/**"/>
+    <mvc:resources location="/WEB-INF/icon/" mapping="/icon/**"/>
 	<!-- MVC相关配置 -->
 	<!-- 拦截器,进行轻量级访问控制 -->
-	
+
 	<!-- 文件上传 -->
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="defaultEncoding" value="UTF-8"/>
-		<property name="maxUploadSize" value="10000000"/>
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="maxUploadSize" value="10000000" />
 	</bean>
-	
-	<!-- ResponseBody返回Jackson和字符串 -->
-	<!-- 映射器-->
-	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+
+	<!-- 映射器 -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
 	<!-- 适配器 -->
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<!-- ResponseBody返回Jackson和字符串 -->
 		<property name="messageConverters">
 			<list>
 				<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
@@ -49,13 +54,13 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<!-- 解析器 -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/jsps/"/>
-		<property name="suffix" value=".jsp"/>
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
 	</bean>
-	
+
 	<!-- 最后使用默认注入，不会覆盖前边的解析器适配器等。。。。 -->
 	<mvc:annotation-driven />
 </beans>      

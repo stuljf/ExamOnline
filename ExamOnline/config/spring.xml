@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p"
-    xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-    xmlns:tx="http://www.springframework.org/schema/tx"
-	
-    xsi:schemaLocation=" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation=" 
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
@@ -15,50 +12,41 @@
 		http://www.springframework.org/schema/aop/spring-aop.xsd
 		http://www.springframework.org/schema/tx
 		http://www.springframework.org/schema/tx/spring-tx.xsd">
-	
+
 	<!-- 组件扫描 -->
 	<context:component-scan base-package="henu.dao" />
 	<context:component-scan base-package="henu.service" />
-	
+
 	<!-- 加载数据源 -->
-<!-- 	<context:property-placeholder location="classpath:db.properties"/> -->
-	
-	<!-- 配置数据源信息-c3p0 -->
+	<context:property-placeholder location="classpath:db.properties" />
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-		<property name="driverClass" value="com.mysql.jdbc.Driver"/>
-		<property name="jdbcUrl" value="jdbc:mysql://47.100.101.31:3306/examonline"/>
-		<property name="user" value="root"/>
-		<property name="password" value="root"/>
-		<property name="initialPoolSize" value="5"/>
-		<property name="maxPoolSize" value="20"/>
-		<property name="maxStatements" value="100"/>
-		<property name="acquireIncrement" value="2"/>
+		<property name="driverClass" value="${mysql.driverClass}" />
+		<property name="jdbcUrl" value="${mysql.url}" />
+		<property name="user" value="${mysql.user}" />
+		<property name="password" value="${mysql.password}" />
+		<property name="initialPoolSize" value="${mysql.initialPoolSize}" />
+		<property name="maxPoolSize" value="${mysql.maxPoolSize}" />
+		<property name="maxStatements" value="${mysql.maxStatements}" />
+		<property name="acquireIncrement" value="${mysql.acquireIncrement}" />
 	</bean>
-<!-- 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-		<property name="driverClass" value="${db.driverClass}"/>
-		<property name="jdbcUrl" value="jdbc:mysql://47.100.101.31:3306/examonline"/>
-		<property name="user" value="${user}"/>
-		<property name="password" value="${password}"/>
-		<property name="initialPoolSize" value="${initialPoolSize}"/>
-		<property name="maxPoolSize" value="${maxPoolSize}"/>
-		<property name="maxStatements" value="${maxStatements}"/>
-		<property name="acquireIncrement" value="${acquireIncrement}"/>
-	</bean> -->
 
 	<!-- DBUtils的queryRunner注入 -->
-	<bean id="queryRunner" class="org.apache.commons.dbutils.QueryRunner" scope="prototype">
-		<constructor-arg name="ds" ref="dataSource"/>
+	<bean id="queryRunner" class="org.apache.commons.dbutils.QueryRunner"
+		scope="prototype">
+		<constructor-arg name="ds" ref="dataSource" />
 	</bean>
-	
+
 	<!-- 事务管理器 -->
-	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"/>
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
 	</bean>
 	<!-- 声明式事务管理 -->
 	<!-- 配置事务管理：xml方式 -->
 	<!-- 事务管理器，jdbc的DataSourceTransactionManager -->
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"/>
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
 	</bean>
 	<!-- 事务的传播行为 -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
@@ -81,7 +69,8 @@
 	</tx:advice>
 	<!-- 事务的切面：需要AOPjar包支持 -->
 	<aop:config>
-		<aop:advisor advice-ref="txAdvice" pointcut="execution(* henu.service.*.*(..))"/>
+		<aop:advisor advice-ref="txAdvice"
+			pointcut="execution(* henu.service.*.*(..))" />
 	</aop:config>
-	
+
 </beans>      
