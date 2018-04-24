@@ -1,7 +1,6 @@
 package henu.dao;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import henu.entity.Student;
 import henu.util.PageBean;
@@ -24,7 +23,7 @@ public interface StudentDao {
 	
 	/**
 	 * remove:(根据学生id和考试id移除学生名单). <br/> 
-	 * @param id void
+	 * @param id
 	 * @throws SQLException 
 	 */
 	void remove(String id) throws SQLException;
@@ -46,11 +45,11 @@ public interface StudentDao {
 	
 	/**
 	 * queryAll:(分页查询所有学生信息). <br/> 
-	 * @param stus
+	 * @param stus 分页Bean，封装学生信息
 	 * @return List<Student>
 	 * @throws SQLException 
 	 */
-	List<Student> queryAll(PageBean<Student> stus) throws SQLException;
+	void queryAll(PageBean<Student> stus) throws SQLException;
 	
 	/**
 	 * studentExists:(查询是否存在该学生). <br/> 

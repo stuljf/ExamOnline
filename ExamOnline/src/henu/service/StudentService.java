@@ -1,5 +1,7 @@
 package henu.service;
 
+import java.util.List;
+
 import henu.entity.Student;
 import henu.util.ResultModel;
 
@@ -34,9 +36,10 @@ public interface StudentService {
 	ResultModel displayQuestion(String eId);
 	
 	/**
-	 * saveAsnwers:(考生答案保存). <br/> 
-	 * @param eId
-	 * @param answers void
+	 * @Description:(考生答案保存). <br/> 
+	 * @param stu		考生信息
+	 * @param answers	考试答案
+	 * @return
 	 */
-	ResultModel saveAsnwers(String eId, String[] answers);
+	ResultModel saveAsnwers(Student stu, List<String> answers);
 }

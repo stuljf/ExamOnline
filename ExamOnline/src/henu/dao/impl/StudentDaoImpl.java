@@ -48,12 +48,16 @@ public class StudentDaoImpl implements StudentDao {
 	}
 
 	@Override
-	public List<Student> queryAll(PageBean<Student> stus) throws SQLException {
+	public void queryAll(PageBean<Student> stus) throws SQLException {
 		//设置总页数
 		stus.setTotalCount((int) getCount());
 		//查询分页信息
 		String sql = "SELECT * FROM student LIMIT ?, ?;";
-		return qr.query(sql, new BeanListHandler<>(Student.class), stus.getCurrentPage()-1, stus.getPageCount());
+		List<Student> studentList = qr.query(sql, new BeanListHandler<>(Student.class), 
+				stus.getCurrentPage()-1, 
+				stus.getPageCount());
+		
+		stus.setPageData(studentList);
 	}
 
 	@Override

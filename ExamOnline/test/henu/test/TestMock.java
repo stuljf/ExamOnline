@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
+ * 测试模版，不要修改或者删除，自己新建目录文件进行测试
  * @ClassName: TestMock <br/> 
  * @Describtion: 使用Spring集成的Mock框架测试web应用的控制器. <br/> 
  * @date: 2018年4月19日 下午1:58:22 <br/> 
@@ -43,7 +44,7 @@ public class TestMock {
 	@Resource 
 	private WebApplicationContext context;
 	/**
-	 * Mock框架的核心类
+	 * Mock测试web的核心类
 	 */
 	private MockMvc mockMVC;
 

@@ -1,6 +1,7 @@
 package henu.service.impl;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -30,19 +31,19 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public ResultModel queryExams(String id) {
-		//待完成
+		
 		return null;
 	}
 
 	@Override
 	public ResultModel displayQuestion(String eId) {
-		//待完成
+		
 		return null;
 	}
 
 	@Override
-	public ResultModel saveAsnwers(String eId, String[] answers) {
-		//待完成
+	public ResultModel saveAsnwers(Student stu, List<String> answers) {
+		
 		return null;
 	}
 
