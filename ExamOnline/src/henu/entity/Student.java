@@ -1,5 +1,8 @@
 package henu.entity;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Student {
     private String id;
 
@@ -8,8 +11,18 @@ public class Student {
     private String ip;
 
     private String clazz;
+    
+    private Integer e_id;
 
-    public String getId() {
+    public Integer getE_id() {
+		return e_id;
+	}
+
+	public void setE_id(Integer e_id) {
+		this.e_id = e_id;
+	}
+
+	public String getId() {
         return id;
     }
 
