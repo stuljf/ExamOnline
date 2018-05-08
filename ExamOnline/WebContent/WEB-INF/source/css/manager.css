@@ -1,0 +1,22 @@
+.top-navbar{
+	padding-right:15px;
+	border-radius:0px;
+	background-color:#f9fbfe;
+	margin-bottom:0px;
+	border-bottom:1px solid #c0cdd9;
+}
+.content{
+	margin:0px;
+}
+.side-navbar{
+	padding:0px;
+	background-color:#f9fbfe;
+	border-right:1px solid #c0cdd9;
+}
+.side-navbar .nav > li > a {
+	padding:15px;
+	border-bottom:1px solid #c0cdd9;
+}
+ .active-menu {
+    background-color:#eee!important;
+} 
