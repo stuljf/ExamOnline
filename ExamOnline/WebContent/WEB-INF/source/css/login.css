@@ -1,0 +1,56 @@
+.content{
+	margin-top:100px;
+	margin-bottom:50px;
+}
+
+.wolcome{
+	margin-left:50px;
+	margin-right:50px;
+}
+
+.login{
+	margin-left:50px;
+	margin-right:50px;
+	border:1px solid #c0cdd9;
+	border-radius:10px;
+}
+
+.header{
+	border-bottom:1px solid #c0cdd9;
+	border-top-left-radius:10px;
+	border-top-right-radius:10px;
+	background-color:#f9fbfe;
+	height:50px;
+}
+
+.swidth{
+	width:50%;
+	height:50px;
+	float:left;
+	text-align:center;
+	padding-top:12px;
+}
+
+.swidth_btn{
+	font-size:18px;
+	color:#999;
+}
+
+.swidth_btn:hover{
+	text-decoration:none;
+	color:#999;
+}
+
+#student_btn{
+	color:#333;
+}
+
+.login_form{
+	min-height:200px;
+	margin:50px;
+	display:none;
+}
+
+#student_login{
+	display:block;
+}
