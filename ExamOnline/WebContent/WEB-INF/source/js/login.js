@@ -6,8 +6,17 @@ function swidth(a){
 	$(".login_form").eq(i).css("display","block");
 }
 
-function s_login(){
-	$("#s_form").submit();
+function s_login() {
+	//do post
+	$.post("/ExamOnline/student/login", $("#s_form").serialize(), function(data) {
+		/*optional stuff to do after success */
+		if (data.status == 200) {
+			window.location="/ExamOnline/page/admin";
+		} else {
+			alert(data.msg);
+		}
+	}, "json");
+	
 }
 
 function t_login(){

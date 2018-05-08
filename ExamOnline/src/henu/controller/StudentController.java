@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import henu.entity.Student;
 import henu.service.StudentService;
@@ -21,7 +22,8 @@ public class StudentController {
 	private StudentService studentService;
 	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String login(Student student, Model model, HttpServletRequest request) {
+	@ResponseBody
+	public ResultModel login(Student student, Model model, HttpServletRequest request) {
 		try {
 			//登陆
 			ResultModel res = studentService.login(student);
@@ -30,17 +32,11 @@ public class StudentController {
 			HttpSession session = request.getSession();
 			session.setAttribute("student", res.getData());
 			
-			//视图跳转
-			if (res.getStatus() == 200) {
-				return "teacher";
-			} else {
-				//用户名密码不匹配
-				model.addAttribute("res", res.getMsg());
-				return "login";
-			}
+			//返回结果
+			return res;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "error";
+			return ResultModel.build(500, "系统错误！");
 		}
 	}
 	

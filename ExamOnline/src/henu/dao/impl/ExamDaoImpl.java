@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import henu.dao.ExamDao;
 import henu.entity.Exam;
 import henu.entity.Question;
-import henu.entity.Student;
 
 @Repository //持久化层注解
 public class ExamDaoImpl implements ExamDao {

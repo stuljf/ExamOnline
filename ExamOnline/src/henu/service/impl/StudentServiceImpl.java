@@ -24,7 +24,8 @@ public class StudentServiceImpl implements StudentService {
 			Student exists = studentDao.studentExists(student);
 			if (exists != null)
 				return ResultModel.ok(exists);
-			return ResultModel.build(400, "请核对帐号密码！");
+			else
+				return ResultModel.build(400, "请核对帐号密码！");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResultModel.build(500, "系统错误！");
