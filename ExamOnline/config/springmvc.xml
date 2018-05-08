@@ -13,14 +13,17 @@
 
 	<!-- 组件扫描 -->
 	<context:component-scan base-package="henu.controller" />
-    
-    <!-- 配置资源映射，对拦截的静态资源进行处理（转发器的URLPattern是“/”，会覆盖Servlet默认的映射） -->
-    <mvc:resources location="/WEB-INF/bootstrap/" mapping="/bootstrap/**"/>
-    <mvc:resources location="/WEB-INF/css/" mapping="/css/**"/>
-    <mvc:resources location="/WEB-INF/js/" mapping="/js/**"/>
-    <mvc:resources location="/WEB-INF/icon/" mapping="/icon/**"/>
+
+	<!-- 配置资源映射，对拦截的静态资源进行处理（转发器的URLPattern是“/”，会覆盖Servlet默认的映射） -->
+	<mvc:resources location="/WEB-INF/source/" mapping="/source/**" />
 	<!-- MVC相关配置 -->
-	<!-- 拦截器,进行轻量级访问控制 -->
+	<!-- 学生操作拦截器 -->
+	<mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/student/**"/>
+            <bean class="henu.interceptor.StudentInterceptor"/>
+        </mvc:interceptor>
+	</mvc:interceptors>
 
 	<!-- 文件上传 -->
 	<bean id="multipartResolver"
@@ -30,22 +33,23 @@
 	</bean>
 
 	<!-- 解析器 -->
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
 
-	<!-- 处理请求返回json字符串的中文乱码问题 以及映射器、适配器的自动配置-->
-    <mvc:annotation-driven>
-        <mvc:message-converters>
-            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
-                <property name="supportedMediaTypes">
-                    <list>
-                        <value>application/json;charset=UTF-8</value>
-                        <value>text/html;charset=UTF-8</value>
-                    </list>
-                </property>
-            </bean>
-        </mvc:message-converters>
-    </mvc:annotation-driven>
+	<!-- 处理请求返回json字符串的中文乱码问题 以及映射器、适配器的自动配置 -->
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>application/json;charset=UTF-8</value>
+						<value>text/html;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
 </beans>      

@@ -54,7 +54,7 @@ public class StudentDaoImpl implements StudentDao {
 		//查询分页信息
 		String sql = "SELECT * FROM student LIMIT ?, ?;";
 		List<Student> studentList = qr.query(sql, new BeanListHandler<>(Student.class), 
-				stus.getCurrentPage()-1, 
+				(stus.getCurrentPage()-1) * stus.getPageCount(), 
 				stus.getPageCount());
 		
 		stus.setPageData(studentList);

@@ -22,10 +22,12 @@ public class StudentServiceImpl implements StudentService {
 	public ResultModel login(Student student) {
 		try {
 			Student exists = studentDao.studentExists(student);
-			return ResultModel.ok(exists);
+			if (exists != null)
+				return ResultModel.ok(exists);
+			return ResultModel.build(400, "请核对帐号密码！");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return ResultModel.build(500, "请重新登录！");
+			return ResultModel.build(500, "系统错误！");
 		}
 	}
 

@@ -7,18 +7,7 @@ function swidth(a){
 }
 
 function s_login(){
-	$.ajax({
-        type: "POST",
-        url: "",
-        dataType: "html",
-        data: $('#s_form').serialize(),
-        success: function (result) {
-        	
-        },
-        error: function() {
-            alert("requeat failed");
-        }
-    });
+	$("#s_form").submit();
 }
 
 function t_login(){
