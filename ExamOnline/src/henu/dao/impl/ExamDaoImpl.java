@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import henu.dao.ExamDao;
 import henu.entity.Exam;
 import henu.entity.Question;
-import henu.entity.Student;
 
 @Repository //持久化层注解
 public class ExamDaoImpl implements ExamDao {
@@ -53,10 +52,10 @@ public class ExamDaoImpl implements ExamDao {
 	}
 
 	@Override
-	public Exam queryExamsByStudent(String studentId) throws SQLException {
+	public Exam queryExamsById(String examId) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql = "SELECT * FROM exam WHERE id = ?;";		
-		return qr.query(sql, new BeanHandler<>(Exam.class), studentId);
+		return qr.query(sql, new BeanHandler<>(Exam.class), examId);
 	}
 
 	@Override

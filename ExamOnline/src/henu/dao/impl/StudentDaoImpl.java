@@ -74,7 +74,7 @@ public class StudentDaoImpl implements StudentDao {
 	 */
 	private long getCount() throws SQLException {
 		String sql = "SELECT COUNT(*) FROM student;";
-		return qr.query(sql, new ScalarHandler<>());
+		return (long) qr.query(sql, new ScalarHandler<>());
 		
 	}
 	

@@ -38,12 +38,12 @@ public interface ExamDao {
 	List<Exam> queryExamsByTeacher(String teacherId) throws SQLException;
 	
 	/**
-	 * queryExamsByStudent:(查找学生参加的考试)
-	 * @param studentId
+	 * queryExamsByStudent:(根据考试号查找考试)
+	 * @param examId
 	 * @return
 	 * @throws SQLException
 	 */
-	Exam queryExamsByStudent(String studentId) throws SQLException;
+	Exam queryExamsById(String examId) throws SQLException;
 	
 	/**
 	 * setStatus:(设置考试状态)
