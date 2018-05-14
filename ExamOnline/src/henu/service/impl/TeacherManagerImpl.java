@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import henu.dao.TeacherDao;
 import henu.entity.Teacher;
 import henu.service.TeacherManager;
+import henu.util.PageBean;
 import henu.util.ResultModel;
 
 @Service
@@ -62,9 +63,15 @@ public class TeacherManagerImpl implements TeacherManager {
 	}
 
 	@Override
-	public ResultModel queryAllTeacher() {
+	public ResultModel queryAllTeacher(PageBean<Teacher> bean) {
 		// TODO Auto-generated method stub
-		return null;
+		try {
+			teacherDao.queryAll(bean);
+			return ResultModel.ok(bean);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return ResultModel.build(500, "查询失败！");
+		}
 	}
 	
 	@Override

@@ -18,7 +18,7 @@ public class ExamManagerImpl implements ExamManager{
 
 	@Resource
 	private ExamDao examDao;
-	
+
 	@Override
 	public ResultModel createExam(Exam exam) {
 		try {
@@ -57,7 +57,7 @@ public class ExamManagerImpl implements ExamManager{
 	@Override
 	public ResultModel cancelExam(Exam exam) {
 		try {
-			examDao.setStatus(exam.getId().toString(), exam.getState());
+			examDao.setState(exam.getId().toString(), exam.getState());
 			return ResultModel.ok();
 		} catch (SQLException e) {
 			e.printStackTrace();

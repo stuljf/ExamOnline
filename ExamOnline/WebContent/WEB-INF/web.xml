@@ -13,6 +13,10 @@
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
 
+    <listener>
+        <listener-class>henu.interceptor.ContextInitLisener</listener-class>
+    </listener>
+
 	<!-- 加载spring容器 -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>

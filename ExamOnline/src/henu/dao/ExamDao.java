@@ -5,6 +5,7 @@ import java.util.List;
 
 import henu.entity.Exam;
 import henu.entity.Question;
+import henu.util.PageBean;
 
 public interface ExamDao {
 	
@@ -51,7 +52,15 @@ public interface ExamDao {
 	 * @param status
 	 * @throws SQLException
 	 */
-	void setStatus(String id, String status) throws SQLException;
+	void setState(String id, String status) throws SQLException;
+	
+	/**
+	 * @Description:(根据考试状态查询考试列表). <br/> 
+	 * @param status
+	 * @return
+	 * @throws SQLException
+	 */
+	void getExamsByState(PageBean<Exam> bean, String status) throws SQLException;
 	
 	/**
 	 * getQues:(获取试卷的试题)
@@ -68,4 +77,6 @@ public interface ExamDao {
 	 * @throws SQLException
 	 */
 	void importQues(String id, Question ques) throws SQLException;
+	
+	
 }

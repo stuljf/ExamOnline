@@ -8,11 +8,13 @@ import javax.annotation.Resource;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.springframework.stereotype.Repository;
 
 import henu.dao.ExamDao;
 import henu.entity.Exam;
 import henu.entity.Question;
+import henu.util.PageBean;
 
 @Repository //持久化层注解
 public class ExamDaoImpl implements ExamDao {
@@ -59,7 +61,7 @@ public class ExamDaoImpl implements ExamDao {
 	}
 
 	@Override
-	public void setStatus(String id, String status) throws SQLException {
+	public void setState(String id, String status) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql = "UPDATE exam SET state = ? WHERE id = ?;";
 		qr.update(sql, id, status);
@@ -80,4 +82,17 @@ public class ExamDaoImpl implements ExamDao {
 				ques.getSelection(), ques.getAnswer(), ques.getE_id(), id);
 	}
 
+	@Override
+	public void getExamsByState(PageBean<Exam> bean, String status) throws SQLException {
+		String sql = "SELECT * FROM exam WHERE state = ? LIMIT ?, ?;";
+		List<Exam> exams = qr.query(sql, new BeanListHandler<>(Exam.class), status, (bean.getCurrentPage()-1)*bean.getPageCount(), bean.getPageCount());
+		bean.setTotalCount((int) getCount());
+		bean.setPageData(exams);
+	}
+	
+	private long getCount() throws SQLException {
+		String sql = "SELECT COUNT(*) FROM exam;";
+		return (long) qr.query(sql, new ScalarHandler<>());
+		
+	}
 }

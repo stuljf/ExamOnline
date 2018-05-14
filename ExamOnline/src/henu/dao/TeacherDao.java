@@ -42,8 +42,9 @@ public interface TeacherDao {
 	/**
 	 * 根据分页查询所有教师
 	 * @param pageBean
+	 * @throws SQLException 
 	 */
-	public void queryAll (PageBean<Teacher> pageBean);
+	public void queryAll (PageBean<Teacher> pageBean) throws SQLException;
 	/**
 	 * 根据教师id和原密码修改密码
 	 * @param id，password 教师id，教师密码

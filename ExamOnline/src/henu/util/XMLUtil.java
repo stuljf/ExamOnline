@@ -8,6 +8,7 @@ import java.io.OutputStream;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
+import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
@@ -67,4 +68,31 @@ public class XMLUtil {
 		}
 	}
 
+	/**
+	 * @Description:(查询XML数据). <br/> 
+	 * @param doc
+	 * @param regex
+	 * @return
+	 */
+	public static String getByXPath(Document doc, String regex) {
+		Element userNode = (Element) doc.selectSingleNode(regex);
+		return userNode.getTextTrim();
+	}
+	
+	/**
+	 * @Description:(修改节点文本). <br/> 
+	 * @param e
+	 * @param text
+	 * @return
+	 */
+	public static boolean setElementText(Document doc, String regex, String text) {
+		try {
+			Element e = (Element) doc.selectSingleNode(regex);
+			e.setText(text);
+			return true;
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return false;
+		}
+	}
 }

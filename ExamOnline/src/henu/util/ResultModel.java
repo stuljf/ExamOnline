@@ -1,5 +1,7 @@
 package henu.util;
 
+import java.util.List;
+
 /**
  * @ClassName: ResultModel <br/> 
  * @Describtion: Ajax请求的返回值，包含状态、消息和数据. <br/> 
@@ -88,4 +90,23 @@ public class ResultModel {
 	public void setData(Object data) {
 		this.data = data;
 	}
+	
+	/**
+	 * @Description:(获取String值，如果Data是String格式，请用此方法获取值). <br/> 
+	 * @return
+	 */
+	public String getStringData() {
+		return (String) data;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> T getPojoData(Class<T> clazz) {
+		return (T) this.data;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> List<T> getListData(Class<T> clazz) {
+		return (List<T>) this.data;
+	}
+	
 }

@@ -12,6 +12,9 @@ import java.util.List;
  */
 public class PageBean<T> {
 	
+	public PageBean(int pageCount) {
+		this.pageCount = pageCount;
+	}
 	/**
 	 * 当前页码
 	 */

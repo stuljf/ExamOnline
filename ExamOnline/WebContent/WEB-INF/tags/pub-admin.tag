@@ -23,25 +23,13 @@
     <nav class="col-md-2 navbar-info side-navbar">
         <ul class="nav">
             <li>
-                <a class="active-menu" href=""><i class="glyphicon glyphicon-chevron-down"></i> Dashboard</a>
+                <a class="active-menu" href="${pageContext.request.contextPath }/admin/teacher/list"><i class="glyphicon glyphicon-chevron-down"></i> 教师管理</a>
             </li>
             <li>
-                <a href=""><i class="glyphicon glyphicon-cog"></i> UI Elements</a>
+                <a href="${pageContext.request.contextPath }/admin/setting/list"><i class="glyphicon glyphicon-cog"></i> 全局设置</a>
             </li>
             <li>
-                <a href=""><i class="glyphicon glyphicon-chevron-up"></i> Charts</a>
-            </li>
-            <li>
-                <a href=""><i class="glyphicon glyphicon-user"></i> Tabs  Panels</a>
-            </li>
-            <li>
-                <a href=""><i class="glyphicon glyphicon-picture"></i> Responsive Tables</a>
-            </li>
-            <li>
-                <a href=""><i class="glyphicon glyphicon-home"></i> Forms</a>
-            </li>
-            <li>
-                <a href=""><i class="glyphicon glyphicon-repeat"></i> Empty Page</a>
+                <a href="${pageContext.request.contextPath }/admin/exam/closed"><i class="glyphicon glyphicon-chevron-up"></i> 考试清理</a>
             </li>
         </ul>
     </nav>

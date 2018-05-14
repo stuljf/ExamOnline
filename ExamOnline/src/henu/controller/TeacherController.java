@@ -27,7 +27,7 @@ public class TeacherController {
 		try {
 			//登陆
 			ResultModel res = teacherService.login(teacher);
-			
+
 			//保存session
 			HttpSession session = request.getSession();
 			session.setAttribute("teacher", res.getData());
