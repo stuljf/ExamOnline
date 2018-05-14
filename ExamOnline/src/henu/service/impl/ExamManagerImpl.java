@@ -3,21 +3,26 @@ package henu.service.impl;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
 import henu.dao.ExamDao;
-import henu.dao.impl.ExamDaoImpl;
 import henu.entity.Exam;
 import henu.entity.Question;
 import henu.service.ExamManager;
 import henu.util.ResultModel;
 
+@Service //业务逻辑层注解
 public class ExamManagerImpl implements ExamManager{
 
-	private ExamDao examdao=new ExamDaoImpl();
+	@Resource
+	private ExamDao examDao;
 	
 	@Override
 	public ResultModel createExam(Exam exam) {
 		try {
-			examdao.save(exam);
+			examDao.save(exam);
 			return ResultModel.ok();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -29,7 +34,7 @@ public class ExamManagerImpl implements ExamManager{
 	public ResultModel importQues(String id, List<Question> qs) {
 		try {
 			for(Question q : qs) {
-				examdao.importQues(id, q);
+				examDao.importQues(id, q);
 			}
 			return ResultModel.ok();
 		} catch (SQLException e) {
@@ -41,7 +46,7 @@ public class ExamManagerImpl implements ExamManager{
 	@Override
 	public ResultModel editExam(Exam exam) {
 		try {
-			examdao.modify(exam);
+			examDao.modify(exam);
 			return ResultModel.ok();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -52,7 +57,7 @@ public class ExamManagerImpl implements ExamManager{
 	@Override
 	public ResultModel cancelExam(Exam exam) {
 		try {
-			examdao.setStatus(exam.getId().toString(), exam.getState());
+			examDao.setStatus(exam.getId().toString(), exam.getState());
 			return ResultModel.ok();
 		} catch (SQLException e) {
 			e.printStackTrace();

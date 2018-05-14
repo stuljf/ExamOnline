@@ -13,13 +13,36 @@ function s_login() {
 		if (data.status == 200) {
 			window.location="/ExamOnline/page/admin";
 		} else {
-			alert(data.msg);
+			$("#s_tip").html(data.msg);
 		}
 	}, "json");
 	
 }
 
 function t_login(){
+	
+	if($("#is_admin").is(":checked")){
+		//do post
+		$.post("/ExamOnline/admin/login", $("#t_form").serialize(), function(data) {
+			/*optional stuff to do after success */
+			if (data.status == 200) {
+				window.location="/ExamOnline/page/admin";
+			} else {
+				$("#t_tip").html(data.msg);
+			}
+		}, "json");
+	}else{
+		//do post
+		$.post("/ExamOnline/teacher/login", $("#t_form").serialize(), function(data) {
+			/*optional stuff to do after success */
+			if (data.status == 200) {
+				window.location="/ExamOnline/page/teacher";
+			} else {
+				$("#t_tip").html(data.msg);
+			}
+		}, "json");
+	}
+	/*
 	$.ajax({
         type: "POST",
         url: "",
@@ -35,5 +58,5 @@ function t_login(){
         error: function() {
             alert("requeat failed");
         }
-    });
+    });*/
 }

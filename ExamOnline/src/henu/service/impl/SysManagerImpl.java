@@ -21,9 +21,9 @@ public class SysManagerImpl implements SysManager {
 	public ResultModel login(Teacher teacher) {
 		try {
 			 Teacher compare=teacherDao.queryById(teacher.getId());
-			 if(compare.getPasswd()==teacher.getPasswd()){
+			 if(compare.getPasswd().equals(teacher.getPasswd())){
 				 if(compare.getIsAdmin()){
-					return ResultModel.ok();
+					return ResultModel.ok(compare);
 				 }else{
 					 return ResultModel.build(500, "非管理员用户");
 				 }
@@ -35,11 +35,6 @@ public class SysManagerImpl implements SysManager {
 			e.printStackTrace();
 			return ResultModel.build(500, "请重新登录！");
 		}
-	}
-	@Override
-	public ResultModel logout(String id) {
-		// TODO Auto-generated method stub
-		return ResultModel.ok();
 	}
 
 	@Override

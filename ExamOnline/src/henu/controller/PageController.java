@@ -11,7 +11,7 @@ public class PageController {
 
 	@RequestMapping("/{uri}")
 	public String page(@PathVariable String uri) {
-		return StringUtils.isEmpty(uri) ? "index" : uri;
+		return StringUtils.isEmpty(uri) ? "login" : uri;
 	}
 	
 }

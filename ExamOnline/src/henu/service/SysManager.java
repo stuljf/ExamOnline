@@ -14,11 +14,7 @@ public interface SysManager {
 	 * @return 
 	 */
 	public ResultModel login(Teacher teacher);
-	/**
-	 * @param id
-	 * @return
-	 */
-	ResultModel logout(String id);
+
 	/**
 	 * @return
 	 */
