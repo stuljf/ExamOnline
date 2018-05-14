@@ -56,7 +56,7 @@
 		</ul>
 	</nav>
 	<div class="col-md-10">
-		<div id="" style="background-color:red;width:100%;height:100px"></div>
+		
 	</div>
 </div>
 </body>
