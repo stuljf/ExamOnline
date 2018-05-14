@@ -1,7 +1,6 @@
 package henu.service.impl;
 
 import java.sql.SQLException;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;

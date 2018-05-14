@@ -3,6 +3,7 @@ package henu.service;
 import henu.entity.Teacher;
 import henu.util.ResultModel;
 
+
 public interface TeacherService {
 
 	/**
