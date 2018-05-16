@@ -12,14 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import henu.dao.ExamDao;
 import henu.entity.Exam;
 import henu.entity.Teacher;
 import henu.service.SysManager;
-import henu.util.PageBean;
 import henu.util.ResultModel;
 
 @Controller //控制器注释
@@ -83,29 +81,39 @@ public class AdminController {
 		return "teachers";
 	}
 
+	@RequestMapping("/examClosed/show")
+	public String showClosedExams(Model model) {
+		model.addAttribute("dataUrl", servletContext.getContextPath() + "/admin/exam/closed");
+		return "examClean";
+	}
+	
 	@RequestMapping("/exam/closed")
-	public String showClosedExams(Model model, @RequestParam(defaultValue="1") Integer page) {
-		int pageCount = (int) servletContext.getAttribute("pageCount");
-		//设置查询参数
-		PageBean<Exam> pageBean = new PageBean<>(pageCount);
-		pageBean.setCurrentPage(page);
-		//查询
-		sysManager.examClean(pageBean );
-		//视图渲染
-		model.addAttribute("examList", pageBean.getPageData());
-		return "examclean";
+	@ResponseBody
+	public List<Exam> examClosed() {
+		try {
+			//查询
+			ResultModel res = sysManager.examClean();
+			List<Exam> closedExams = res.getListData(Exam.class);
+			return closedExams;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@RequestMapping("/exam/clean")
 	@ResponseBody
-	public ResultModel exanClean(List<Integer> ids) {
+	public ResultModel exanClean(String ids) {
 		try {
-			for (Integer id : ids) {
-				examManager.remove(id);
+			//把id分割出来
+			String[] examIds = ids.trim().split(" +");
+			for (String id : examIds) {
+				examManager.remove(Integer.parseInt(id));
 			}
+			return ResultModel.ok();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResultModel.build(500, "删除失败，请重试！");
 		}
-		return ResultModel.ok();
 	}
 }

@@ -26,18 +26,7 @@ public class TestSysManager {
 	//依赖注入
 	@Resource 
 	private SysManager sys;
-	
-	//测试查看考试清理范围
-	@Test
-	public void testExamClean(){
-		PageBean<Exam> bean = new PageBean<>(10);
-		//开始测试
-		ResultModel res = sys.examClean(bean);
-		System.out.println(res.getStatus());
-		List<Exam> exams = bean.getPageData();
-		System.out.println(exams);
-		
-	}
+
 	
 	//读取全局设置信息
 	@Test

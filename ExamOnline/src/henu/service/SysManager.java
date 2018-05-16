@@ -1,7 +1,5 @@
 package henu.service;
-import henu.entity.Exam;
 import henu.entity.Teacher;
-import henu.util.PageBean;
 import henu.util.ResultModel;
 /**
  * @author Administrator
@@ -21,7 +19,7 @@ public interface SysManager {
 	 * @Description:(考试清理). <br/> 
 	 * @return
 	 */
-	ResultModel examClean(PageBean<Exam> pageBean);
+	ResultModel examClean();
 	/**
 	 * @param Page
 	 * @param time

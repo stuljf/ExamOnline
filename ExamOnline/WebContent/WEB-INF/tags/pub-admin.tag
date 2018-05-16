@@ -1,5 +1,8 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/source/css/manager.css" />
+
 <nav class="navbar navbar-info top-navbar" style="margin: 0">
     <div class="navbar-header">
         <a class="navbar-brand" onclick="" href="">上机考试管理员后台管理系统</a>
@@ -29,11 +32,13 @@
                 <a href="${pageContext.request.contextPath }/admin/setting/list"><i class="glyphicon glyphicon-cog"></i> 全局设置</a>
             </li>
             <li>
-                <a href="${pageContext.request.contextPath }/admin/exam/closed"><i class="glyphicon glyphicon-chevron-up"></i> 考试清理</a>
+                <a href="${pageContext.request.contextPath }/admin/examClosed/show"><i class="glyphicon glyphicon-chevron-up"></i> 考试清理</a>
             </li>
         </ul>
     </nav>
     <div class="col-md-10">
+        <div style="padding:10px;">
         <jsp:doBody />
+        </div>
     </div>
 </div>
