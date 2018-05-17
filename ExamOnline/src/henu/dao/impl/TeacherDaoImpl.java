@@ -68,7 +68,7 @@ public class TeacherDaoImpl implements TeacherDao {
 	@SuppressWarnings("unused")
 	private long getCount() throws SQLException {
 		String sql = "SELECT COUNT(*) FROM teacher;";
-		return qr.query(sql, new ScalarHandler<>());
+		return (long) qr.query(sql, new ScalarHandler<>());
 
 	}
 }

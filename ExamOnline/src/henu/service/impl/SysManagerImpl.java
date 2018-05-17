@@ -33,19 +33,19 @@ public class SysManagerImpl implements SysManager {
 	public ResultModel login(Teacher teacher) {
 		try {
 			 Teacher compare=teacherDao.queryById(teacher.getId());
-			 if(compare.getPasswd().equals(teacher.getPasswd())){
+			 if(compare != null && compare.getPasswd().equals(teacher.getPasswd())){
 				 if(compare.getIsAdmin()){
 					return ResultModel.ok(compare);
 				 }else{
 					 return ResultModel.build(500, "非管理员用户");
 				 }
 			 }else{
-				 return ResultModel.build(500, "密码错误");
+				 return ResultModel.build(500, "用户名或密码错误");
 			 }
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return ResultModel.build(500, "请重新登录！");
+			return ResultModel.build(500, "系统错误！");
 		}
 	}
 

@@ -16,11 +16,9 @@ function s_login() {
 			$("#s_tip").html(data.msg);
 		}
 	}, "json");
-	
 }
 
 function t_login(){
-	
 	if($("#is_admin").is(":checked")){
 		//do post
 		$.post("/ExamOnline/admin/login", $("#t_form").serialize(), function(data) {
@@ -42,7 +40,7 @@ function t_login(){
 			}
 		}, "json");
 	}
-	/*
+/*
 	$.ajax({
         type: "POST",
         url: "",
@@ -58,5 +56,6 @@ function t_login(){
         error: function() {
             alert("requeat failed");
         }
-    });*/
+    });
+*/
 }

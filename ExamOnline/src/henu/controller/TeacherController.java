@@ -32,6 +32,7 @@ public class TeacherController {
 			HttpSession session = request.getSession();
 			session.setAttribute("teacher", res.getData());
 			
+			res.setData(null);
 			//返回结果
 			return res;
 		} catch (Exception e) {
