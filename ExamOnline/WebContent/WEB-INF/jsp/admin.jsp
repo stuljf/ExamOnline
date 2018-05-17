@@ -5,7 +5,7 @@
     <jsp:body>
         <tmp:pub-admin>
             <jsp:body>
-             	<div class="jumbotron mainpage">
+             	<div class="jumbotron text-center">
              		<h2 class="text-info">上机考试管理员后台管理系统</h2>
              		<p class="text-primary">管理员功能：教师管理、系统配置、考试清理</p>
              	</div>

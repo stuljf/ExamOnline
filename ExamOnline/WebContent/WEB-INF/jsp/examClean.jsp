@@ -7,11 +7,6 @@
         <tmp:pub-admin>
             <jsp:body>
                 <!-- 引入bootstrap-table样式 -->
-                    <link href="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.css" rel="stylesheet">
-                    <!-- bootstrap-table.min.js -->
-				    <script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
-				    <!-- 引入中文语言包 -->
-				    <script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js"></script>
                     <script type="text/javascript" >
 					    $(function () {
 					
@@ -120,7 +115,7 @@
                         }
 					    
 					</script>
-				<div class="container">
+				<div class="text-center">
 				    <button class="btn btn-info" style="width: 100%;" type="button" onclick="oneKeyClean()">一键清除</button>
 				    <table id="table"></table>
 				</div>

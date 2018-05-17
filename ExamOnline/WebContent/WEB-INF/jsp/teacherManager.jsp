@@ -6,7 +6,7 @@ pageEncoding="UTF-8"%>
 <jsp:body>
 <tmp:pub-admin>
 <jsp:body>
-<div class="container">
+<div class="text-center">
 
     <!--工具栏-->
     <div id="toolbar" class="btn-group">
@@ -187,7 +187,7 @@ pageEncoding="UTF-8"%>
 
         //2.初始化事件
         function isAdminFormatter(value, row, index) {
-            return value == "1"? "是": "否";
+            return value == true? "是": "否";
         }
 
         $("#btn_delete").click(function () {
@@ -247,7 +247,13 @@ pageEncoding="UTF-8"%>
             $("form input[name!='isAdmin']").val("");
             $("form input[name='isAdmin']").removeAttr("checked");
         }
+        
 
+         /* $('#updateTeacherModel').on('hidden.bs.modal', function () {
+          // 执行一些动作...
+        	  $("#updateTeacherForm input[name='isAdmin']").removeProp("checked");
+        })  */
+        
         //修改教师
         $("#btn_edit").click(function () {
             //获取行信息
@@ -258,8 +264,11 @@ pageEncoding="UTF-8"%>
                 var row = selects[0];
                 $("#updateTeacherForm :input[name='id']").val(row.id);
                 $("#updateTeacherForm :input[name='name']").val(row.name);
-                if (row.isAdmin == 1)
-                    $("#updateTeacherForm :input[name='isAdmin']").attr("checked", "checked")
+                if (row.isAdmin) {
+                	 $("#updateTeacherForm :input[name='isAdmin']").prop("checked", true);
+                } else {
+                	$("#updateTeacherForm :input[name='isAdmin']").removeAttr("checked");
+                }
                 //开启模态框
                 $('#updateTeacherModel').modal('toggle');
             }

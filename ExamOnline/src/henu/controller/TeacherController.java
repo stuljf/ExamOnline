@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,11 +23,12 @@ public class TeacherController {
 
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	@ResponseBody
-	public ResultModel login(Teacher teacher, Model model, HttpServletRequest request) {
+	public ResultModel login(Teacher teacher, HttpServletRequest request) {
 		try {
 			//登陆
+			teacher.setPasswd(DigestUtils.md5DigestAsHex(teacher.getPasswd().getBytes()));
 			ResultModel res = teacherService.login(teacher);
-
+			
 			//保存session
 			HttpSession session = request.getSession();
 			session.setAttribute("teacher", res.getData());

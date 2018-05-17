@@ -65,7 +65,7 @@
 				    });
 				</script>
 				
-			    <div class="container">
+			    <div class="text-center">
 			        <form class="form-horizontal" role="form">
 			            <div id="paper">
 			                <!-- 动态生成试题 -->

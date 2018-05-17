@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,6 +50,7 @@ public class AdminController {
 	public ResultModel login(Teacher teacher, Model model, HttpServletRequest request) {
 		try {
 			//登陆
+			teacher.setPasswd(DigestUtils.md5DigestAsHex(teacher.getPasswd().getBytes()));
 			ResultModel res = sysManager.login(teacher);
 
 			//保存session
@@ -125,7 +127,14 @@ public class AdminController {
 	@ResponseBody
 	public ResultModel addTeacher(Teacher teacher) {
 		try {
-			//查询所有教师
+			if (teacher.getPasswd() == null) {
+				teacher.setPasswd(teacher.getId());
+			}
+			if (teacher.getIsAdmin() == null) {
+				teacher.setIsAdmin(false);
+			}
+			//加密
+			teacher.setPasswd(DigestUtils.md5DigestAsHex(teacher.getPasswd().getBytes()));
 			ResultModel res = teacherManager.addTeacher(teacher);
 			//返回数据
 			return res;
@@ -152,7 +161,9 @@ public class AdminController {
 	@ResponseBody
 	public ResultModel updateTeacher(Teacher teacher) {
 		try {
-			//查询所有教师
+			if (teacher.getIsAdmin() == null) {
+				teacher.setIsAdmin(false);
+			}
 			ResultModel res = teacherManager.updateTeacher(teacher);
 			//返回数据
 			return res;
