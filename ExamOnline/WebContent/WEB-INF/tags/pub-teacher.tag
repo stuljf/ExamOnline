@@ -1,5 +1,12 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/source/css/manager.css" />
+<script type="text/javascript" >
+$(document).ready(function(){
+var h=$(window).height();
+$(".side-navbar").css("min-height", h);
+});
+</script>
 <nav class="navbar navbar-info top-navbar" style="margin: 0">
     <div class="navbar-header">
         <a class="navbar-brand" onclick="" href="">上机考试管理员后台管理系统</a>
@@ -18,7 +25,6 @@
         </li>
     </ul>
 </nav>
-
 <div class="row content">
     <nav class="col-md-2 navbar-info side-navbar">
         <ul class="nav">

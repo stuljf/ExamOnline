@@ -48,6 +48,7 @@ public class AdminController {
 			HttpSession session = request.getSession();
 			session.setAttribute("admin", res.getData());
 
+			res.setData(null);
 			//返回结果
 			return res;
 		} catch (Exception e) {

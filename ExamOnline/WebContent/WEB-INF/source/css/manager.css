@@ -19,4 +19,11 @@
 }
  .active-menu {
     background-color:#eee!important;
-} 
+}
+.mainpage{
+	margin:20px 200px;
+}
+.panel-footer{
+	background-color:#f9fbfe;
+	border-top:1px solid #c0cdd9;
+}
