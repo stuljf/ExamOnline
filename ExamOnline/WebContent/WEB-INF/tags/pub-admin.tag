@@ -26,13 +26,13 @@
     <nav class="col-md-2 navbar-info side-navbar">
         <ul class="nav">
             <li>
-                <a class="active-menu" href="${pageContext.request.contextPath }/admin/teacher/list"><i class="glyphicon glyphicon-chevron-down"></i> 教师管理</a>
+                <a class="active-menu" href="${pageContext.request.contextPath }/page/teacherManager"><i class="glyphicon glyphicon-chevron-down"></i> 教师管理</a>
             </li>
             <li>
-                <a href="${pageContext.request.contextPath }/admin/setting/list"><i class="glyphicon glyphicon-cog"></i> 全局设置</a>
+                <a href="${pageContext.request.contextPath }/page/settings"><i class="glyphicon glyphicon-cog"></i> 全局设置</a>
             </li>
             <li>
-                <a href="${pageContext.request.contextPath }/admin/examClosed/show"><i class="glyphicon glyphicon-chevron-up"></i> 考试清理</a>
+                <a href="${pageContext.request.contextPath }/page/examClean"><i class="glyphicon glyphicon-chevron-up"></i> 考试清理</a>
             </li>
         </ul>
     </nav>

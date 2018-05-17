@@ -108,19 +108,19 @@ public class AdminController {
 	
 	@RequestMapping("/teacher/list")
 	@ResponseBody
-	public ResultModel listTeacher() {
+	public List<Teacher> listTeacher() {
 		try {
 			//查询所有教师
 			ResultModel res = teacherManager.queryAllTeacher();
 			//返回数据
-			return res;
+			return res.getListData(Teacher.class);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResultModel.build(500, "系统故障，请联系管理员！");
+			return null;
 		}
 	}
 	
-	@RequestMapping("/teacher/add")
+	@RequestMapping(value="/teacher/add", method=RequestMethod.POST)
 	@ResponseBody
 	public ResultModel addTeacher(Teacher teacher) {
 		try {
@@ -161,14 +161,17 @@ public class AdminController {
 		}
 	}
 	
-	@RequestMapping("/teacher/remove/{tId}")
+	@RequestMapping("/teacher/remove/{ids}")
 	@ResponseBody
-	public ResultModel removeTeacher(@PathVariable String tId) {
+	public ResultModel removeTeacher(@PathVariable String ids) {
 		try {
-			//查询所有教师
-			ResultModel res = teacherManager.deleteTeacher(tId);
+			String[] tids = ids.split(",");
+			//删除对应教师
+			for (String tid : tids) {
+				teacherManager.deleteTeacher(tid);				
+			}
 			//返回数据
-			return res;
+			return ResultModel.ok();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResultModel.build(500, "删除失败，请联系管理员！");
@@ -178,13 +181,7 @@ public class AdminController {
 	/*
 	 * 以下是考试清理相关 
 	 */
-	
-	@RequestMapping("/examClosed/show")
-	public String showClosedExams(Model model) {
-		model.addAttribute("dataUrl", servletContext.getContextPath() + "/admin/exam/closed");
-		return "examClean";
-	}
-	
+
 	@RequestMapping("/exam/closed")
 	@ResponseBody
 	public List<Exam> examClosed() {

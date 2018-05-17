@@ -6,14 +6,28 @@
 <head>
 <meta charset="UTF-8">
 <title>${title }</title>
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/source/bootstrap/css/bootstrap.min.css" />
+<!-- 引入bootstrap样式 -->
+<link
+	href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css"
+	rel="stylesheet">
+<!-- 引入bootstrap-table样式 -->
+<link
+	href="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.css"
+	rel="stylesheet">
+
+<!-- jquery -->
+<script src="https://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+<script
+	src="https://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- bootstrap-table.min.js -->
+<script
+	src="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+<!-- 引入中文语言包 -->
+<script
+	src="https://cdn.bootcss.com/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js"></script>
 <script type="text/javascript"
-	src="${pageContext.request.contextPath }/source/jquery/jquery-2.1.0.min.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath }/source/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript"
-    src="${pageContext.request.contextPath }/source/js/common.js"></script>
+	src="${pageContext.request.contextPath }/source/js/common.js"></script>
 </head>
 <body>
 	<jsp:doBody />

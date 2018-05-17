@@ -151,3 +151,25 @@
 					    	 }
 					    	 }();
 					    	})(jQuery);
+
+
+function getSelectRows() {
+    return $("#table").bootstrapTable('getSelections');
+}
+
+function removeRows(ids) {
+    $("#table").bootstrapTable('remove', {field:'id', values:ids});
+}
+
+function addRow(data) {
+    $("#table").bootstrapTable('prepend', data);
+}
+
+//获取索引号，坑爹的设计，修改行数据必须要index而不是uniqueId，大坑特坑
+function getSelectIndex() {
+    return $("#table tbody tr[data-uniqueid='" + getSelectRows()[0].id + "']").attr("data-index");
+}
+
+function updateRow(data) {
+    $("#table").bootstrapTable('updateRow', data);
+}

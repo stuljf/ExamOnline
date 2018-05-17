@@ -22,7 +22,7 @@ public class TeacherManagerImpl implements TeacherManager {
 	public ResultModel addTeacher(Teacher teacher) {
 		try {
 			teacherDao.save(teacher);
-			return ResultModel.ok();
+			return ResultModel.ok(teacher);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResultModel.build(500, "系统出错");
@@ -43,8 +43,19 @@ public class TeacherManagerImpl implements TeacherManager {
 	@Override
 	public ResultModel updateTeacher(Teacher teacher) {
 		try {
+			Teacher t = teacherDao.queryById(teacher.getId());
+			//只修改改变部分
+			if (teacher.getPasswd() == null) {
+				teacher.setPasswd(t.getPasswd());
+			}
+			if (teacher.getIsAdmin() == null) {
+				teacher.setIsAdmin(t.getIsAdmin());
+			}
+			if (teacher.getName() == null) {
+				teacher.setName(t.getName());
+			}
 			teacherDao.modify(teacher);
-			return ResultModel.ok();
+			return ResultModel.ok(teacher);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResultModel.build(500, "系统出错");
