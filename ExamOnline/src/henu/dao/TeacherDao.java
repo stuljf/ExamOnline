@@ -1,9 +1,9 @@
 package henu.dao;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import henu.entity.Teacher;
-import henu.util.PageBean;
 
 /**
  * @ClassName TeacherDao
@@ -40,11 +40,10 @@ public interface TeacherDao {
 	 */
 	public Teacher queryById (String id) throws SQLException;
 	/**
-	 * 根据分页查询所有教师
-	 * @param pageBean
+	 * 查询所有教师
 	 * @throws SQLException 
 	 */
-	public void queryAll (PageBean<Teacher> pageBean) throws SQLException;
+	public List<Teacher> queryAll () throws SQLException;
 	/**
 	 * 根据教师id和原密码修改密码
 	 * @param id，password 教师id，教师密码

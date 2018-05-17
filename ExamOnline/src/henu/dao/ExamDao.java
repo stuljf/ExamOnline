@@ -60,7 +60,7 @@ public interface ExamDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	void getExamsByState(PageBean<Exam> bean, String status) throws SQLException;
+	List<Exam> getExamsByState(String status) throws SQLException;
 	
 	/**
 	 * getQues:(获取试卷的试题)

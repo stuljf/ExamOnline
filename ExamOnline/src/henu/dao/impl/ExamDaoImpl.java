@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import henu.dao.ExamDao;
 import henu.entity.Exam;
 import henu.entity.Question;
-import henu.util.PageBean;
 
 @Repository //持久化层注解
 public class ExamDaoImpl implements ExamDao {
@@ -83,13 +82,13 @@ public class ExamDaoImpl implements ExamDao {
 	}
 
 	@Override
-	public void getExamsByState(PageBean<Exam> bean, String status) throws SQLException {
-		String sql = "SELECT * FROM exam WHERE state = ? LIMIT ?, ?;";
-		List<Exam> exams = qr.query(sql, new BeanListHandler<>(Exam.class), status, (bean.getCurrentPage()-1)*bean.getPageCount(), bean.getPageCount());
-		bean.setTotalCount((int) getCount());
-		bean.setPageData(exams);
+	public List<Exam> getExamsByState(String status) throws SQLException {
+		String sql = "SELECT * FROM exam WHERE state = ?;";
+		List<Exam> exams = qr.query(sql, new BeanListHandler<>(Exam.class), status);
+		return exams;
 	}
 	
+	@SuppressWarnings("unused")
 	private long getCount() throws SQLException {
 		String sql = "SELECT COUNT(*) FROM exam;";
 		return (long) qr.query(sql, new ScalarHandler<>());

@@ -35,12 +35,14 @@ $(".side-navbar").css("min-height", h);
                 <a href="${pageContext.request.contextPath }/admin/setting/list"><i class="glyphicon glyphicon-cog"></i> 全局设置</a>
             </li>
             <li>
-                <a href="${pageContext.request.contextPath }/admin/exam/closed"><i class="glyphicon glyphicon-trash"></i> 考试清理</a>
+                <a href="${pageContext.request.contextPath }/admin/examClosed/show"><i class="glyphicon glyphicon-chevron-up"></i> 考试清理</a>
             </li>
         </ul>
     </nav>
     <div class="col-md-10">
+        <div style="padding:10px;">
         <jsp:doBody />
+        </div>
     </div>
 </div>
 <div class="panel-footer text-center text-primary">
