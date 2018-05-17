@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import henu.dao.TeacherDao;
 import henu.entity.Teacher;
-import henu.util.PageBean;
 
 @Repository
 public class TeacherDaoImpl implements TeacherDao {
@@ -47,16 +46,11 @@ public class TeacherDaoImpl implements TeacherDao {
 	}
 
 	@Override
-	public void queryAll(PageBean<Teacher> pageBean) throws SQLException {
-		//设置总页数
-		pageBean.setTotalCount((int) getCount());
-		//查询分页信息
-		String sql = "SELECT * FROM teacher LIMIT ?, ?;";
-		List<Teacher> teacherList = qr.query(sql, new BeanListHandler<>(Teacher.class), 
-				(pageBean.getCurrentPage()-1) * pageBean.getPageCount(), 
-				pageBean.getPageCount());
-
-		pageBean.setPageData(teacherList);
+	public List<Teacher> queryAll() throws SQLException {
+		//查询
+		String sql = "SELECT * FROM teacher;";
+		List<Teacher> teacherList = qr.query(sql, new BeanListHandler<>(Teacher.class));
+		return teacherList;
 	}
 
 	@Override
@@ -71,6 +65,7 @@ public class TeacherDaoImpl implements TeacherDao {
 	 * @throws SQLException long
 	 * @see
 	 */
+	@SuppressWarnings("unused")
 	private long getCount() throws SQLException {
 		String sql = "SELECT COUNT(*) FROM teacher;";
 		return qr.query(sql, new ScalarHandler<>());

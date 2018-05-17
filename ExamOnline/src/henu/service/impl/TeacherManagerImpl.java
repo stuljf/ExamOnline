@@ -1,6 +1,7 @@
 package henu.service.impl;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 import henu.dao.TeacherDao;
 import henu.entity.Teacher;
 import henu.service.TeacherManager;
-import henu.util.PageBean;
 import henu.util.ResultModel;
 
 @Service
@@ -63,11 +63,11 @@ public class TeacherManagerImpl implements TeacherManager {
 	}
 
 	@Override
-	public ResultModel queryAllTeacher(PageBean<Teacher> bean) {
+	public ResultModel queryAllTeacher() {
 		// TODO Auto-generated method stub
 		try {
-			teacherDao.queryAll(bean);
-			return ResultModel.ok(bean);
+			List<Teacher> list = teacherDao.queryAll();
+			return ResultModel.ok(list);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResultModel.build(500, "查询失败！");

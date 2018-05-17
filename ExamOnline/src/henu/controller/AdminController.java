@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +19,7 @@ import henu.dao.ExamDao;
 import henu.entity.Exam;
 import henu.entity.Teacher;
 import henu.service.SysManager;
+import henu.service.TeacherManager;
 import henu.util.ResultModel;
 
 @Controller //控制器注释
@@ -27,6 +29,9 @@ public class AdminController {
 	@Resource
 	private SysManager sysManager;
 
+	@Resource
+	private TeacherManager teacherManager;
+	
 	//	@Resource
 	//	private ExamManager examManager;
 	@Resource
@@ -35,6 +40,10 @@ public class AdminController {
 	@Resource
 	private ServletContext servletContext;
 
+	/*
+	 * 登陆登出和修改密码
+	 */
+	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	@ResponseBody
 	public ResultModel login(Teacher teacher, Model model, HttpServletRequest request) {
@@ -54,6 +63,25 @@ public class AdminController {
 		}
 	}
 
+	@RequestMapping(value="/logut")
+	public String logout(String id, HttpServletRequest request) {
+		try {
+			//清空该用户session
+			HttpSession session = request.getSession();
+			session.removeAttribute("admin");
+
+			//返回视图
+			return "login";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+	}
+	
+	/*
+	 * 以下是系统配置相关
+	 */
+	
 	@RequestMapping("/setting/list")
 	public String showSettings() {
 		return "sysConfig";
@@ -74,13 +102,83 @@ public class AdminController {
 		}
 	}
 
+	/*
+	 * 以下是教师管理模块
+	 */
+	
 	@RequestMapping("/teacher/list")
-	public String showTeachers(Model model, Integer page) {
-
-
-		return "teachers";
+	@ResponseBody
+	public ResultModel listTeacher() {
+		try {
+			//查询所有教师
+			ResultModel res = teacherManager.queryAllTeacher();
+			//返回数据
+			return res;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultModel.build(500, "系统故障，请联系管理员！");
+		}
 	}
-
+	
+	@RequestMapping("/teacher/add")
+	@ResponseBody
+	public ResultModel addTeacher(Teacher teacher) {
+		try {
+			//查询所有教师
+			ResultModel res = teacherManager.addTeacher(teacher);
+			//返回数据
+			return res;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultModel.build(500, "系统故障，请联系管理员！");
+		}
+	}
+	
+	@RequestMapping("/teacher/{tId}")
+	@ResponseBody
+	public ResultModel queryTeacherById(@PathVariable String tId) {
+		try {
+			//查询所有教师
+			ResultModel res = teacherManager.queryTeacher(tId);
+			//返回数据
+			return res;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultModel.build(500, "查询失败，请联系管理员！");
+		}
+	}
+	@RequestMapping(value="/teacher/update", method=RequestMethod.POST)
+	@ResponseBody
+	public ResultModel updateTeacher(Teacher teacher) {
+		try {
+			//查询所有教师
+			ResultModel res = teacherManager.updateTeacher(teacher);
+			//返回数据
+			return res;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultModel.build(500, "更新失败，请联系管理员！");
+		}
+	}
+	
+	@RequestMapping("/teacher/remove/{tId}")
+	@ResponseBody
+	public ResultModel removeTeacher(@PathVariable String tId) {
+		try {
+			//查询所有教师
+			ResultModel res = teacherManager.deleteTeacher(tId);
+			//返回数据
+			return res;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultModel.build(500, "删除失败，请联系管理员！");
+		}
+	}
+	
+	/*
+	 * 以下是考试清理相关 
+	 */
+	
 	@RequestMapping("/examClosed/show")
 	public String showClosedExams(Model model) {
 		model.addAttribute("dataUrl", servletContext.getContextPath() + "/admin/exam/closed");

@@ -1,7 +1,6 @@
 package henu.service;
 
 import henu.entity.Teacher;
-import henu.util.PageBean;
 import henu.util.ResultModel;
 
 /**
@@ -43,7 +42,7 @@ public interface TeacherManager {
 	 * 查询所有教师
 	 * @return
 	 */
-	public ResultModel queryAllTeacher(PageBean<Teacher> baan);
+	public ResultModel queryAllTeacher();
 	
 	/**
 	 * 重置教师密码
