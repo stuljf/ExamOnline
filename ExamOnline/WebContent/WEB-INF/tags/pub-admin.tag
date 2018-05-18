@@ -6,18 +6,17 @@ $(document).ready(function(){
 var h=$(window).height();
 $(".side-navbar").css("min-height", h);
 $(".jumbotron").css("min-height", h);
-
 });
 </script>
 <style type="text/css">
-/* #flooter {
+#flooter {
     position: fixed;
     bottom: 0px;
     left: 0px;
     width:100%;
     height: 40px;
     text-align: center;
-} */
+}
 </style>
 <nav class="navbar navbar-info top-navbar">
     <div class="navbar-header">

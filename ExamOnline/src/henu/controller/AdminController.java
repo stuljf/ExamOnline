@@ -56,7 +56,6 @@ public class AdminController {
 			//保存session
 			HttpSession session = request.getSession();
 			session.setAttribute("admin", res.getData());
-
 			res.setData(null);
 			//返回结果
 			return res;
@@ -91,17 +90,16 @@ public class AdminController {
 	}
 
 	@RequestMapping(value="/setting/update", method=RequestMethod.POST)
-	@ResponseBody
-	public ResultModel updateSettings(String pageCount, String timeLimit) {
+	public String updateSettings(String pageCount, String timeLimit) {
 		//判空
 		if (pageCount == null || timeLimit == null) {
-			return ResultModel.build(400, "参数不能为空！");
+			return "sysConfig";
 		} else {
-			ResultModel res = sysManager.setting(pageCount, timeLimit);
+			sysManager.setting(pageCount, timeLimit);
 			//同步内存
 			servletContext.setAttribute("pageCount", pageCount);
 			servletContext.setAttribute("timeLimit", timeLimit);
-			return res;
+			return "sysConfig";
 		}
 	}
 
@@ -163,6 +161,9 @@ public class AdminController {
 		try {
 			if (teacher.getIsAdmin() == null) {
 				teacher.setIsAdmin(false);
+			}
+			if (teacher.getPasswd() != null) {
+				teacher.setPasswd(DigestUtils.md5DigestAsHex(teacher.getPasswd().getBytes()));
 			}
 			ResultModel res = teacherManager.updateTeacher(teacher);
 			//返回数据

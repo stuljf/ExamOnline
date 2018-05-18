@@ -5,7 +5,6 @@ import java.util.List;
 
 import henu.entity.Exam;
 import henu.entity.Question;
-import henu.util.PageBean;
 
 public interface ExamDao {
 	

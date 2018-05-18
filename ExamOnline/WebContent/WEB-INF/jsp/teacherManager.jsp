@@ -22,8 +22,8 @@ pageEncoding="UTF-8"%>
     </div>
 
     <!--表格-->
-    <table id="table"></table>
-
+    <table id="table" style="margin: 10px auto 30px auto;"></table>
+    <div style="height: 30px;"></div>
     <!--新增-->
     <div class="modal fade" data-keyboard="false" id="addTeacherModel" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
