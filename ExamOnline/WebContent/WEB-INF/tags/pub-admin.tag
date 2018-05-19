@@ -28,9 +28,7 @@ $(".jumbotron").css("min-height", h);
 				当前用户：${admin.name }&ensp;<i class="glyphicon glyphicon-chevron-down"></i>
             </a>
             <ul class="dropdown-menu">
-                <li><a href="#">passwd</a>
-                </li>
-                <li><a href="#">Logout</a>
+                <li><a href="${pageContext.request.contextPath }/admin/logout">Logout</a>
                 </li>
             </ul>
         </li>

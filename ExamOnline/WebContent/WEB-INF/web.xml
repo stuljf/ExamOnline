@@ -16,6 +16,10 @@
     <session-config>
         <session-timeout>20</session-timeout>
     </session-config>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/jsp/error.jsp</location>
+    </error-page>
 
     <listener>
         <listener-class>henu.interceptor.ContextInitLisener</listener-class>
