@@ -1,5 +1,6 @@
 package henu.dao.impl;
 
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -24,9 +25,9 @@ public class ExamDaoImpl implements ExamDao {
 	@Override
 	public void save(Exam exam) throws SQLException {
 		// TODO Auto-generated method stub
-		String sql="INSERT INTO student VALUES(NULL, ?, ?, ?, ?, ?);";
+		String sql="INSERT INTO exam VALUES(NULL, ?, ?, ?, DEFAULT, ?);";
 		qr.update(sql, exam.getSubject(), exam.getStarttime(), 
-				exam.getEndtime(), exam.getState(), exam.getT_id());
+				exam.getEndtime(), exam.getT_id());
 	}
 
 	@Override
@@ -46,14 +47,37 @@ public class ExamDaoImpl implements ExamDao {
 	}
 
 	@Override
-	public List<Exam> queryExamsByTeacher(String teacherId) throws SQLException {
-		// TODO Auto-generated method stub
-		String sql = "SELECT * FROM exam WHERE id = ?;";
-		return qr.query(sql, new BeanListHandler<>(Exam.class), teacherId);
+	public List<Exam> queryExamsByTeacher(String teacherId, String state) throws SQLException {
+		//判断
+		String sql = null;
+		List<Exam> exams = null;
+		switch (state) {
+		case "created":
+			sql = "SELECT * FROM exam WHERE t_id = ? AND state = ?;";
+			exams = qr.query(sql, new BeanListHandler<>(Exam.class), teacherId, state);
+			break;
+			
+		case "begined":
+			sql = "SELECT * FROM exam WHERE t_id = ? AND state = ?;";
+			exams = qr.query(sql, new BeanListHandler<>(Exam.class), teacherId, state);
+			break;
+			
+		case "closed":
+			sql = "SELECT * FROM exam WHERE t_id = ? AND state = ?;";
+			exams = qr.query(sql, new BeanListHandler<>(Exam.class), teacherId, state);
+			break;
+			
+		default: 
+			sql = "SELECT * FROM exam WHERE t_id = ?;";
+			exams = qr.query(sql, new BeanListHandler<>(Exam.class), teacherId);
+			break;
+		}
+		
+		return exams;
 	}
 
 	@Override
-	public Exam queryExamsById(String examId) throws SQLException {
+	public Exam queryExamsById(int examId) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql = "SELECT * FROM exam WHERE id = ?;";		
 		return qr.query(sql, new BeanHandler<>(Exam.class), examId);
@@ -63,7 +87,7 @@ public class ExamDaoImpl implements ExamDao {
 	public void setState(String id, String status) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql = "UPDATE exam SET state = ? WHERE id = ?;";
-		qr.update(sql, id, status);
+		qr.update(sql, status, id);
 	}
 
 	@Override
@@ -93,5 +117,12 @@ public class ExamDaoImpl implements ExamDao {
 		String sql = "SELECT COUNT(*) FROM exam;";
 		return (long) qr.query(sql, new ScalarHandler<>());
 		
+	}
+
+	@Override
+	public int getLastInsertID() throws SQLException {
+		String sql = "SELECT LAST_INSERT_ID();";
+		BigInteger t = qr.query(sql, new ScalarHandler<>());
+		return t.intValue();
 	}
 }

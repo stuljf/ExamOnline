@@ -1,5 +1,6 @@
 package henu.service.impl;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -21,21 +22,32 @@ public class ExamManagerImpl implements ExamManager {
 	private ExamDao examDao;
 
 	@Override
-	public ResultModel createExam(Exam exam) {
-		
-		return null;
+	public ResultModel createExam(Exam exam) throws SQLException {
+		//插入
+		examDao.save(exam);
+		//获取自增主键
+		int id = examDao.getLastInsertID();
+		//设置id
+		exam.setId(id);
+		return ResultModel.ok(exam);
 	}
 
 	@Override
-	public ResultModel editExam(Exam exam) {
-		
-		return null;
+	public ResultModel editExam(Exam exam) throws SQLException {
+		//获取旧数据
+		Exam t = examDao.queryExamsById(exam.getId());
+		//填充数据
+		exam.setState(t.getState());
+		exam.setT_id(t.getT_id());
+		//修改数据
+		examDao.modify(exam);
+		return ResultModel.ok();
 	}
 
 	@Override
-	public ResultModel setExamState(String id, String status) {
-		
-		return null;
+	public ResultModel setExamState(String id, String status) throws SQLException {
+		examDao.setState(id, status);
+		return ResultModel.ok();
 	}
 
 	@Override
@@ -90,6 +102,11 @@ public class ExamManagerImpl implements ExamManager {
 	public ResultModel unbindIP(String s_id) {
 		
 		return null;
+	}
+
+	@Override
+	public List<Exam> queryExamByTeacher(String t_id, String state) throws SQLException {
+		return examDao.queryExamsByTeacher(t_id, state);
 	}
 
 }

@@ -3,15 +3,18 @@ package henu.entity;
 import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Exam {
     private Integer id;
 
     private String subject;
-
+    
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
     private Date starttime;
-
+    
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
     private Date endtime;
 
     private String state;

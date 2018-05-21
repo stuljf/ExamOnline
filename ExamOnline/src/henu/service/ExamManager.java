@@ -1,5 +1,6 @@
 package henu.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import henu.entity.Exam;
@@ -14,24 +15,36 @@ public interface ExamManager {
 	 * @Description:(创建考试). <br/> 
 	 * @param exam
 	 * @return
+	 * @throws SQLException 
 	 */
-	ResultModel createExam(Exam exam);
+	ResultModel createExam(Exam exam) throws SQLException;
 
 	/**
 	 * @Description:(修改考试信息). <br/> 
 	 * @param exam
 	 * @return
+	 * @throws SQLException 
 	 */
-	ResultModel editExam(Exam exam);
+	ResultModel editExam(Exam exam) throws SQLException;
 
 	/**
 	 * @Description:(修改考试状态). <br/> 
 	 * @param id
 	 * @param status 开始，进行中，取消，结束
 	 * @return
+	 * @throws SQLException 
 	 */
-	ResultModel setExamState(String id, String status);
+	ResultModel setExamState(String id, String status) throws SQLException;
 
+	/**
+	 * @Description:(根据教师和考试状态查询). <br/> 
+	 * @param t_id
+	 * @param state
+	 * @return
+	 * @throws SQLException 
+	 */
+	List<Exam> queryExamByTeacher(String t_id, String state) throws SQLException;
+	
 	/**
 	 * @Description:(导入 试题). <br/> 
 	 * @param id
