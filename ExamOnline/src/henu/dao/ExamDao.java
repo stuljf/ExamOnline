@@ -32,10 +32,11 @@ public interface ExamDao {
 	/**
 	 * queryExamsByTeacher:(查找教师创建的考试)
 	 * @param teacherId
+	 * @param key 根据状态查询
 	 * @return
 	 * @throws SQLException
 	 */
-	List<Exam> queryExamsByTeacher(String teacherId) throws SQLException;
+	List<Exam> queryExamsByTeacher(String teacherId, String key) throws SQLException;
 	
 	/**
 	 * queryExamsByStudent:(根据考试号查找考试)
@@ -43,7 +44,7 @@ public interface ExamDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	Exam queryExamsById(String examId) throws SQLException;
+	Exam queryExamsById(int examId) throws SQLException;
 	
 	/**
 	 * setStatus:(设置考试状态)
@@ -76,6 +77,14 @@ public interface ExamDao {
 	 * @throws SQLException
 	 */
 	void importQues(String id, Question ques) throws SQLException;
+	
+	/**
+	 * @return 
+	 * @throws SQLException 
+	 * @Description:(获取自增主键). <br/> 
+	 *
+	 */
+	int getLastInsertID() throws SQLException;
 	
 	
 }

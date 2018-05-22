@@ -14,7 +14,7 @@ $(".side-navbar").css("min-height", h);
     <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                <i class="glyphicon glyphicon-user"></i> username <i class="glyphicon glyphicon-chevron-down"></i>
+                <i class="glyphicon glyphicon-user"></i>${teacher.name }<i class="glyphicon glyphicon-chevron-down"></i>
             </a>
             <ul class="dropdown-menu">
                 <li><a href="#">passwd</a>
@@ -32,22 +32,22 @@ $(".side-navbar").css("min-height", h);
                 <a class="active-menu" href=""><i class="glyphicon glyphicon-chevron-down"></i> Dashboard</a>
             </li>
             <li>
-                <a href=""><i class="glyphicon glyphicon-cog"></i> UI Elements</a>
+                <a href="${pageContext.request.contextPath }/page/examListCreated"><i class="glyphicon glyphicon-cog"></i>考前管理</a>
             </li>
             <li>
-                <a href=""><i class="glyphicon glyphicon-chevron-up"></i> Charts</a>
+                <a href=""><i class="glyphicon glyphicon-chevron-up"></i>考中管理</a>
             </li>
             <li>
-                <a href=""><i class="glyphicon glyphicon-user"></i> Tabs  Panels</a>
+                <a href=""><i class="glyphicon glyphicon-user"></i>考后管理</a>
             </li>
             <li>
-                <a href=""><i class="glyphicon glyphicon-picture"></i> Responsive Tables</a>
+                <a href=""><i class="glyphicon glyphicon-picture"></i>考试概览</a>
             </li>
             <li>
-                <a href=""><i class="glyphicon glyphicon-home"></i> Forms</a>
+                <a href=""><i class="glyphicon glyphicon-home"></i>IP解绑</a>
             </li>
             <li>
-                <a href=""><i class="glyphicon glyphicon-repeat"></i> Empty Page</a>
+                <a href=""><i class="glyphicon glyphicon-repeat"></i>待添加...</a>
             </li>
         </ul>
     </nav>

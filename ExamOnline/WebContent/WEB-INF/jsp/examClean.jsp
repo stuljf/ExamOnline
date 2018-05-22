@@ -86,7 +86,7 @@
                             console.log(ids)
                             console.log(ids.join()) */
                            
-					    	Ewin.confirm({ message: "确认要删除选择的数据吗？" }).on(function (e) {
+					    	messager.confirm({ message: "确认要删除选择的数据吗？" }).on(function (e) {
                             	if (e) {
                             		//...
                             		var ids = new Array();

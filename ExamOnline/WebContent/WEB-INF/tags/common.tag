@@ -28,8 +28,32 @@
 	src="https://cdn.bootcss.com/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/source/js/common.js"></script>
+<!-- 时间选择组件 -->
+<link href="${pageContext.request.contextPath }/source/bootstrap-datepicker/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath }/source/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
+<script src="${pageContext.request.contextPath }/source/bootstrap-datepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+<style type="text/css">
+#flooter {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width:100%;
+    height: 40px;
+    text-align: center;
+}
+</style>	
+<script type="text/javascript" >
+$(document).ready(function(){
+var h=$(window).height();
+$(".side-navbar").css("min-height", h);
+$(".jumbotron").css("min-height", h);
+});
+</script>
 </head>
 <body>
 	<jsp:doBody />
+	<div id="flooter" class="panel-footer text-center text-primary">
+    版权所有&ensp;&copy;&ensp;第一小组：张亚康、赵俊福、姚亚强、刘冀峰
+</div>
 </body>
 </html>

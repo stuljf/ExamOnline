@@ -22,7 +22,6 @@
         <mvc:interceptor>
             <mvc:mapping path="/student/**"/>
             <mvc:mapping path="/page/student"/>
-            <mvc:mapping path="/page/importQuestion"/>
             <mvc:exclude-mapping path="/student/login"/>
             <bean class="henu.interceptor.StudentInterceptor"/>
         </mvc:interceptor>
@@ -30,7 +29,6 @@
             <mvc:mapping path="/admin/**"/>
             <mvc:mapping path="/page/admin"/>
             <mvc:mapping path="/page/examClean"/>
-            <mvc:mapping path="/page/sysConfig"/>
             <mvc:mapping path="/page/teacherManager"/>
             <mvc:exclude-mapping path="/admin/login"/>
             <bean class="henu.interceptor.AdminInterceptor"/>

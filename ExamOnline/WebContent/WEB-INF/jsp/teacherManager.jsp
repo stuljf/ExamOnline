@@ -187,7 +187,7 @@ pageEncoding="UTF-8"%>
 
         //2.初始化事件
         function isAdminFormatter(value, row, index) {
-            return value == true? "是": "否";
+            return value == true? "<span class='badge' style='background:red'>是</span>": "<span class='badge'>否</span>";
         }
 
         $("#btn_delete").click(function () {
@@ -284,8 +284,8 @@ pageEncoding="UTF-8"%>
             $.post(url, params, function (data) {
                 if (data.status == 200) {
 		            //提交成功，修改该数据
-		            //updateRow({index:getSelectIndex(), row:{ id: t[0].value, name:t[1].value, isAdmin:t.length ==2 ? 0:1}});
-		            updateRow({index:getSelectIndex(), row:{ id: data.data.id, name: data.data.name, isAdmin: data.data.isAdmin }});
+		            //updateRow({index:getSelectIndex(t[0].value), row:{ id: t[0].value, name:t[1].value, isAdmin:t.length ==2 ? 0:1}});
+		            updateRow({index:getSelectIndex(data.data.id), row:{ id: data.data.id, name: data.data.name, isAdmin: data.data.isAdmin }});
 		            $('#updateTeacherModel').modal('toggle');
 		            //数据清空
 		            clearForm();
