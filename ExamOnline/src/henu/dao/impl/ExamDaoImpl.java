@@ -122,7 +122,7 @@ public class ExamDaoImpl implements ExamDao {
 	@Override
 	public int getLastInsertID() throws SQLException {
 		String sql = "SELECT LAST_INSERT_ID();";
-		BigInteger t = qr.query(sql, new ScalarHandler<>());
+		BigInteger t = (BigInteger) qr.query(sql, new ScalarHandler<>());
 		return t.intValue();
 	}
 }
