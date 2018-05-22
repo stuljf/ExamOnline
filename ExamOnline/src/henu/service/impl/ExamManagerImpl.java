@@ -57,7 +57,7 @@ public class ExamManagerImpl implements ExamManager {
 	}
 
 	@Override
-	public ResultModel getQues(String id) {
+	public ResultModel getQues(int id) {
 		
 		return null;
 	}

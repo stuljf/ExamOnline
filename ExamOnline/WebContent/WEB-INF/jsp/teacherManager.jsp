@@ -6,7 +6,7 @@ pageEncoding="UTF-8"%>
 <jsp:body>
 <tmp:pub-admin>
 <jsp:body>
-<div class="text-center">
+<div style="padding: auto 10px">
 
     <!--工具栏-->
     <div id="toolbar" class="btn-group">

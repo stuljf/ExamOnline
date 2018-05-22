@@ -58,7 +58,7 @@ public interface ExamManager {
 	 * @param id
 	 * @return
 	 */
-	ResultModel getQues(String id);
+	ResultModel getQues(int id);
 
 
 	/**

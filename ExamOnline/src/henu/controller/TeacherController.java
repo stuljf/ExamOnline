@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import henu.entity.Exam;
+import henu.entity.Question;
 import henu.entity.Teacher;
 import henu.service.ExamManager;
 import henu.service.TeacherService;
@@ -117,4 +119,24 @@ public class TeacherController {
 			return ResultModel.build(500, "编辑考试信息失败！");
 		}
 	}
+	
+	@RequestMapping("/question/list")
+	public String questionList(Integer id, Model model) {
+		try {
+			//获取试卷信息
+			ResultModel res = examManager.getQues(id);
+			List<Question> ques = res.getListData(Question.class);
+			
+			//视图渲染
+			
+			
+			//返回视图
+			return "importQuestion";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+	}
+
 }

@@ -57,7 +57,8 @@
 					                    formatter: dateFormatter
 					                }, {
 					                    field: 'state',
-					                    title: '状态'
+					                    title: '状态',
+					                    formatter: stateFormatter
 					                }, {
 					                    field: 't_id',
 					                    title: '教师ID',
@@ -69,6 +70,10 @@
 					        function dateFormatter(value, row, index) {
 					            var date = new Date(value);
 					            return date.toLocaleString();
+					        }
+					        
+					        function stateFormatter(value, row, index) {
+					        	return "<span class='badge'>已结束</span>";
 					        }
 					
 					    })
@@ -115,7 +120,7 @@
                         }
 					    
 					</script>
-				<div class="text-center">
+				<div style="padding: auto 10px 30px 10px">
 				    <button class="btn btn-info" style="width: 100%;" type="button" onclick="oneKeyClean()">一键清除</button>
 				    <table id="table"></table>
 				</div>

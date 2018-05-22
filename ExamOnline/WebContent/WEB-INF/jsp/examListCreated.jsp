@@ -275,10 +275,10 @@
         // result += "<a  class='btn btn-xs green' onclick=\"EditViewById('" + id + "', view='view')\"><span class='glyphicon glyphicon-search'></span></a>";
         // result += "<a  class='btn btn-xs blue' onclick='editExam(" + id + ") ' title='编辑'><span class='glyphicon glyphicon-pencil'></span></a>";
         // result += "<a  class='btn btn-xs red' onclick='' title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
-        result += "<a  class='btn btn-xs red' onclick='editExam(" + id + ", " + index + ")' title='考试信息编辑'><button type='button' class='btn btn-info'>编辑</button></a>";
-        result += "<a  class='btn btn-xs red' href='#' title='试题管理'><button type='button' class='btn btn-info'>试题</button></a>";
-        result += "<a  class='btn btn-xs red' href='#' title='学生管理'><button type='button' class='btn btn-info'>学生</button></a>";
-        result += "<a  class='btn btn-xs red' onclick='startExam(" + id + ", " + index + ")' href='#' title='学生管理'><button type='button' class='btn btn-info'>开始</button></a>";
+        result += "<a  class='btn btn-xs red' onclick='editExam(" + id + ", " + index + ")' title='考试信息编辑'><button type='button' class='btn btn-sm btn-info'>编辑</button></a>";
+        result += "<a  class='btn btn-xs red' href='${pageContext.request.contextPath}/teacher/question/list?id=" + id + "' title='试题管理'><button type='button' class='btn btn-sm btn-info'>试题</button></a>";
+        result += "<a  class='btn btn-xs red' href='#' title='学生管理'><button type='button' class='btn btn-sm btn-info'>学生</button></a>";
+        result += "<a  class='btn btn-xs red' onclick='startExam(" + id + ", " + index + ")' href='#' title='学生管理'><button type='button' class='btn btn-sm btn-info'>开始</button></a>";
         return result;
     }
 
