@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import henu.dao.StudentDao;
 import henu.entity.Student;
+import henu.util.PageBean;
 
 /**
  * @ClassName: TestStudentDao <br/> 
@@ -45,6 +46,19 @@ public class TestStudentDao {
 	}
 	
 	@Test
+	public void testQueryAll() {
+		try {
+			PageBean<Student> bean = new PageBean<>(0, 10);
+			dao.queryAll(11, bean);
+			for (Student s : bean.getPageData()) {
+				System.out.println(s.getName());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
 	public void testQueryStudentById() {
 		try {
 			Student s = dao.queryStudentById("1510121175");
@@ -53,15 +67,14 @@ public class TestStudentDao {
 			e.printStackTrace();
 		}
 	}
-	
 	//测试保存
 	@Test
 	public void testSave(){
 		Student s = new Student();
-		s.setId("1510121175");
+		s.setId("2");
 		s.setName("ljf");
-		s.setClazz("15-2");
-		s.setE_id(1);
+		s.setClazz("15-3");
+		s.setE_id(11);
 		try {
 			dao.save(s);
 		} catch (SQLException e) {

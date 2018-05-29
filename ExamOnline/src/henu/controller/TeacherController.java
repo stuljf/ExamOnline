@@ -18,9 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import henu.entity.Exam;
 import henu.entity.Question;
+import henu.entity.Student;
 import henu.entity.Teacher;
 import henu.service.ExamManager;
 import henu.service.TeacherService;
+import henu.util.BootstrapPageResult;
+import henu.util.PageBean;
 import henu.util.ResultModel;
 
 @Controller
@@ -137,5 +140,37 @@ public class TeacherController {
 			return "error";
 		}
 	}
+	
+	/**************以下是学生管理******************/
+	@RequestMapping("/exam/created/student/show")
+	public String studentList(Integer examId, Model model) {
+		if (examId == null) {
+			return "error";
+		}
+		
+		model.addAttribute("examId", examId);
+		
+		return "importStudent";
+	}
+	
+	@RequestMapping("/exam/created/student/list")
+	@ResponseBody
+	public BootstrapPageResult<Student> studentList(Integer examId,
+			@RequestParam(defaultValue="1") Integer page, 
+			@RequestParam(defaultValue="10") Integer row) {
+		if (examId == null) {
+			return null;
+		}
+		
+		//创建分页对象
+		PageBean<Student> bean = new PageBean<>(page, row);
+		//query
+		examManager.queryStudent(examId, bean);
+		
+		BootstrapPageResult<Student> exams = new BootstrapPageResult<>(bean.getTotalCount(), bean.getPageData());
+		
+		return exams;
+	}
+	
 
 }

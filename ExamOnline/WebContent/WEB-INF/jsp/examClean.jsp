@@ -73,7 +73,11 @@
 					        }
 					        
 					        function stateFormatter(value, row, index) {
-					        	return "<span class='badge'>已结束</span>";
+					        	
+					        	if (value == "closed")
+						        	return "<span class='badge'>已结束</span>";
+						        else 
+						        	return "<span class='badge' style='background: orange'>已取消</span>";
 					        }
 					
 					    })

@@ -174,7 +174,24 @@
 	}();
 })(jQuery);
 
+//2.初始化事件
+function dateFormatter(value, row, index) {
+    var date = new Date();
+    date.setTime(value);
+    return date.format("yyyy-MM-dd HH:mm");
+}
 
+function stateFormatter(value, row, index) {
+    if (value == "created") {
+        return "<span class='badge' style='background: darkgreen'>创建</span>";
+    } else if (value == "begined") {
+        return "<span class='badge' style='background: red'>进行中...</span>";
+    } else if (value == "canceled") {
+        return "<span class='badge' style='background: orange'>取消</span>"
+    } else {
+    	return "<span class='badge'>结束</span>"
+    }
+}
 
 function getSelectRow(id) {
 	return $("#table").bootstrapTable('getRowByUniqueId', id);

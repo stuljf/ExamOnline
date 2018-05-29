@@ -97,11 +97,11 @@ public interface ExamManager {
 
 	/**
 	 * @Description:(导入学生名单，查询). <br/> 
-	 * @param id
+	 * @param examId
 	 * @param bean
-	 * @return
+	 * @throws SQLException 
 	 */
-	ResultModel queryStudent(String id, PageBean<Student> bean);
+	void queryStudent(int examId, PageBean<Student> bean);
 
 	/**
 	 * @Description:(学生名单，关键字查询). <br/> 

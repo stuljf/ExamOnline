@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import henu.dao.ExamDao;
+import henu.dao.StudentDao;
 import henu.entity.Exam;
 import henu.entity.Question;
 import henu.entity.Student;
@@ -20,6 +21,9 @@ public class ExamManagerImpl implements ExamManager {
 
 	@Resource
 	private ExamDao examDao;
+	
+	@Resource
+	private StudentDao studentDao;
 
 	@Override
 	public ResultModel createExam(Exam exam) throws SQLException {
@@ -87,9 +91,12 @@ public class ExamManagerImpl implements ExamManager {
 	}
 
 	@Override
-	public ResultModel queryStudent(String id, PageBean<Student> bean) {
-		
-		return null;
+	public void queryStudent(int id, PageBean<Student> bean) {
+		try {
+			studentDao.queryAll(id, bean);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

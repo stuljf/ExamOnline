@@ -49,7 +49,7 @@ public interface StudentDao {
 	 * @return List<Student>
 	 * @throws SQLException 
 	 */
-	void queryAll(PageBean<Student> stus) throws SQLException;
+	void queryAll(int examId, PageBean<Student> stus) throws SQLException;
 	
 	/**
 	 * studentExists:(查询是否存在该学生). <br/> 

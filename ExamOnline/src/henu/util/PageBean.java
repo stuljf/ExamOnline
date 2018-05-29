@@ -12,13 +12,14 @@ import java.util.List;
  */
 public class PageBean<T> {
 	
-	public PageBean(int pageCount) {
+	public PageBean(int currentPate, int pageCount) {
+		this.currentPage = currentPate;
 		this.pageCount = pageCount;
 	}
 	/**
 	 * 当前页码
 	 */
-	private int currentPage = 1;
+	private int currentPage = 0;
 	/**
 	 * 每页的记录数
 	 */

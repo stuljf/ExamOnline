@@ -1,6 +1,7 @@
 package henu.service.impl;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -29,6 +30,9 @@ public class SysManagerImpl implements SysManager {
 	@Value("${CLOSE}")
 	private String CLOSED;
 	
+	@Value("${CANCEL}")
+	private String CANCEL;
+	
 	@Override
 	public ResultModel login(Teacher teacher) {
 		try {
@@ -52,8 +56,10 @@ public class SysManagerImpl implements SysManager {
 	@Override
 	public ResultModel examClean() {
 		try {
+			List<Exam> exams = new ArrayList<>();
 			// 删除已经结束的考试信息
-			List<Exam> exams = examDao.getExamsByState(CLOSED);
+			exams.addAll(examDao.getExamsByState(CLOSED));
+			exams.addAll(examDao.getExamsByState(CANCEL));
 			return ResultModel.ok(exams);
 		} catch (SQLException e) {
 			e.printStackTrace();

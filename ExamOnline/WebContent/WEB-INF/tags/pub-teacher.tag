@@ -9,7 +9,7 @@ $(".side-navbar").css("min-height", h);
 </script>
 <nav class="navbar navbar-info top-navbar" style="margin: 0">
     <div class="navbar-header">
-        <a class="navbar-brand" onclick="" href="${pageContext.request.contentType }/page/teacher">上机考试管理员后台管理系统</a>
+        <a class="navbar-brand" onclick="" href="${pageContext.request.contextPath}/page/teacher">上机考试管理员后台管理系统</a>
     </div>
     <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
@@ -38,7 +38,7 @@ $(".side-navbar").css("min-height", h);
                 <a href=""><i class="glyphicon glyphicon-chevron-up"></i>考中管理</a>
             </li>
             <li>
-                <a href=""><i class="glyphicon glyphicon-user"></i>考后管理</a>
+                <a href="${pageContext.request.contextPath }/page/examListEnded"><i class="glyphicon glyphicon-user"></i>考后管理</a>
             </li>
             <li>
                 <a href="${pageContext.request.contextPath }/page/examList"><i class="glyphicon glyphicon-picture"></i>考试概览</a>

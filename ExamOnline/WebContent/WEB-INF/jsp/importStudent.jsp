@@ -3,11 +3,9 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tmp"%>
 
 <tmp:common title="Teacher">
-	<jsp:body>
-        <tmp:pub-teacher>
-            <jsp:body>
-<div style="margin: 10px">
-
+<jsp:body>
+<tmp:pub-teacher>
+<jsp:body>
 <style type="text/css">
 #table  thead {
 	background: #5488c4;
@@ -16,11 +14,14 @@
 
     <!--工具栏-->
     <div id="toolbar" class="btn-group">
-        <button id="btn_add" type="button" class="btn btn-default">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+        <button id="btn_import" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>单个导入
         </button>
-        <button id="btn_cancel" type="button" class="btn btn-default">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>批量取消考试
+        <button id="btn_import_batch" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>批量导入
+        </button>
+         <button id="btn_remove" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>批量删除
         </button>
     </div>
 
@@ -147,37 +148,12 @@
 						<!-- /.modal-dialog -->
     </div>
 					<!-- /.modal -->
-</div>
-
+	
 <script type="text/javascript">
-
-    //时间控件初始化
-    $(".form_datetime").datetimepicker({
-        format: "yyyy-mm-dd hh:ii",
-        autoclose: true,
-        todayBtn: true,
-        minuteStep: 5,
-        startDate: new Date()
-    });
-    //考试结束时间 >= 考试开始时间
-    function checkDate() {
-        var cDate = $("#addExamForm input[name='starttime']").val();
-        $("#addExamForm :input[name='endtime']").datetimepicker('setStartDate', cDate);
-        $("#addExamForm :input[name='endtime']").val(cDate);
-
-        var uDate = $("#updateExamForm input[name='starttime']").val();
-        $("#updateExamForm :input[name='endtime']").datetimepicker('setStartDate', uDate);
-        $("#updateExamForm :input[name='endtime']").val(uDate);
-    }
-    $("input[name='starttime']").change(function () {
-        checkDate();
-    })
-
-
     //1.初始化Table
     $(function() {
     	$('#table').bootstrapTable({
-            url: '${pageContext.request.contextPath}/teacher/exam/list?tId=${teacher.id }&state=created',         //请求后台的URL（*）
+            url: '${pageContext.request.contextPath}/teacher/exam/created/student/list?examId=${examId}',         //请求后台的URL（*）
             method: 'get',                      //请求方式（*）
             toolbar: '#toolbar',                //工具按钮用哪个容器
             striped: true,                      //是否显示行间隔色
@@ -185,16 +161,16 @@
             pagination: true,                   //是否显示分页（*）
             sortable: true,                     //是否启用排序
             sortOrder: "asc",                   //排序方式
-            /*queryParams: function (params) {
+            queryParams: function (params) {
                 var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-                    limit: params.limit,   //页面大小
-                    offset: params.offset,  //页码
-                    departmentname: $("#txt_search_departmentname").val(),
-                    statu: $("#txt_search_statu").val()
+                    row: params.limit,   //页面大小
+                    page: params.offset  //页码
+                    //departmentname: $("#txt_search_departmentname").val(),
+                    //statu: $("#txt_search_statu").val()
                 };
             return temp;
-            },*/ //传递参数（*）
-            sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+            }, //传递参数（*）
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
             pageNumber:1,                       //初始化加载第一页，默认第一页
             pageSize: 10,                       //每页的记录行数（*）
             pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
@@ -218,52 +194,34 @@
                 valign: 'middle',
                 sortable:true
             }, {
-                field: 'subject',
-                title: '科目',
+                field: 'name',
+                title: '姓名',
                 valign: 'middle',
                 sortable:true
             }, {
-                field: 'starttime',
-                title: '开始时间  ',
+                field: 'clazz',
+                title: '班级',
                 valign: 'middle',
-                sortable:true,
-                formatter: dateFormatter
+                sortable:true
             }, {
-                field: 'endtime',
-                title: '结束时间  ',
+                field: 'ip',
+                title: '登录IP',
                 valign: 'middle',
-                sortable:true,
-                formatter: dateFormatter
-            }, {
-                field: 'state',
-                title: '当前状态  ',
-                valign: 'middle',
-                sortable:true,
-                formatter: stateFormatter
-            },{
-                field: 'id',
-                title: "操作",
-                sortable:true,
-                valign: 'middle',
-                align: 'center',
-                formatter: operationFormatter
-            } ]
+                formatter: ipFormatter
+            }]
         });
     
     })
-
-    function operationFormatter(value, row, index) {
-        var id = value;
-        var result = "";
-        // result += "<a  class='btn btn-xs green' onclick=\"EditViewById('" + id + "', view='view')\"><span class='glyphicon glyphicon-search'></span></a>";
-        // result += "<a  class='btn btn-xs blue' onclick='editExam(" + id + ") ' title='编辑'><span class='glyphicon glyphicon-pencil'></span></a>";
-        // result += "<a  class='btn btn-xs red' onclick='' title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
-        result += "<a  class='btn btn-xs red' onclick='editExam(" + id + ", " + index + ")' title='考试信息编辑'><button type='button' class='btn btn-sm btn-info'>编辑</button></a>";
-        result += "<a  class='btn btn-xs red' href='${pageContext.request.contextPath}/teacher/question/list?id=" + id + "' title='试题管理'><button type='button' class='btn btn-sm btn-info'>试题</button></a>";
-        result += "<a  class='btn btn-xs red' href='${pageContext.request.contextPath}/teacher/exam/created/student/show?examId=" + id + "' title='学生管理'><button type='button' class='btn btn-sm btn-info'>学生</button></a>";
-        result += "<a  class='btn btn-xs red' onclick='startExam(" + id + ", " + index + ")' href='#' title='学生管理'><button type='button' class='btn btn-sm btn-info'>开始</button></a>";
-        return result;
+    
+    function ipFormatter(value, row, index) {
+         if (value == "0.0.0.0") {
+            return "<span class='badge' style='background: red'>未登录</span>";
+        } else {
+            return "<span class='badge' style='background: darkgreen'>" + value  + "</span>";
+        } 
     }
+
+   
 
     $("#btn_cancel").click(function () {
     	messager.confirm({ message: "确认要取消选中的考试吗？" }).on(function (e) {
@@ -392,7 +350,7 @@
     	});
     }
 </script>
-            </jsp:body>
-        </tmp:pub-teacher>
-    </jsp:body>
+</jsp:body>
+</tmp:pub-teacher>
+</jsp:body>
 </tmp:common>
