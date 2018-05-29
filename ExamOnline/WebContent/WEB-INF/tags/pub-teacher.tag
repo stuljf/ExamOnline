@@ -35,7 +35,7 @@ $(".side-navbar").css("min-height", h);
                 <a href="${pageContext.request.contextPath }/page/examListCreated"><i class="glyphicon glyphicon-cog"></i>考前管理</a>
             </li>
             <li>
-                <a href=""><i class="glyphicon glyphicon-chevron-up"></i>考中管理</a>
+                <a href="${pageContext.request.contextPath }/page/examListBegined"><i class="glyphicon glyphicon-chevron-up"></i>考中管理</a>
             </li>
             <li>
                 <a href=""><i class="glyphicon glyphicon-user"></i>考后管理</a>
