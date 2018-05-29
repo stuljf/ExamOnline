@@ -11,7 +11,7 @@ function s_login() {
 	$.post("/ExamOnline/student/login", $("#s_form").serialize(), function(data) {
 		/*optional stuff to do after success */
 		if (data.status == 200) {
-			window.location="/ExamOnline/page/admin";
+			window.location="/ExamOnline/page/student";
 		} else {
 			$("#s_tip").html(data.msg);
 		}

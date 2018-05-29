@@ -35,9 +35,9 @@ public class StudentDaoImpl implements StudentDao {
 	}
 
 	@Override
-	public Student queryStudentById(String id) throws SQLException {
+	public List<Student> queryStudentById(String id) throws SQLException {
 		String sql = "SELECT * FROM student WHERE id = ?;";
-		return qr.query(sql, new BeanHandler<>(Student.class), id);
+		return qr.query(sql, new BeanListHandler<>(Student.class), id);
 	}
 
 	@Override

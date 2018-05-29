@@ -1,8 +1,5 @@
 package henu.test.dao;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 import java.sql.SQLException;
 
 import javax.annotation.Resource;
@@ -14,7 +11,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import henu.dao.StudentDao;
 import henu.entity.Student;
-import henu.util.PageBean;
 
 /**
  * @ClassName: TestStudentDao <br/> 
@@ -33,7 +29,7 @@ public class TestStudentDao {
 	//依赖注入
 	@Resource 
 	private StudentDao dao;
-
+/*
 	@Test
 	public void testRemove() {
 		try {
@@ -67,6 +63,7 @@ public class TestStudentDao {
 			e.printStackTrace();
 		}
 	}
+	*/
 	//测试保存
 	@Test
 	public void testSave(){

@@ -21,7 +21,7 @@
 	<mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/student/**"/>
-            <mvc:mapping path="/page/student"/>
+            <mvc:exclude-mapping path="/page/student"/>
             <mvc:exclude-mapping path="/student/login"/>
             <bean class="henu.interceptor.StudentInterceptor"/>
         </mvc:interceptor>

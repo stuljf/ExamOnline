@@ -1,6 +1,7 @@
 package henu.dao;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import henu.entity.Student;
 import henu.util.PageBean;
@@ -34,7 +35,7 @@ public interface StudentDao {
 	 * @return Student
 	 * @throws SQLException 
 	 */
-	Student queryStudentById(String id) throws SQLException;
+	List<Student> queryStudentById(String id) throws SQLException;
 	
 	/**
 	 * modify:(修改学生信息). <br/> 
