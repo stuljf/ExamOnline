@@ -1,5 +1,8 @@
 package henu.controller;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -8,8 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import henu.entity.Exam;
 import henu.entity.Student;
 import henu.service.StudentService;
 import henu.util.ResultModel;
@@ -40,4 +45,22 @@ public class StudentController {
 		}
 	}
 	
+	@RequestMapping(value="/exam/list")
+	@ResponseBody
+	public List<Exam> getExamList(String sId) {
+		//判空
+		if (sId == null) return null;
+		
+		try {
+			ResultModel res = studentService.queryExams(sId);
+			if(res.getStatus()==200) {
+				return (List<Exam>)res.getData();
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

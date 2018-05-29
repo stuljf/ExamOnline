@@ -32,7 +32,7 @@ public class TestStudentDao {
 	//依赖注入
 	@Resource 
 	private StudentDao dao;
-
+/*
 	@Test
 	public void testRemove() {
 		try {
@@ -53,7 +53,7 @@ public class TestStudentDao {
 			e.printStackTrace();
 		}
 	}
-	
+	*/
 	//测试保存
 	@Test
 	public void testSave(){
