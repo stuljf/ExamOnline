@@ -6,9 +6,9 @@
 	<jsp:body>
         <tmp:pub-teacher>
             <jsp:body>
-                <div style="margin: 10px">
+<div style="margin: 10px">
 
-    <style type="text/css">
+<style type="text/css">
 #table  thead {
 	background: #5488c4;
 }
@@ -26,7 +26,7 @@
 
     <!--表格-->
     <table id="table"></table>
-
+    <div style="height: 30px;"></div>
     <!--新增-->
     <div class="modal fade" data-keyboard="false" id="addExamModel"
 						data-backdrop="static" tabindex="-1" role="dialog"

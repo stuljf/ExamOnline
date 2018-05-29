@@ -91,7 +91,7 @@ public class ExamDaoImpl implements ExamDao {
 	}
 
 	@Override
-	public List<Question> getQues(String id) throws SQLException {
+	public List<Question> getQues(int id) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql = "SELECT * FROM question WHERE e_id = ?;";
 		return qr.query(sql, new BeanListHandler<>(Question.class), id);

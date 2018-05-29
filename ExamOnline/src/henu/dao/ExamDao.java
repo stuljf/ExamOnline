@@ -68,7 +68,7 @@ public interface ExamDao {
 	 * @return List<Question>
 	 * @throws SQLException
 	 */
-	List<Question> getQues(String id) throws SQLException;
+	List<Question> getQues(int id) throws SQLException;
 	
 	/**
 	 * importQues:(上传试卷的试题)

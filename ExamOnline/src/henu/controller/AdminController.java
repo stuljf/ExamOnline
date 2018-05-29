@@ -65,7 +65,7 @@ public class AdminController {
 		}
 	}
 
-	@RequestMapping(value="/logut")
+	@RequestMapping(value="/logout")
 	public String logout(String id, HttpServletRequest request) {
 		try {
 			//清空该用户session

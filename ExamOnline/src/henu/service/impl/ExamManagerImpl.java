@@ -51,15 +51,15 @@ public class ExamManagerImpl implements ExamManager {
 	}
 
 	@Override
-	public ResultModel importQues(String id, List<Question> ques) {
+	public ResultModel importQues(String id, List<Question> ques) throws SQLException {
 		
 		return null;
 	}
 
 	@Override
-	public ResultModel getQues(int id) {
-		
-		return null;
+	public List<Question> getQues(int id) throws SQLException {
+		List<Question> ques = examDao.getQues(id);
+		return ques;
 	}
 
 	@Override

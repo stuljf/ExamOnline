@@ -41,7 +41,7 @@ $(".side-navbar").css("min-height", h);
                 <a href=""><i class="glyphicon glyphicon-user"></i>考后管理</a>
             </li>
             <li>
-                <a href=""><i class="glyphicon glyphicon-picture"></i>考试概览</a>
+                <a href="${pageContext.request.contextPath }/page/examList"><i class="glyphicon glyphicon-picture"></i>考试概览</a>
             </li>
             <li>
                 <a href=""><i class="glyphicon glyphicon-home"></i>IP解绑</a>

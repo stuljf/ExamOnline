@@ -59,7 +59,7 @@ public class TeacherController {
 		//判空
 		if (tId == null) 
 			return null;
-
+		
 		try {
 			List<Exam> exams = examManager.queryExamByTeacher(tId, state);
 			return exams;
@@ -124,11 +124,10 @@ public class TeacherController {
 	public String questionList(Integer id, Model model) {
 		try {
 			//获取试卷信息
-			ResultModel res = examManager.getQues(id);
-			List<Question> ques = res.getListData(Question.class);
+			List<Question> ques = examManager.getQues(id);
 			
 			//视图渲染
-			
+			model.addAttribute("ques", ques);
 			
 			//返回视图
 			return "importQuestion";

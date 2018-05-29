@@ -50,15 +50,17 @@ public interface ExamManager {
 	 * @param id
 	 * @param ques
 	 * @return
+	 * @throws SQLException 
 	 */
-	ResultModel importQues(String id, List<Question> ques);
+	ResultModel importQues(String id, List<Question> ques) throws SQLException;
 
 	/**
 	 * @Description:(获取试题). <br/> 
 	 * @param id
 	 * @return
+	 * @throws SQLException 
 	 */
-	ResultModel getQues(int id);
+	List<Question> getQues(int id) throws SQLException;
 
 
 	/**
