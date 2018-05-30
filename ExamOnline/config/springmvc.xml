@@ -19,12 +19,12 @@
 	<!-- MVC相关配置 -->
 	<!-- 学生操作拦截器 -->
 	<mvc:interceptors>
-        <mvc:interceptor>
+        <!-- <mvc:interceptor>
             <mvc:mapping path="/student/**"/>
             <mvc:exclude-mapping path="/page/student"/>
             <mvc:exclude-mapping path="/student/login"/>
             <bean class="henu.interceptor.StudentInterceptor"/>
-        </mvc:interceptor>
+        </mvc:interceptor> -->
         <mvc:interceptor>
             <mvc:mapping path="/admin/**"/>
             <mvc:mapping path="/page/admin"/>

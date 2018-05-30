@@ -1,0 +1,11 @@
+.top-navbar {
+	padding-right:15px;
+	border-radius:0px;
+	background-color:#f9fbfe;
+	margin-bottom:0px;
+	border-bottom:1px solid #c0cdd9;
+}
+.info {
+	min-height:1px!important;
+	margin-top:10px;
+}

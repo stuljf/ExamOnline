@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import henu.entity.Exam;
+import henu.entity.Question;
 import henu.entity.Student;
+import henu.service.ExamManager;
 import henu.service.StudentService;
 import henu.util.ResultModel;
 
@@ -30,6 +32,8 @@ public class StudentController {
 	@ResponseBody
 	public ResultModel login(Student student, Model model, HttpServletRequest request) {
 		try {
+			String ip=request.getRemoteAddr();
+			student.setIp(ip);
 			//登陆
 			ResultModel res = studentService.login(student);
 			
@@ -54,13 +58,27 @@ public class StudentController {
 		try {
 			ResultModel res = studentService.queryExams(sId);
 			if(res.getStatus()==200) {
-				return (List<Exam>)res.getData();
+				return (List<Exam>) res.getData();
 			} else {
 				return null;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	@RequestMapping(value="/exam/start")
+	public String examStart(String eId, Model model) {
+		ResultModel res = studentService.displayQuestion(eId);
+		if(res.getStatus()==200) {
+			List<Question> ques=(List<Question>) res.getData();
+			//视图渲染
+			model.addAttribute("ques", ques);
+			//返回视图
+			return "exam";
+		} else {
+			return "error";
 		}
 	}
 }

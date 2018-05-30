@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import henu.dao.ExamDao;
 import henu.dao.StudentDao;
 import henu.entity.Exam;
+import henu.entity.Question;
 import henu.entity.Student;
 import henu.service.StudentService;
 import henu.util.ResultModel;
@@ -55,8 +56,15 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public ResultModel displayQuestion(String eId) {
-		
-		return null;
+		try {
+			int id=Integer.parseInt(eId);
+			List<Question> ques = examDao.getQues(id);
+			return ResultModel.ok(ques);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return ResultModel.build(500, "系统错误");
+		}
 	}
 
 	@Override
