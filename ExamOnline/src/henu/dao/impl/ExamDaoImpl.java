@@ -84,7 +84,7 @@ public class ExamDaoImpl implements ExamDao {
 	}
 
 	@Override
-	public void setState(String id, String status) throws SQLException {
+	public void setState(int id, String status) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql = "UPDATE exam SET state = ? WHERE id = ?;";
 		qr.update(sql, status, id);

@@ -218,6 +218,10 @@ function getSelectIndex(id) {
 	return $("#table tbody tr[data-uniqueid='" + id + "']").attr("data-index");
 }
 
+function refresh() {
+	$("#table").bootstrapTable('refresh');
+}
+
 function updateRow(data) {
 	$("#table").bootstrapTable('updateRow', data);
 }

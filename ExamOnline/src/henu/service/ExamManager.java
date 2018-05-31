@@ -3,6 +3,8 @@ package henu.service;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import henu.entity.Exam;
 import henu.entity.Question;
 import henu.entity.Student;
@@ -34,7 +36,7 @@ public interface ExamManager {
 	 * @return
 	 * @throws SQLException 
 	 */
-	ResultModel setExamState(String id, String status) throws SQLException;
+	ResultModel setExamState(int id, String status) throws SQLException;
 
 	/**
 	 * @Description:(根据教师和考试状态查询). <br/> 
@@ -52,7 +54,7 @@ public interface ExamManager {
 	 * @return
 	 * @throws SQLException 
 	 */
-	ResultModel importQues(String id, List<Question> ques) throws SQLException;
+	ResultModel importQues(int id, List<Question> ques) throws SQLException;
 
 	/**
 	 * @Description:(获取试题). <br/> 
@@ -69,7 +71,7 @@ public interface ExamManager {
 	 * @param stus
 	 * @return
 	 */
-	ResultModel importStudents(String id, List<Student> stus);
+	ResultModel importStudents(int id, MultipartFile multipartFile);
 
 	/**
 	 * @Description:(导入学生名单，新增). <br/> 
@@ -77,7 +79,7 @@ public interface ExamManager {
 	 * @param stu
 	 * @return
 	 */
-	ResultModel addStudent(String id, Student stu);
+	ResultModel addStudent(int id, Student stu);
 
 	/**
 	 * @Description:(学生名单，删除). <br/> 
@@ -93,7 +95,7 @@ public interface ExamManager {
 	 * @param stu
 	 * @return
 	 */
-	ResultModel updateStudent(String id, Student stu);
+	ResultModel updateStudent(int id, Student stu);
 
 	/**
 	 * @Description:(导入学生名单，查询). <br/> 

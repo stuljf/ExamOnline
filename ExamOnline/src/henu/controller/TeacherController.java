@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import henu.entity.Exam;
 import henu.entity.Question;
@@ -78,7 +79,7 @@ public class TeacherController {
 		try {
 			String[] ids = eId.split(",");
 			for (String id : ids) {
-				examManager.setExamState(id, "canceled");
+				examManager.setExamState(Integer.parseInt(id), "canceled");
 			}
 			return ResultModel.ok();
 		} catch (Exception e) {
@@ -89,7 +90,7 @@ public class TeacherController {
 	
 	@RequestMapping("/exam/start/{eId}")
 	@ResponseBody
-	public ResultModel examStart(@PathVariable String eId) {
+	public ResultModel examStart(@PathVariable Integer eId) {
 		try {
 			ResultModel res = examManager.setExamState(eId, "begined");
 			return res;
@@ -147,7 +148,7 @@ public class TeacherController {
 		if (examId == null) {
 			return "error";
 		}
-		
+		//jsp注入考试id
 		model.addAttribute("examId", examId);
 		
 		return "importStudent";
@@ -156,14 +157,14 @@ public class TeacherController {
 	@RequestMapping("/exam/created/student/list")
 	@ResponseBody
 	public BootstrapPageResult<Student> studentList(Integer examId,
-			@RequestParam(defaultValue="1") Integer page, 
-			@RequestParam(defaultValue="10") Integer row) {
+			@RequestParam(defaultValue="1") Integer offset, 
+			@RequestParam(defaultValue="10") Integer limit) {
 		if (examId == null) {
 			return null;
 		}
 		
 		//创建分页对象
-		PageBean<Student> bean = new PageBean<>(page, row);
+		PageBean<Student> bean = new PageBean<>(offset%limit == 0? offset/limit : offset/limit + 1, limit);
 		//query
 		examManager.queryStudent(examId, bean);
 		
@@ -172,5 +173,37 @@ public class TeacherController {
 		return exams;
 	}
 	
+	@RequestMapping(value="/exam/created/student/import", method=RequestMethod.POST)
+	@ResponseBody
+	public ResultModel studentImport(Integer examId, Student student) {
+		if (examId == null) {
+			return ResultModel.build(500, "缺少考试Id，倒入失败！");
+		}
+		//导入学生信息
+		ResultModel res = examManager.addStudent(examId, student);
+		return res;
+	}
 
+	
+	@RequestMapping(value="/exam/created/student/importAll", method=RequestMethod.POST)
+	@ResponseBody
+	public ResultModel studentListImport(Integer examId, @RequestParam("file") MultipartFile multipartFile) {
+		if (examId == null) {
+			return ResultModel.build(500, "缺少考试Id，倒入失败！");
+		}
+		//导入学生信息
+		ResultModel res = examManager.importStudents(examId, multipartFile);
+		return res;
+	}
+
+	@RequestMapping(value="/exam/created/student/update", method=RequestMethod.POST)
+	@ResponseBody
+	public ResultModel studentUpdate(Integer examId, Student student) {
+		if (examId == null) {
+			return ResultModel.build(500, "缺少考试Id，倒入失败！");
+		}
+		//导入学生信息
+		ResultModel res = examManager.updateStudent(examId, student);
+		return res;
+	}
 }

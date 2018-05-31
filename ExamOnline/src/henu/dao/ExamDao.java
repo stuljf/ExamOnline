@@ -52,7 +52,7 @@ public interface ExamDao {
 	 * @param status
 	 * @throws SQLException
 	 */
-	void setState(String id, String status) throws SQLException;
+	void setState(int id, String status) throws SQLException;
 	
 	/**
 	 * @Description:(根据考试状态查询考试列表). <br/> 

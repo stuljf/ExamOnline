@@ -42,15 +42,15 @@ public class StudentDaoImpl implements StudentDao {
 
 	@Override
 	public void modify(Student student) throws SQLException {
-		String sql = "UPDATE student SET name = ?, ip = ?, clazz = ? WHERE id = ?;";
-		qr.update(sql, student.getName(), student.getIp(),
+		String sql = "UPDATE student SET name = ?, clazz = ? WHERE id = ?;";
+		qr.update(sql, student.getName(), 
 				student.getClazz(), student.getId());
 	}
 
 	@Override
 	public void queryAll(int examId, PageBean<Student> stus) throws SQLException {
 		//设置总页数
-		stus.setTotalCount((int) getCount());
+		stus.setTotalCount((int) getCount(examId));
 		//查询分页信息
 		String sql = "SELECT * FROM student WHERE e_id = ? LIMIT ?, ?;";
 		List<Student> studentList = qr.query(sql, new BeanListHandler<>(Student.class), 
@@ -84,9 +84,9 @@ public class StudentDaoImpl implements StudentDao {
 	 * @throws SQLException long
 	 * @see
 	 */
-	private long getCount() throws SQLException {
-		String sql = "SELECT COUNT(*) FROM student;";
-		return (long) qr.query(sql, new ScalarHandler<>());
+	private long getCount(int examId) throws SQLException {
+		String sql = "SELECT COUNT(*) FROM (SELECT * FROM student WHERE e_id = ?) AS student_exam_tmp;";
+		return (long) qr.query(sql, new ScalarHandler<>(), examId);
 		
 	}
 
