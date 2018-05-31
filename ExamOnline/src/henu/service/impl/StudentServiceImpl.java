@@ -26,11 +26,12 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public ResultModel login(Student student) {
 		try {
-			Student exists = studentDao.studentExists(student);
-			if (exists != null)
-				return ResultModel.ok(exists);
-			else
-				return ResultModel.build(400, "请核对帐号密码！");
+			List<Student> exists = studentDao.studentExists(student);
+			if (!exists.isEmpty()) {
+				return ResultModel.ok(student);
+			} else {
+				return ResultModel.build(400, "请核对学号姓名");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResultModel.build(500, "系统错误！");
@@ -46,7 +47,7 @@ public class StudentServiceImpl implements StudentService {
 			for (Student s : students) {
 				exam=examDao.queryExamsById(s.getE_id());
 				if(!exams.add(exam))
-				return ResultModel.build(400, "查找考试错误");
+					return ResultModel.build(400, "查找考试错误");
 			}
 			return ResultModel.ok(exams);
 		}catch(SQLException e) {
@@ -71,6 +72,27 @@ public class StudentServiceImpl implements StudentService {
 	public ResultModel saveAsnwers(Student stu, List<String> answers) {
 		
 		return null;
+	}
+
+	@Override
+	public ResultModel bindIp(Student student) {
+		try {
+			Student stu=studentDao.query(student);
+			if(stu.getIp().isEmpty()) {
+				studentDao.modifyIp(student);
+				return ResultModel.ok();
+			}else {
+				if(stu.getIp().equals(student.getIp())) {
+					return ResultModel.ok();
+				}else {
+					return ResultModel.build(400, "你已经在其他地方登陆");
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return ResultModel.build(500, "系统错误");
+		}
 	}
 
 }

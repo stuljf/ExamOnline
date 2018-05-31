@@ -69,16 +69,27 @@ public class StudentController {
 	}
 	
 	@RequestMapping(value="/exam/start")
-	public String examStart(String eId, Model model) {
-		ResultModel res = studentService.displayQuestion(eId);
+	public String examStart(Integer eId, Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		Student student=(Student) session.getAttribute("student");
+		String ip=request.getRemoteAddr();
+		student.setIp(ip);
+		student.setE_id(eId);
+		ResultModel res = studentService.bindIp(student);
 		if(res.getStatus()==200) {
-			List<Question> ques=(List<Question>) res.getData();
-			//视图渲染
-			model.addAttribute("ques", ques);
-			//返回视图
-			return "exam";
-		} else {
-			return "error";
+			res = studentService.displayQuestion(eId.toString());
+			if(res.getStatus()==200) {
+				List<Question> ques=(List<Question>) res.getData();
+				//视图渲染
+				model.addAttribute("ques", ques);
+				//返回视图
+				return "exam";
+			} else {
+				return "error";
+			}
+		}else {
+			model.addAttribute("bindIp", res.getMsg());
+			return "student";
 		}
 	}
 }

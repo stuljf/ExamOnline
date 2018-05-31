@@ -42,4 +42,11 @@ public interface StudentService {
 	 * @return
 	 */
 	ResultModel saveAsnwers(Student stu, List<String> answers);
+	
+	/**
+	 * bindIp(开始考试时绑定学生Ip)
+	 * @param student
+	 * @return
+	 */
+	ResultModel bindIp(Student student);
 }

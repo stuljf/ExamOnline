@@ -61,11 +61,23 @@ public class StudentDaoImpl implements StudentDao {
 	}
 
 	@Override
-	public Student studentExists(Student student) throws SQLException {
+	public List<Student> studentExists(Student student) throws SQLException {
 		String sql = "SELECT * FROM student WHERE id = ? AND name = ?;";
-		return qr.query(sql, new BeanHandler<>(Student.class), student.getId(), student.getName());
+		return qr.query(sql, new BeanListHandler<>(Student.class), student.getId(), student.getName());
 	}
 
+	@Override
+	public void modifyIp(Student student) throws SQLException {
+		String sql = "UPDATE student SET ip = ? WHERE id = ? AND e_id = ?;";
+		qr.update(sql, student.getIp(),	student.getId(), student.getE_id());
+	}
+
+	@Override
+	public Student query(Student student) throws SQLException {
+		String sql = "SELECT * FROM student WHERE id = ? AND e_id = ?;";
+		return qr.query(sql, new BeanHandler<>(Student.class), student.getId(), student.getE_id());
+	}
+	
 	/**
 	 * getCount:(获取总记录数). <br/> 
 	 * @return
@@ -77,5 +89,5 @@ public class StudentDaoImpl implements StudentDao {
 		return (long) qr.query(sql, new ScalarHandler<>());
 		
 	}
-	
+
 }

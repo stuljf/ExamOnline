@@ -58,5 +58,20 @@ public interface StudentDao {
 	 * @return Student 如果存在就返回所有信息，不存在返回null
 	 * @throws SQLException 
 	 */
-	Student studentExists(Student student) throws SQLException;
+	List<Student> studentExists(Student student) throws SQLException;
+	
+	/**
+	 * modifyIp:(解除和绑定Ip)
+	 * @param ip
+	 * @throws SQLException
+	 */
+	void modifyIp(Student student) throws SQLException;
+	
+	/**
+	 * query(查询一个学生通过学号和考试号)
+	 * @param student
+	 * @return
+	 * @throws SQLException
+	 */
+	Student query(Student student) throws SQLException;
 }
