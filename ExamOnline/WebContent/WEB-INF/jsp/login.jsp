@@ -28,7 +28,7 @@
 	                        <form id="s_form">
 	                            <div class="form-group"><input class="form-control" name="id" type="text" placeholder="请输入学号"/></div>
 	                            <div class="form-group"><input class="form-control" name="name" type="text" placeholder="请输入姓名"/></div>
-	                            <div class="form-group"><input class="btn btn-info btn-block" type="button" onclick="s_login()" value="登录"/></div>
+	                            <div class="form-group"><input class="btn btn-info btn-block" type="button" onclick="s_login('${pageContext.request.contextPath}')" value="登录"/></div>
 	                        </form>
 	                    </div>
 	                    <div id="teacher_login" class="login_form">
@@ -37,7 +37,7 @@
 	                            <div class="form-group"><input class="form-control" name="id" type="text" placeholder="请输入用户名"/></div>
 	                            <div class="form-group"><input class="form-control" name="passwd" type="password" placeholder="请输入密码"/></div>
 	                            <div class="checkbox"><label><input id="is_admin" name="isAdmin" type="checkbox" />以管理员身份登录</label></div>
-	                            <div class="form-group"><input class="btn btn-info btn-block" type="button" onclick="t_login()" value="登录"/></div>
+	                            <div class="form-group"><input class="btn btn-info btn-block" type="button" onclick="t_login('${pageContext.request.contextPath}')" value="登录"/></div>
 	                        </form>
 	                    </div>
 	                </div>

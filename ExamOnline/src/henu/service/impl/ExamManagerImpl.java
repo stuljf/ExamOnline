@@ -1,6 +1,7 @@
 package henu.service.impl;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,17 +28,17 @@ import henu.util.ResultModel;
 public class ExamManagerImpl implements ExamManager {
 
 	private Logger log = LoggerFactory.getLogger(ExamManagerImpl.class);
-	
+
 	@Value("${student.id}")
 	private String STUDENT_ID;
 	@Value("${student.name}")
 	private String STUDENT_NAME;
 	@Value("${student.clazz}")
 	private String STUDENT_CLAZZ;
-	
+
 	@Resource
 	private ExamDao examDao;
-	
+
 	@Resource
 	private StudentDao studentDao;
 
@@ -71,9 +72,16 @@ public class ExamManagerImpl implements ExamManager {
 	}
 
 	@Override
-	public ResultModel importQues(int id, List<Question> ques) throws SQLException {
-		
-		return null;
+	public ResultModel importQues(List<Question> ques) throws SQLException {
+		//获取考试id
+		int examId = ques.get(0).getE_id();
+		//先清空试题
+		examDao.clearQues(examId);
+		//再插入新试题
+		for (Question question : ques) {
+			examDao.importQues(question);
+		}
+		return ResultModel.ok();
 	}
 
 	@Override
@@ -93,24 +101,34 @@ public class ExamManagerImpl implements ExamManager {
 			log.error("插入学生时，读取文件失败！");
 			return ResultModel.build(500, "系统错误");
 		}
+
+		//获取行列总数
+		int totalRows = reader.getTotalRows();
+		//总列数
+		int totalCols = reader.getTotalColumns();
+
 		//获取列名
-		String[] cols = new String[3];
-		cols[0] = reader.read(0, 0);
-		cols[1] = reader.read(0, 1);
-		cols[2] = reader.read(0, 2);
+		String[] colNames = new String[totalCols];
+		for (int i = 0; i < colNames.length; i++) {
+			colNames[i] = reader.read(0, i);
+		}
+
 		//根据配置文件放置列
 		Map<String, Integer> map = new HashMap<>();
-		for (int i = 0; i < cols.length; i++) {
-			if (cols[i].equals(STUDENT_ID))
+		for (int i = 0; i < colNames.length; i++) {
+			if (colNames[i].equals(STUDENT_ID))
 				map.put(STUDENT_ID, i);
-			else if (cols[i].equals(STUDENT_NAME))
+			else if (colNames[i].equals(STUDENT_NAME))
 				map.put(STUDENT_NAME, i);
-			else if (cols[i].equals(STUDENT_CLAZZ))
+			else if (colNames[i].equals(STUDENT_CLAZZ))
 				map.put(STUDENT_CLAZZ, i);
 		}
-		
+
 		//开始读取
-		for (int i = 1; i < reader.getTotalRows(); i++) {
+		for (int i = 1; i < totalRows; i++) {
+			//如果id字段为空，舍弃 
+			if (reader.read(i, map.get(STUDENT_ID)).isEmpty())
+				break;
 			Student s = new Student();
 			s.setId(reader.read(i, map.get(STUDENT_ID)));
 			s.setName(reader.read(i, map.get(STUDENT_NAME)));
@@ -141,9 +159,15 @@ public class ExamManagerImpl implements ExamManager {
 	}
 
 	@Override
-	public ResultModel removeStudent(String id, String s_id) {
-		
-		return null;
+	public ResultModel removeStudent(int id, String s_id) {
+		try {
+			studentDao.remove(s_id, id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.error("删除学生信息失败！");
+			return ResultModel.build(500, "删除失败！");
+		}
+		return ResultModel.ok();
 	}
 
 	@Override
@@ -170,13 +194,13 @@ public class ExamManagerImpl implements ExamManager {
 
 	@Override
 	public ResultModel queryStudentByKey(String id, String key) {
-		
+
 		return null;
 	}
 
 	@Override
 	public ResultModel unbindIP(String s_id) {
-		
+
 		return null;
 	}
 
@@ -185,4 +209,22 @@ public class ExamManagerImpl implements ExamManager {
 		return examDao.queryExamsByTeacher(t_id, state);
 	}
 
+	@Override
+	public ResultModel startExam(Integer eId, String startStatus, long timeLimit) {
+		try {
+			//获取考试信息
+			Exam exam = examDao.queryExamsById(eId);
+			//获取开始时间
+			Date starttime = exam.getStarttime();
+			//判断是否可以开启
+			if (starttime.getTime() - new Date().getTime() < timeLimit) {
+				return setExamState(eId, startStatus);
+			} else {
+				return ResultModel.build(500, "考试开始前" + timeLimit/60000 + "分才能开启考试！");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return ResultModel.build(500, "系统错误，请联系管理员！");
+		}
+	}
 }

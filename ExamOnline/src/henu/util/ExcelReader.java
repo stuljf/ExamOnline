@@ -54,12 +54,23 @@ public class ExcelReader {
 	
 		//获取当前区域的值
 		Cell cell = row.getCell(c);
+		if (cell == null)
+			return "";
 		cell.setCellType(CellType.STRING);
 		return cell.getStringCellValue();
 	}
 	
 	public int getTotalRows() {
 		return sheet.getLastRowNum() + 1;
+	}
+	
+	public int getTotalColumns() {
+		Row row = rows.get(0);
+		if (row == null) {
+			row = sheet.getRow(0);
+			rows.put(0, row);
+		}
+		 return row.getLastCellNum();
 	}
 	
 	public void close() throws IOException {

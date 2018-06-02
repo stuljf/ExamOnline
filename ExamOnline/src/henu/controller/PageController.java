@@ -13,5 +13,4 @@ public class PageController {
 	public String page(@PathVariable String uri) {
 		return StringUtils.isEmpty(uri) ? "login" : uri;
 	}
-	
 }

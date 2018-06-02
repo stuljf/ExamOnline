@@ -30,4 +30,14 @@ public class TeacherServiceImpl implements TeacherService {
 		}
 	}
 
+	@Override
+	public ResultModel changePwd(Teacher teacher) {
+		try {
+			teacherDao.modify(teacher);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return ResultModel.build(500, "修改失败！");
+		}
+		return ResultModel.ok();
+	}
 }

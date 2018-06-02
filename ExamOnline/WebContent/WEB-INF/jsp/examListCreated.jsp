@@ -259,7 +259,7 @@
         // result += "<a  class='btn btn-xs blue' onclick='editExam(" + id + ") ' title='编辑'><span class='glyphicon glyphicon-pencil'></span></a>";
         // result += "<a  class='btn btn-xs red' onclick='' title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
         result += "<a  class='btn btn-xs red' onclick='editExam(" + id + ", " + index + ")' title='考试信息编辑'><button type='button' class='btn btn-sm btn-info'>编辑</button></a>";
-        result += "<a  class='btn btn-xs red' href='${pageContext.request.contextPath}/teacher/question/list?id=" + id + "' title='试题管理'><button type='button' class='btn btn-sm btn-info'>试题</button></a>";
+        result += "<a  class='btn btn-xs red' href='${pageContext.request.contextPath}/teacher/exam/question/list?examId=" + id + "' title='试题管理'><button type='button' class='btn btn-sm btn-info'>试题</button></a>";
         result += "<a  class='btn btn-xs red' href='${pageContext.request.contextPath}/teacher/exam/created/student/show?examId=" + id + "' title='学生管理'><button type='button' class='btn btn-sm btn-info'>学生</button></a>";
         result += "<a  class='btn btn-xs red' onclick='startExam(" + id + ", " + index + ")' href='#' title='学生管理'><button type='button' class='btn btn-sm btn-info'>开始</button></a>";
         return result;
@@ -376,16 +376,18 @@
 
     //开始考试
     function startExam(id, i) {
-    	messager.confirm({ message: "确认要取消选中的考试吗？" }).on(function (e) {
+    	messager.confirm({ message: "确认要开始选中的考试吗？" }).on(function (e) {
             if (e) {
             	$.get("${pageContext.request.contextPath}/teacher/exam/start/" + id, function(data) {
             		if (data.status == 200) {
-            			index = i;
+            			/* index = i;
                         var row = getSelectRow(id);
                         row.state = 'begined';
                         updateRow({index: index, row:row});
-                        // removeRow(id);
-                        index = -1;
+                        index = -1; */
+                        removeRow(id);
+            		} else {
+            			alert(data.msg)
             		}
             	});
             }

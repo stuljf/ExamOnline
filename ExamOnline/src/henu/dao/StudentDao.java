@@ -27,7 +27,7 @@ public interface StudentDao {
 	 * @param id
 	 * @throws SQLException 
 	 */
-	void remove(String id) throws SQLException;
+	void remove(String id, int examId) throws SQLException;
 	
 	/**
 	 * getStudentById:(get Student info by student's id). <br/> 

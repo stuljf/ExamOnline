@@ -33,6 +33,7 @@ public interface ExamManager {
 	 * @Description:(修改考试状态). <br/> 
 	 * @param id
 	 * @param status 开始，进行中，取消，结束
+	 * @param timeLimit 提前多少毫秒可以开启考试
 	 * @return
 	 * @throws SQLException 
 	 */
@@ -49,20 +50,19 @@ public interface ExamManager {
 	
 	/**
 	 * @Description:(导入 试题). <br/> 
-	 * @param id
 	 * @param ques
 	 * @return
 	 * @throws SQLException 
 	 */
-	ResultModel importQues(int id, List<Question> ques) throws SQLException;
+	ResultModel importQues(List<Question> ques) throws SQLException;
 
 	/**
 	 * @Description:(获取试题). <br/> 
-	 * @param id
+	 * @param examId
 	 * @return
 	 * @throws SQLException 
 	 */
-	List<Question> getQues(int id) throws SQLException;
+	List<Question> getQues(int examId) throws SQLException;
 
 
 	/**
@@ -87,7 +87,7 @@ public interface ExamManager {
 	 * @param s_id
 	 * @return
 	 */
-	ResultModel removeStudent(String id, String s_id);
+	ResultModel removeStudent(int id, String s_id);
 
 	/**
 	 * @Description:(学生名单，修改). <br/> 
@@ -119,4 +119,13 @@ public interface ExamManager {
 	 * @return
 	 */
 	ResultModel unbindIP(String s_id);
+
+	/**
+	 * @Description:(手动开启一场考试). <br/> 
+	 * @param eId
+	 * @param string
+	 * @param timeLimit
+	 * @return
+	 */
+	ResultModel startExam(Integer eId, String string, long timeLimit);
 }

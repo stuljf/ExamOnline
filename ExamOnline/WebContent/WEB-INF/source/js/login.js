@@ -6,35 +6,35 @@ function swidth(a){
 	$(".login_form").eq(i).css("display","block");
 }
 
-function s_login() {
+function s_login(context) {
 	//do post
-	$.post("/ExamOnline/student/login", $("#s_form").serialize(), function(data) {
+	$.post(context + "/student/login", $("#s_form").serialize(), function(data) {
 		/*optional stuff to do after success */
 		if (data.status == 200) {
-			window.location="/ExamOnline/page/student";
+			window.location=context + "/page/student";
 		} else {
 			$("#s_tip").html(data.msg);
 		}
 	}, "json");
 }
 
-function t_login(){
+function t_login(context){
 	if($("#is_admin").is(":checked")){
 		//do post
-		$.post("/ExamOnline/admin/login", $("#t_form").serialize(), function(data) {
+		$.post(context + "/admin/login", $("#t_form").serialize(), function(data) {
 			/*optional stuff to do after success */
 			if (data.status == 200) {
-				window.location="/ExamOnline/page/admin";
+				window.location=context + "/page/admin";
 			} else {
 				$("#t_tip").html(data.msg);
 			}
 		}, "json");
 	}else{
 		//do post
-		$.post("/ExamOnline/teacher/login", $("#t_form").serialize(), function(data) {
+		$.post(context + "/teacher/login", $("#t_form").serialize(), function(data) {
 			/*optional stuff to do after success */
 			if (data.status == 200) {
-				window.location="/ExamOnline/page/teacher";
+				window.location=context + "/page/teacher";
 			} else {
 				$("#t_tip").html(data.msg);
 			}

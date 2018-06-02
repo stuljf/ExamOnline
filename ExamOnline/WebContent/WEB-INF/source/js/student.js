@@ -65,7 +65,7 @@ $(document).ready(function() {
     });
 	timeCount();
 	$("#btn_start").click(function start(){
-		$("#table").bootstrapTable("checkBy",{field: 'state', values: ["begined"]});
+		$("#table").bootstrapTable("checkBy", {field: 'state', values: ["begined"]});
 		var row=$("#table").bootstrapTable('getSelections');
 		if(row.length==0){
 			alert("当前没有进行中的考试");

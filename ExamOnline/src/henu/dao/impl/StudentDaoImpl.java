@@ -29,9 +29,9 @@ public class StudentDaoImpl implements StudentDao {
 	}
 
 	@Override
-	public void remove(String id) throws SQLException {
-		String sql = "DELETE FROM student WHERE id = ?;";
-		qr.update(sql, id);
+	public void remove(String id, int examId) throws SQLException {
+		String sql = "DELETE FROM student WHERE id = ? AND e_id = ?;";
+		qr.update(sql, id, examId);
 	}
 
 	@Override
