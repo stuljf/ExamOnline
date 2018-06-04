@@ -8,6 +8,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
@@ -25,6 +27,7 @@ import henu.entity.Teacher;
 import henu.service.ExamManager;
 import henu.service.TeacherService;
 import henu.util.BootstrapPageResult;
+import henu.util.ExceptionUtil;
 import henu.util.PageBean;
 import henu.util.RequestModel;
 import henu.util.ResultModel;
@@ -33,6 +36,8 @@ import henu.util.ResultModel;
 @RequestMapping("/teacher")
 public class TeacherController {
 
+	private Logger log = LoggerFactory.getLogger(TeacherController.class);
+	
 	@Resource
 	private TeacherService teacherService;
 
@@ -58,6 +63,7 @@ public class TeacherController {
 			return res;
 		} catch (Exception e) {
 			e.printStackTrace();
+			log.error(ExceptionUtil.getStackTrace(e));
 			return ResultModel.build(500, "系统错误！");
 		}
 	}
