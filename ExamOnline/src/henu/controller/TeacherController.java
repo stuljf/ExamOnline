@@ -293,4 +293,14 @@ public class TeacherController {
 			return ResultModel.build(500, "删除失败！");
 		}
 	}
+	
+	@RequestMapping("unbindIp")
+	@ResponseBody
+	public ResultModel unbindIp(Student student) {
+		if(student.getId().isEmpty()||student.getName().isEmpty()) {
+			return ResultModel.build(400, "请填写完整信息");
+		}else {
+			return examManager.unbindIP(student.getId());
+		}
+	}
 }

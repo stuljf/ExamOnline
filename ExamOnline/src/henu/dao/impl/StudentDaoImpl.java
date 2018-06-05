@@ -78,6 +78,12 @@ public class StudentDaoImpl implements StudentDao {
 		return qr.query(sql, new BeanHandler<>(Student.class), student.getId(), student.getE_id());
 	}
 	
+	@Override
+	public void unbindIp(String id) throws SQLException {
+		String sql = "UPDATE student SET ip = DEFAULT WHERE id = ?;";
+		qr.update(sql, id);
+	}
+	
 	/**
 	 * getCount:(获取总记录数). <br/> 
 	 * @return
