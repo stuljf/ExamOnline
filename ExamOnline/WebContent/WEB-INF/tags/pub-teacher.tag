@@ -115,7 +115,7 @@ $(".side-navbar").css("min-height", h);
                 <a href="${pageContext.request.contextPath }/page/examListEnded"><i class="glyphicon glyphicon-user"></i>考后管理</a>
             </li>
             <li>
-                <a href=""><i class="glyphicon glyphicon-home"></i>IP解绑</a>
+                <a href="${pageContext.request.contextPath }/page/unbindIp"><i class="glyphicon glyphicon-home"></i>IP解绑</a>
             </li>
             <li>
                 <a href=""><i class="glyphicon glyphicon-repeat"></i>待添加...</a>

@@ -200,8 +200,13 @@ public class ExamManagerImpl implements ExamManager {
 
 	@Override
 	public ResultModel unbindIP(String s_id) {
-
-		return null;
+		try {
+			studentDao.unbindIp(s_id);
+			return ResultModel.ok();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return ResultModel.build(500, "系统错误");
+		}
 	}
 
 	@Override

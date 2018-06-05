@@ -294,6 +294,7 @@ public class TeacherController {
 		}
 	}
 
+
 	@RequestMapping("/exam/begined/student/show")
 	public String beginedStudentList(Integer examId, Model model) {
 		if (examId == null) {
@@ -304,4 +305,16 @@ public class TeacherController {
 		
 		return "examListBeginedStudent";
 	}
+
+	
+	@RequestMapping("unbindIp")
+	@ResponseBody
+	public ResultModel unbindIp(Student student) {
+		if(student.getId().isEmpty()||student.getName().isEmpty()) {
+			return ResultModel.build(400, "请填写完整信息");
+		}else {
+			return examManager.unbindIP(student.getId());
+		}
+	}
 }
+
