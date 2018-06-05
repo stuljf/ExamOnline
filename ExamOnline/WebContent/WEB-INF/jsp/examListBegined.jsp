@@ -104,10 +104,15 @@ $(function() {
         	return "<span class='badge'>结束</span>"
         }
     }
-    $("#btn_detials").click(function() {
-    	
-    })
-
+ 
+	    $("#btn_detials").click(function() {
+             var selects = $("#table").bootstrapTable('getSelections');
+             if(selects.length>=1){
+	          var id=selects[0].id;
+	             window.location="${pageContext.request.contextPath}/teacher/exam/begined/student/show?examId="+id;
+           	}
+	    });
+	
 </script>
 </jsp:body>
 </tmp:pub-teacher>

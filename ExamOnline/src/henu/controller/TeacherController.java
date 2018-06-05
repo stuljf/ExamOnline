@@ -293,4 +293,15 @@ public class TeacherController {
 			return ResultModel.build(500, "删除失败！");
 		}
 	}
+
+	@RequestMapping("/exam/begined/student/show")
+	public String beginedStudentList(Integer examId, Model model) {
+		if (examId == null) {
+			return "error";
+		}
+		//jsp注入考试id
+		model.addAttribute("examId", examId);
+		
+		return "examListBeginedStudent";
+	}
 }
