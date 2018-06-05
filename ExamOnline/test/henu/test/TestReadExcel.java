@@ -55,4 +55,18 @@ public class TestReadExcel {
 		reader.close();
 	}
 
+	public void t(double s) {
+		System.out.println(s/100);
+	}
+	public void t2(long s) {
+		System.out.println(s/100);
+	}
+	
+	@Test
+	public void myTest() {
+		double s = 100000d;
+		System.out.println(s);
+		t2((long) s);
+	}
+	
 }

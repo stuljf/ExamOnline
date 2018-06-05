@@ -287,8 +287,9 @@
                         $.each(ids, function(index, item) {
 	                        var row = getSelectRow(item);
 	                        row.state = 'canceled';
-	                        updateRow({index: getSelectIndex(item), row:row});
-                        })
+	                        //updateRow({index: getSelectIndex(item), row:row});
+	                        removeRows(ids);
+                        });
                     }
                 })
             }

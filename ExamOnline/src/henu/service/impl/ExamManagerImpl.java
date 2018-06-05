@@ -19,6 +19,7 @@ import henu.dao.StudentDao;
 import henu.entity.Exam;
 import henu.entity.Question;
 import henu.entity.Student;
+import henu.service.ExamAutoer;
 import henu.service.ExamManager;
 import henu.util.ExcelReader;
 import henu.util.PageBean;
@@ -35,13 +36,16 @@ public class ExamManagerImpl implements ExamManager {
 	private String STUDENT_NAME;
 	@Value("${student.clazz}")
 	private String STUDENT_CLAZZ;
-
+	
 	@Resource
 	private ExamDao examDao;
 
 	@Resource
 	private StudentDao studentDao;
 
+	@Resource
+	private ExamAutoer examAutoer;
+	
 	@Override
 	public ResultModel createExam(Exam exam) throws SQLException {
 		//插入
@@ -50,6 +54,10 @@ public class ExamManagerImpl implements ExamManager {
 		int id = examDao.getLastInsertID();
 		//设置id
 		exam.setId(id);
+		
+		examAutoer.queueBegin(id, exam.getStarttime().getTime());
+		examAutoer.queueClose(id, exam.getEndtime().getTime());
+		
 		return ResultModel.ok(exam);
 	}
 
@@ -62,6 +70,10 @@ public class ExamManagerImpl implements ExamManager {
 		exam.setT_id(t.getT_id());
 		//修改数据
 		examDao.modify(exam);
+		
+		examAutoer.queueBegin(exam.getId(), exam.getStarttime().getTime());
+		examAutoer.queueClose(exam.getId(), exam.getEndtime().getTime());
+		
 		return ResultModel.ok();
 	}
 
