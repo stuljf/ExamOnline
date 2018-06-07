@@ -1,6 +1,5 @@
 package henu.interceptor;
 
-import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -12,13 +11,10 @@ import henu.util.XMLUtil;
 
 public class ContextInitLisener implements ServletContextListener {
 
-	@Resource
-	private ExamStatusScanner examStatusScanner;
-	
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
 	}
-
+	
 	@Override
 	public void contextInitialized(ServletContextEvent eve) {
 		//获取sc
@@ -35,6 +31,6 @@ public class ContextInitLisener implements ServletContextListener {
 		
 		//==========================================================================
 		//考试自动开始和结束任务开启
-		examStatusScanner.start();
+		//new ExamStatusScanner().start();
 	}
 }

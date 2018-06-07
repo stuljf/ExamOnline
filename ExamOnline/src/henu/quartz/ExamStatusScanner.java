@@ -1,7 +1,5 @@
 package henu.quartz;
 
-import javax.annotation.Resource;
-
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -10,23 +8,21 @@ import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
+import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import henu.util.ExceptionUtil;
 
-@Component
 public class ExamStatusScanner extends Thread {
 
 	private Logger log = LoggerFactory.getLogger(ExamStatusScanner.class);
 	
-	@Resource
-	private SchedulerFactory stdSchedulerFactory;
+//	@Autowired
+	private SchedulerFactory stdSchedulerFactory = new StdSchedulerFactory();
 	
-	@Value("${crontime}")
-	private String crontime;
+//	@Value("${crontime}")
+//	private String crontime;
 	
 	@Override
 	public void run() {
@@ -54,7 +50,7 @@ public class ExamStatusScanner extends Thread {
 			//支持表达式的触发器
 			Trigger trigger = TriggerBuilder.newTrigger()
 			        .withIdentity("examStatusScannerTrigger")
-			        .withSchedule(CronScheduleBuilder.cronSchedule(crontime))
+			        .withSchedule(CronScheduleBuilder.cronSchedule("0/3 * * * * ?"))
 			        .startNow()
 			        .build();
 

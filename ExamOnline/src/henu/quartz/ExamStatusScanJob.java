@@ -3,16 +3,18 @@ package henu.quartz;
 import java.sql.SQLException;
 import java.util.Date;
 
-import javax.annotation.Resource;
-
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import henu.dao.ExamDao;
+import henu.dao.impl.ExamDaoImpl;
 import henu.service.ExamAutoer;
+import henu.service.impl.ExamAutoerImpl;
 import henu.util.ExceptionUtil;
 import redis.clients.jedis.Tuple;
 
@@ -23,18 +25,20 @@ import redis.clients.jedis.Tuple;
  * @version v1.0 <br/>
  * @since JDK 1.8
  */
+//@Component
 public class ExamStatusScanJob implements Job {
 
 	private Logger log = LoggerFactory.getLogger(ExamStatusScanJob.class);
 	
-	@Resource
-	private ExamAutoer examAutoer;
+//	@Autowired
+	private ExamAutoer examAutoer = new ExamAutoerImpl();
 	
-	@Resource
-	private ExamDao examDao;
+//	@Autowired
+	private ExamDao examDao = new ExamDaoImpl();
 	
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
+		System.out.println("-----------------job start ........");
 		//监控是否有考试要开启
 		Tuple isStart = examAutoer.getRecentBeginExam();
 		long startTime = (long) isStart.getScore();
