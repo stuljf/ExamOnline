@@ -61,7 +61,7 @@ public interface StudentDao {
 	List<Student> studentExists(Student student) throws SQLException;
 	
 	/**
-	 * modifyIp:(解除和绑定Ip)
+	 * modifyIp:(绑定Ip)
 	 * @param ip
 	 * @throws SQLException
 	 */
@@ -74,4 +74,11 @@ public interface StudentDao {
 	 * @throws SQLException
 	 */
 	Student query(Student student) throws SQLException;
+	
+	/**
+	 * unbindIp(解除IP绑定)
+	 * @param id
+	 * @throws SQLException
+	 */
+	public void unbindIp(String id) throws SQLException;
 }
