@@ -1,6 +1,7 @@
 package henu.service.impl;
 
 import java.sql.SQLException;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -26,8 +27,18 @@ public class TeacherServiceImpl implements TeacherService {
 				return ResultModel.build(400, "请核对帐号密码！");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return ResultModel.build(500, "系统错误！");
+			return ResultModel.build(500, "系统错误");
 		}
 	}
 
+	@Override
+	public ResultModel changePwd(Teacher teacher) {
+		try {
+			teacherDao.modify(teacher);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return ResultModel.build(500, "修改失败！");
+		}
+		return ResultModel.ok();
+	}
 }

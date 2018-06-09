@@ -16,6 +16,8 @@
 	<!-- 组件扫描 -->
 	<context:component-scan base-package="henu.dao" />
 	<context:component-scan base-package="henu.service" />
+    <context:component-scan base-package="henu.interceptor"/>
+    <context:component-scan base-package="henu.quartz"/>
 
 	<!-- 加载配置文件 -->
 	<context:property-placeholder location="classpath:db.properties,classpath:res.properties" file-encoding="UTF-8"/>
@@ -73,5 +75,10 @@
 		<aop:advisor advice-ref="txAdvice"
 			pointcut="execution(* henu.service.*.*(..))" />
 	</aop:config>
+    
+    <!-- 任务调度器工厂 -->
+    <bean id="stdSchedulerFactory" class="org.quartz.impl.StdSchedulerFactory"/>
+
+    <import resource="classpath:springredis.xml"/>
 
 </beans>      

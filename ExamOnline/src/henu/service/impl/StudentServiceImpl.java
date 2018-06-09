@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import henu.dao.ExamDao;
@@ -14,13 +16,18 @@ import henu.entity.Exam;
 import henu.entity.Question;
 import henu.entity.Student;
 import henu.service.StudentService;
+import henu.util.ExceptionUtil;
 import henu.util.ResultModel;
 
 @Service //业务逻辑层注解
 public class StudentServiceImpl implements StudentService {
 
+	private Logger log = LoggerFactory.getLogger(StudentService.class);
+	
 	@Resource
 	private StudentDao studentDao;
+	
+	@Resource
 	private ExamDao examDao;
 	
 	@Override
@@ -28,12 +35,13 @@ public class StudentServiceImpl implements StudentService {
 		try {
 			List<Student> exists = studentDao.studentExists(student);
 			if (!exists.isEmpty()) {
-				return ResultModel.ok(student);
+				return ResultModel.ok(exists.get(0));
 			} else {
 				return ResultModel.build(400, "请核对学号姓名");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			log.error(ExceptionUtil.getStackTrace(e));
 			return ResultModel.build(500, "系统错误！");
 		}
 	}
@@ -56,15 +64,14 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public ResultModel displayQuestion(String eId) {
+	public ResultModel displayQuestion(int eId) {
 		try {
-			int id=Integer.parseInt(eId);
-			List<Question> ques = examDao.getQues(id);
+			List<Question> ques = examDao.getQues(eId);
 			return ResultModel.ok(ques);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return ResultModel.build(500, "系统错误");
+			return ResultModel.build(500, "获取试卷错误");
 		}
 	}
 
@@ -78,7 +85,7 @@ public class StudentServiceImpl implements StudentService {
 	public ResultModel bindIp(Student student) {
 		try {
 			Student stu=studentDao.query(student);
-			if(stu.getIp().isEmpty()) {
+			if(stu.getIp().isEmpty() || stu.getIp().trim().equals("0.0.0.0")) {
 				studentDao.modifyIp(student);
 				return ResultModel.ok();
 			}else {

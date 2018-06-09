@@ -13,4 +13,5 @@ public interface TeacherService {
 	 */
 	ResultModel login(Teacher teacher);
 	
+	ResultModel changePwd(Teacher teacher);
 }

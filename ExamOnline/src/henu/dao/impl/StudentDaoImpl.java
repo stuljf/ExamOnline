@@ -29,9 +29,9 @@ public class StudentDaoImpl implements StudentDao {
 	}
 
 	@Override
-	public void remove(String id) throws SQLException {
-		String sql = "DELETE FROM student WHERE id = ?;";
-		qr.update(sql, id);
+	public void remove(String id, int examId) throws SQLException {
+		String sql = "DELETE FROM student WHERE id = ? AND e_id = ?;";
+		qr.update(sql, id, examId);
 	}
 
 	@Override
@@ -76,6 +76,12 @@ public class StudentDaoImpl implements StudentDao {
 	public Student query(Student student) throws SQLException {
 		String sql = "SELECT * FROM student WHERE id = ? AND e_id = ?;";
 		return qr.query(sql, new BeanHandler<>(Student.class), student.getId(), student.getE_id());
+	}
+	
+	@Override
+	public void unbindIp(String id) throws SQLException {
+		String sql = "UPDATE student SET ip = DEFAULT WHERE id = ?;";
+		qr.update(sql, id);
 	}
 	
 	/**

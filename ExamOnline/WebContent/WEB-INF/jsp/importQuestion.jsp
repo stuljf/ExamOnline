@@ -29,7 +29,6 @@
 				        
 				        //index
 				        var index = $("#paper .item").length;
-				        alert(index)
 				        //exam id
 				        // var e_id = ${e_id};
 				
@@ -39,7 +38,7 @@
 				
 				            //if the type == 单选  show
 				            var $nextNode = $(this).parent().parent().next();
-				            if ($type == "单选") {
+				            if ($type == "choice") {
 				                $nextNode.show();
 				            } else {
 				                //hidden
@@ -58,77 +57,51 @@
 				
 				        // add a question
 				        $("#addQuestion").click(function(event) {
-				            $("#paper").append('<div class="item"> <div class="form-group"> <label class="col-sm-2 control-label">题号</label> <div class="col-sm-9"> <span>No.' + index + '</span> <input type="hidden" class="form-control" name="questions[' + index + '].number" value="' + (index) + '" /> </div> </div> <div class="form-group"> <label class="col-sm-2 control-label">题目</label> <div class="col-sm-9"> <input type="text" class="form-control" name="questions[' + index + '].title"/> </div> </div> <div class="form-group"> <label class="col-sm-2 control-label">类型</label> <div class="col-sm-9"> <select name="questions[' + index + '].type"> <option value="单选" selected>单选</option> <option value="填空">填空</option> <option value="编程">编程</option> </select> </div> </div> <div class="form-group"> <label class="col-sm-2 control-label">选项</label> <div class="col-sm-9"> <input type="hidden" class="form-control" name="questions[' + index + '].selection"/> <div class="input-group"> <span class="input-group-addon">A</span> <input type="text" class="form-control"/> </div> <div class="input-group"> <span class="input-group-addon">B</span> <input type="text" class="form-control"/> </div> <div class="input-group"> <span class="input-group-addon">C</span> <input type="text" class="form-control"/> </div> <div class="input-group"> <span class="input-group-addon">D</span> <input type="text" class="form-control"/> </div> </div> </div> <div class="form-group"> <label class="col-sm-2 control-label">答案</label> <div class="col-sm-9"> <input type="text" class="form-control" name="questions[' + index + '].answer"/> <input type="hidden" class="form-control" name="" + e_id + ""/> </div> </div> <div class="text-center"> </div> </div>');
+				            $("#paper").append('<div class="item"> <div class="form-group"> <label class="col-sm-2 control-label">题号</label> <div class="col-sm-9"> <span>No.' + index + '</span> <input type="hidden" class="form-control" name="questions[' + index + '].number" value="' + (index) + '" /> </div> </div> <div class="form-group"> <label class="col-sm-2 control-label">题目</label> <div class="col-sm-9"> <input type="text" class="form-control" name="questions[' + index + '].title"/> </div> </div> <div class="form-group"> <label class="col-sm-2 control-label">类型</label> <div class="col-sm-9"> <select class="ques_type" name="questions[' + index + '].type"> <option value="choice" selected>选择</option> <option value="fill">填空</option> <option value="program">编程</option> </select> </div> </div> <div class="form-group"> <label class="col-sm-2 control-label">选项</label> <div class="col-sm-9"> <input type="hidden" class="ques_selection form-control" name="questions[' + index + '].selection"/> <div class="input-group"> <span class="input-group-addon">A</span> <input type="text" class="ques_A form-control"/> </div> <div class="input-group"> <span class="input-group-addon">B</span> <input type="text" class="ques_B form-control"/> </div> <div class="input-group"> <span class="input-group-addon">C</span> <input type="text" class="ques_C form-control"/> </div> <div class="input-group"> <span class="input-group-addon">D</span> <input type="text" class="ques_D form-control"/> </div> </div> </div> <div class="form-group"> <label class="col-sm-2 control-label">答案</label> <div class="col-sm-9"> <input type="text" class="form-control" name="questions[' + index + '].answer"/> <input type="hidden" class="form-control" name="questions[' + index + '].e_id" value="${examId}"/> </div> </div> <div class="text-center"> </div> </div>');
 				
 				            index++;
 				        });
 				
+				        $("#importQues").click(function() {
+				        	
+				        	
+				        	var types = $(".ques_type");
+				        	var selections = $(".ques_selection");
+				        	var As = $(".ques_A");
+				        	var Bs = $(".ques_B");
+				        	var Cs = $(".ques_C");
+				        	var Ds = $(".ques_D");
+				        	//如果题型是choice将选项ABCD的值放进selection中
+				        	$.each(types, function(index, item) {
+				        		if ($(item).val() == "choice") {
+					        		var selection = new Array();
+					        		selection.push($(As[index]).val());
+					        		selection.push($(Bs[index]).val());
+					        		selection.push($(Cs[index]).val());
+					        		selection.push($(Ds[index]).val());
+					        		$(selections[index]).val(selection);
+				        		}
+				        	})
+				        	
+				        	//post请求提交
+				        	var url = "${pageContext.request.contextPath}/teacher/exam/question/import";
+                            var params = $("#importQuesForm").serialize();
+				        	$.post(url, params, function(data) {
+				        		if (data.status == 200) {
+				        			alert("添加试题成功！");
+				        			window.location="${pageContext.request.contextPath}/page/examListCreated";
+				        		} else {
+				        			alert(data.msg);
+				        		}
+				        	})
+				        })
+				        
 				    });
 				</script>
 				
 			    <div style="padding: auto 10px 30px 10px">
-			        <form class="form-horizontal" role="form">
+			        <form id="importQuesForm" class="form-horizontal" role="form">
 			            <div id="paper">
-			              <c:forEach var="question" items="${ques}" varStatus="index">
-			                   <div class="item">
-			                      <input type="hidden" name="e_id" value="${e_id}">   
-							      <div class="form-group">
-							        <label class="col-sm-2 control-label">题号</label>
-							        <div class="col-sm-9">
-							            <span>No.${index }</span>
-							            <input type="hidden" class="form-control" name="questions[${index }].number" value="${index }" />
-							        </div>
-								  </div>
-								    <div class="form-group">
-								        <label class="col-sm-2 control-label">题目</label>
-								        <div class="col-sm-9">
-								            <input type="text" class="form-control" name="questions[" + index + "].title"/>
-								        </div>
-								    </div>
-								    <div class="form-group">
-								        <label class="col-sm-2 control-label">类型</label>
-								        <div class="col-sm-9">
-								            <select name="questions[" + index + "].type">
-								                <option value="单选" selected>单选</option>
-								                <option value="填空">填空</option>
-								                <option value="编程">编程</option>
-								            </select>
-								        </div>
-								    </div>
-								    <div class="form-group">
-								        <label class="col-sm-2 control-label">选项</label>
-								        <div class="col-sm-9">
-								            <input type="hidden" class="form-control" name="questions[" + index + "].selection"/>
-								            <div class="input-group">
-								                <span class="input-group-addon">A</span>
-								                <input type="text" class="form-control"/>
-								            </div>
-								            <div class="input-group">
-								                <span class="input-group-addon">B</span>
-								                <input type="text" class="form-control"/>
-								            </div>
-								            <div class="input-group">
-								                <span class="input-group-addon">C</span>
-								                <input type="text" class="form-control"/>
-								            </div>
-								            <div class="input-group">
-								                <span class="input-group-addon">D</span>
-								                <input type="text" class="form-control"/>
-								            </div>
-								        </div>
-								    </div>
-								    <div class="form-group">
-								        <label class="col-sm-2 control-label">答案</label>
-								        <div class="col-sm-9">
-								            <input type="text" class="form-control" name="questions[" + index + "].answer"/>
-								            <input type="text" class="form-control" name="" + e_id + ""/>
-								        </div>
-								    </div>
-								    <div class="text-center">
-								        <button type="button" name="removeQuestion" class="btn btn-info" style="width: 30%; margin: 0px auto 10px auto">移除当前试题</button>
-								     </div>
-							     </div>
-						  </c:forEach>
 			                <!-- 动态生成试题 -->
 			            </div>
 			            <div class="text-center">
@@ -139,11 +112,12 @@
 			            </div>
 			            <div class="form-group">
 			                <div class="text-center">
-			                    <button type="submit" class="btn btn-warning .btn-lg" style="font-size: 20px;">导入试题</button>
+			                    <button id="importQues" type="button" class="btn btn-warning .btn-lg" style="font-size: 20px;">导入试题</button>
 			                </div>
 			            </div>
 			        </form>
 			    </div>
+            <div style="height: 30px;"></div>
             </jsp:body>
         </tmp:pub-teacher>
     </jsp:body>

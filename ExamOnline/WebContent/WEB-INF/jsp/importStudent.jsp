@@ -218,7 +218,7 @@
             showColumns: true,                  //是否显示所有的列
             showRefresh: true,                  //是否显示刷新按钮
             minimumCountColumns: 2,             //最少允许的列数
-            clickToSelect: false,                //是否启用点击选中行
+            clickToSelect: true,                //是否启用点击选中行
             //height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
             uniqueId: "id",                     //每一行的唯一标识，一般为主键列
             showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
@@ -264,7 +264,7 @@
     $("#btn_remove").click(function () {
     	messager.confirm({ message: "确认要删除考生信息吗？" }).on(function (e) {
             if (e) {
-            	//本地表格删除
+            	//获取选中的列id
                 var ids = new Array();
                 var selects = getSelectRows();
                 // selects.forEach(function (item, index, arr) {
@@ -275,16 +275,13 @@
                 })
 
                 // 请求服务器删除数据
-                var url = "${pageContext.request.contextPath}/teacher/exam/cancel/" + ids;
-                $.get(url, function(data) {
+                var url = "${pageContext.request.contextPath}/teacher/exam/created/student/remove";
+                $.get(url, "examId=${examId}&ids=" + ids, function(data) {
                     if (data.status == 200) {
                         //删除本地表格对应的行
-                        //removeRows(ids);
-                        $.each(ids, function(index, item) {
-	                        var row = getSelectRow(item);
-	                        row.state = 'canceled';
-	                        updateRow({index: getSelectIndex(item), row:row});
-                        })
+                    	refresh();
+                    } else {
+                    	alert(data.msg)
                     }
                 })
             }

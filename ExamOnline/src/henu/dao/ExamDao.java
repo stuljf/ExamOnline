@@ -76,7 +76,14 @@ public interface ExamDao {
 	 * @param question
 	 * @throws SQLException
 	 */
-	void importQues(String id, Question ques) throws SQLException;
+	void importQues(Question ques) throws SQLException;
+	
+	/**
+	 * @Description:(清除试题). <br/> 
+	 * @param examId
+	 * @throws SQLException
+	 */
+	void clearQues(int examId) throws SQLException;
 	
 	/**
 	 * @return 
