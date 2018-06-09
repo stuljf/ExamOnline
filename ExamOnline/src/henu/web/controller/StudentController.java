@@ -22,7 +22,6 @@ import henu.dao.ExamDao;
 import henu.entity.Exam;
 import henu.entity.Question;
 import henu.entity.Student;
-import henu.service.ExamManager;
 import henu.service.StudentService;
 import henu.util.ExceptionUtil;
 import henu.util.IPUtil;
@@ -36,9 +35,6 @@ public class StudentController {
 
 	@Autowired
 	private StudentService studentService;
-
-	@Autowired
-	private ExamManager examManager;
 
 	@Autowired
 	private ExamDao examDao;
@@ -150,7 +146,7 @@ public class StudentController {
 	@ResponseBody
 	public ResultModel listBroadcast(@PathVariable String examId) {
 		//从application中获取
-		List<String> attribute = (List<String>) servletContext.getAttribute("broadcast" + examId);
-		return null;
+		String publish = (String) servletContext.getAttribute("publish:" + examId);
+		return ResultModel.ok(publish);
 	}
 }
