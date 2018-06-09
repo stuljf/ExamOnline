@@ -3,8 +3,8 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/source/css/manager.css" />
 <script type="text/javascript" >
 $(document).ready(function(){
-var h=$(window).height();
-$(".side-navbar").css("min-height", h);
+	var h=$(window).height();
+	$(".side-navbar").css("min-height", h);
 });
 </script>
 <nav class="navbar navbar-info top-navbar" style="margin: 0">
@@ -13,13 +13,13 @@ $(".side-navbar").css("min-height", h);
     </div>
     <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="cursor:pointer;">
                 <i class="glyphicon glyphicon-user"></i>${teacher.name }<i class="glyphicon glyphicon-chevron-down"></i>
             </a>
             <ul class="dropdown-menu">
-                <li><a href="#">passwd</a>
+                <li><a href="#">修改密码</a>
                 </li>
-                <li><a href="#">Logout</a>
+                <li><a href="#">退出登录</a>
                 </li>
             </ul>
         </li>
@@ -29,29 +29,28 @@ $(".side-navbar").css("min-height", h);
     <nav class="col-md-2 navbar-info side-navbar">
         <ul class="nav">
             <li>
-                <a class="active-menu" href=""><i class="glyphicon glyphicon-chevron-down"></i> Dashboard</a>
+                <a href="${pageContext.request.contextPath }/page/examListCreated"><i class="glyphicon glyphicon-cog"></i> 考前管理</a>
             </li>
             <li>
-                <a href="${pageContext.request.contextPath }/page/examListCreated"><i class="glyphicon glyphicon-cog"></i>考前管理</a>
+                <a href="${pageContext.request.contextPath }/page/examListBegined"><i class="glyphicon glyphicon-chevron-up"></i> 考中管理</a>
             </li>
             <li>
-                <a href="${pageContext.request.contextPath }/page/examListBegined"><i class="glyphicon glyphicon-chevron-up"></i>考中管理</a>
+                <a href="${pageContext.request.contextPath }/page/examListEnded"><i class="glyphicon glyphicon-user"></i> 考后管理</a>
             </li>
             <li>
-                <a href="${pageContext.request.contextPath }/page/examListEnded"><i class="glyphicon glyphicon-user"></i>考后管理</a>
+                <a href="${pageContext.request.contextPath }/page/examList"><i class="glyphicon glyphicon-picture"></i> 考试概览</a>
             </li>
             <li>
-                <a href="${pageContext.request.contextPath }/page/examList"><i class="glyphicon glyphicon-picture"></i>考试概览</a>
+                <a href=""><i class="glyphicon glyphicon-home"></i> IP解绑</a>
             </li>
             <li>
-                <a href=""><i class="glyphicon glyphicon-home"></i>IP解绑</a>
-            </li>
-            <li>
-                <a href=""><i class="glyphicon glyphicon-repeat"></i>待添加...</a>
+                <a href=""><i class="glyphicon glyphicon-repeat"></i> 待添加...</a>
             </li>
         </ul>
     </nav>
     <div class="col-md-10">
+        <div style="margin:20px 0px 50px;">
         <jsp:doBody />
+        </div>
     </div>
 </div>

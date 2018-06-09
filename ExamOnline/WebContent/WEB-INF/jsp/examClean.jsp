@@ -9,7 +9,6 @@
                 <!-- 引入bootstrap-table样式 -->
                     <script type="text/javascript" >
 					    $(function () {
-					
 					        //初始化bootstrap-table的内容
 					        $('#table').bootstrapTable({
 					            url: '${pageContext.request.contextPath}/admin/exam/closed',                      //请求后台的URL（*）
@@ -122,9 +121,8 @@
                                 return row;
                                 }); */
                         }
-					    
 					</script>
-				<div style="padding: auto 10px 30px 10px">
+				<div class="container-fluid">
 				    <button class="btn btn-info" style="width: 100%;" type="button" onclick="oneKeyClean()">一键清除</button>
 				    <table id="table"></table>
 				</div>

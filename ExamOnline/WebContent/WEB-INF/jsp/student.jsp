@@ -21,6 +21,10 @@
 		        </li>
 		    </ul>
 		</nav>
+		<%Object s=session.getAttribute("bindIp");
+		if(s!=null) { %>
+		<div class="text-center text-danger"><%=s.toString() %></div>
+		<%} %>
 		<div class="container">
 			<div class="jumbotron text-center info">
            		<h2 class="text-info">请确认考生信息</h2>

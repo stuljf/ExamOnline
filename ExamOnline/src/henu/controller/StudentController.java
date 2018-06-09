@@ -32,8 +32,6 @@ public class StudentController {
 	@ResponseBody
 	public ResultModel login(Student student, Model model, HttpServletRequest request) {
 		try {
-			String ip=request.getRemoteAddr();
-			student.setIp(ip);
 			//登陆
 			ResultModel res = studentService.login(student);
 			
@@ -90,6 +88,21 @@ public class StudentController {
 		}else {
 			model.addAttribute("bindIp", res.getMsg());
 			return "student";
+		}
+	}
+	
+	@RequestMapping(value="/logout")
+	public String logout(String id, HttpServletRequest request) {
+		try {
+			//清空该用户session
+			HttpSession session = request.getSession();
+			session.removeAttribute("student");
+
+			//返回视图
+			return "login";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
 		}
 	}
 }

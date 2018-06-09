@@ -10,10 +10,10 @@
 	        <div class="row content">
 	            <div class="col-md-7">
 	                <div class="wolcome">
-	                    <h1 class="text-info">Wolcome to ExamOnline!</h1>
-	                    <p>学如逆水行舟，不进则退</p>
-	                    <p>jsjdfjskfjsdkfj</p>
-	                    
+	                    <h1 class="text-info">Wolcome to ExamOnline</h1>
+	                    <p>Don't believe that winning is really everything. It's more important to stand for something.
+	                    If you don't stand for something, what do you win?</p>
+	                    <p class="text-right">--Yauto</p>
 	                    <img src="${pageContext.request.contextPath }/source/images/fou_04.jpg" width="100%" />
 	                </div>
 	            </div>
