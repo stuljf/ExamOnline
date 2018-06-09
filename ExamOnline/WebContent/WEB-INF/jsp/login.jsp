@@ -25,7 +25,7 @@
 	                    </div>
 	                    <div id="student_login" class="login_form">
 	                        <div id="s_tip" class="tip"></div>
-	                        <form id="s_form">
+	                        <form id="s_form" onkeydown="if(event.keyCode==13) s_login();">
 	                            <div class="form-group"><input class="form-control" name="id" type="text" placeholder="请输入学号"/></div>
 	                            <div class="form-group"><input class="form-control" name="name" type="text" placeholder="请输入姓名"/></div>
 	                            <div class="form-group"><input class="btn btn-info btn-block" type="button" onclick="s_login()" value="登录"/></div>
@@ -33,7 +33,7 @@
 	                    </div>
 	                    <div id="teacher_login" class="login_form">
 	                        <div id="t_tip" class="tip"></div>
-	                        <form id="t_form">
+	                        <form id="t_form" onkeydown="if(event.keyCode==13) t_login();">
 	                            <div class="form-group"><input class="form-control" name="id" type="text" placeholder="请输入用户名"/></div>
 	                            <div class="form-group"><input class="form-control" name="passwd" type="password" placeholder="请输入密码"/></div>
 	                            <div class="checkbox"><label><input id="is_admin" name="isAdmin" type="checkbox" />以管理员身份登录</label></div>
