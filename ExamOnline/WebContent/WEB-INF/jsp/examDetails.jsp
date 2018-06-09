@@ -39,7 +39,7 @@
 		<div class="panel-heading">
 			<h4 style="text-align: center;" class="text-info">考试公告</h4>
 		</div>
-		<div class="pre-scrollable" style=" height: 280px" id="div">
+		<div class="pre-scrollable" style=" height: 280px; word-break: break-all;" id="div">
     		<ul class="list-group" id="announcements">
         		<li class="list-group-item">准备充分，忙中有序</li>
         		<li class="list-group-item">倾听说明，填写卷头</li>
