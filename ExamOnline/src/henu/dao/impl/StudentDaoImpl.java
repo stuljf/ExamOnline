@@ -29,9 +29,9 @@ public class StudentDaoImpl implements StudentDao {
 	}
 
 	@Override
-	public void remove(String id) throws SQLException {
-		String sql = "DELETE FROM student WHERE id = ?;";
-		qr.update(sql, id);
+	public void remove(String id, int examId) throws SQLException {
+		String sql = "DELETE FROM student WHERE id = ? AND e_id = ?;";
+		qr.update(sql, id, examId);
 	}
 
 	@Override
@@ -42,15 +42,15 @@ public class StudentDaoImpl implements StudentDao {
 
 	@Override
 	public void modify(Student student) throws SQLException {
-		String sql = "UPDATE student SET name = ?, ip = ?, clazz = ? WHERE id = ?;";
-		qr.update(sql, student.getName(), student.getIp(),
+		String sql = "UPDATE student SET name = ?, clazz = ? WHERE id = ?;";
+		qr.update(sql, student.getName(), 
 				student.getClazz(), student.getId());
 	}
 
 	@Override
 	public void queryAll(int examId, PageBean<Student> stus) throws SQLException {
 		//设置总页数
-		stus.setTotalCount((int) getCount());
+		stus.setTotalCount((int) getCount(examId));
 		//查询分页信息
 		String sql = "SELECT * FROM student WHERE e_id = ? LIMIT ?, ?;";
 		List<Student> studentList = qr.query(sql, new BeanListHandler<>(Student.class), 
@@ -78,15 +78,21 @@ public class StudentDaoImpl implements StudentDao {
 		return qr.query(sql, new BeanHandler<>(Student.class), student.getId(), student.getE_id());
 	}
 	
+	@Override
+	public void unbindIp(String id) throws SQLException {
+		String sql = "UPDATE student SET ip = DEFAULT WHERE id = ?;";
+		qr.update(sql, id);
+	}
+	
 	/**
 	 * getCount:(获取总记录数). <br/> 
 	 * @return
 	 * @throws SQLException long
 	 * @see
 	 */
-	private long getCount() throws SQLException {
-		String sql = "SELECT COUNT(*) FROM student;";
-		return (long) qr.query(sql, new ScalarHandler<>());
+	private long getCount(int examId) throws SQLException {
+		String sql = "SELECT COUNT(*) FROM (SELECT * FROM student WHERE e_id = ?) AS student_exam_tmp;";
+		return (long) qr.query(sql, new ScalarHandler<>(), examId);
 		
 	}
 

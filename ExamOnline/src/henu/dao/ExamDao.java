@@ -52,7 +52,7 @@ public interface ExamDao {
 	 * @param status
 	 * @throws SQLException
 	 */
-	void setState(String id, String status) throws SQLException;
+	void setState(int id, String status) throws SQLException;
 	
 	/**
 	 * @Description:(根据考试状态查询考试列表). <br/> 
@@ -76,7 +76,14 @@ public interface ExamDao {
 	 * @param question
 	 * @throws SQLException
 	 */
-	void importQues(String id, Question ques) throws SQLException;
+	void importQues(Question ques) throws SQLException;
+	
+	/**
+	 * @Description:(清除试题). <br/> 
+	 * @param examId
+	 * @throws SQLException
+	 */
+	void clearQues(int examId) throws SQLException;
 	
 	/**
 	 * @return 

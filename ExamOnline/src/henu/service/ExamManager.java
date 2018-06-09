@@ -3,6 +3,8 @@ package henu.service;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import henu.entity.Exam;
 import henu.entity.Question;
 import henu.entity.Student;
@@ -31,10 +33,11 @@ public interface ExamManager {
 	 * @Description:(修改考试状态). <br/> 
 	 * @param id
 	 * @param status 开始，进行中，取消，结束
+	 * @param timeLimit 提前多少毫秒可以开启考试
 	 * @return
 	 * @throws SQLException 
 	 */
-	ResultModel setExamState(String id, String status) throws SQLException;
+	ResultModel setExamState(int id, String status) throws SQLException;
 
 	/**
 	 * @Description:(根据教师和考试状态查询). <br/> 
@@ -47,20 +50,19 @@ public interface ExamManager {
 	
 	/**
 	 * @Description:(导入 试题). <br/> 
-	 * @param id
 	 * @param ques
 	 * @return
 	 * @throws SQLException 
 	 */
-	ResultModel importQues(String id, List<Question> ques) throws SQLException;
+	ResultModel importQues(List<Question> ques) throws SQLException;
 
 	/**
 	 * @Description:(获取试题). <br/> 
-	 * @param id
+	 * @param examId
 	 * @return
 	 * @throws SQLException 
 	 */
-	List<Question> getQues(int id) throws SQLException;
+	List<Question> getQues(int examId) throws SQLException;
 
 
 	/**
@@ -69,7 +71,7 @@ public interface ExamManager {
 	 * @param stus
 	 * @return
 	 */
-	ResultModel importStudents(String id, List<Student> stus);
+	ResultModel importStudents(int id, MultipartFile multipartFile);
 
 	/**
 	 * @Description:(导入学生名单，新增). <br/> 
@@ -77,7 +79,7 @@ public interface ExamManager {
 	 * @param stu
 	 * @return
 	 */
-	ResultModel addStudent(String id, Student stu);
+	ResultModel addStudent(int id, Student stu);
 
 	/**
 	 * @Description:(学生名单，删除). <br/> 
@@ -85,7 +87,7 @@ public interface ExamManager {
 	 * @param s_id
 	 * @return
 	 */
-	ResultModel removeStudent(String id, String s_id);
+	ResultModel removeStudent(int id, String s_id);
 
 	/**
 	 * @Description:(学生名单，修改). <br/> 
@@ -93,7 +95,7 @@ public interface ExamManager {
 	 * @param stu
 	 * @return
 	 */
-	ResultModel updateStudent(String id, Student stu);
+	ResultModel updateStudent(int id, Student stu);
 
 	/**
 	 * @Description:(导入学生名单，查询). <br/> 
@@ -117,4 +119,13 @@ public interface ExamManager {
 	 * @return
 	 */
 	ResultModel unbindIP(String s_id);
+
+	/**
+	 * @Description:(手动开启一场考试). <br/> 
+	 * @param eId
+	 * @param string
+	 * @param timeLimit
+	 * @return
+	 */
+	ResultModel startExam(Integer eId, String string, long timeLimit);
 }

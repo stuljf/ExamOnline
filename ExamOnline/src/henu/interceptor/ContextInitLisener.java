@@ -6,6 +6,7 @@ import javax.servlet.ServletContextListener;
 
 import org.dom4j.Document;
 
+import henu.quartz.ExamStatusScanner;
 import henu.util.XMLUtil;
 
 public class ContextInitLisener implements ServletContextListener {
@@ -13,10 +14,10 @@ public class ContextInitLisener implements ServletContextListener {
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
 	}
-
+	
 	@Override
 	public void contextInitialized(ServletContextEvent eve) {
-		//获取ac
+		//获取sc
 		ServletContext servletContext = eve.getServletContext();
 		
 		String path = this.getClass().getResource("/settings.xml").getPath();
@@ -27,5 +28,9 @@ public class ContextInitLisener implements ServletContextListener {
 		//查询时间限制
 		String timeLimit = "//setting[@name='timeLimit']";
 		servletContext.setAttribute("timeLimit", XMLUtil.getByXPath(doc, timeLimit));
+		
+		//==========================================================================
+		//考试自动开始和结束任务开启
+		//new ExamStatusScanner().start();
 	}
 }

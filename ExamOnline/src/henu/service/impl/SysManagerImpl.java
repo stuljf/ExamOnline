@@ -7,6 +7,8 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.dom4j.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +17,13 @@ import henu.dao.TeacherDao;
 import henu.entity.Exam;
 import henu.entity.Teacher;
 import henu.service.SysManager;
+import henu.util.ExceptionUtil;
 import henu.util.ResultModel;
 import henu.util.XMLUtil;
 
 @Service
 public class SysManagerImpl implements SysManager {
-
+	private Logger log = LoggerFactory.getLogger(SysManager.class);
 	@Resource
 	private ExamDao examDao;
 	
@@ -49,7 +52,8 @@ public class SysManagerImpl implements SysManager {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return ResultModel.build(500, "系统错误！");
+			log.error(ExceptionUtil.getStackTrace(e));
+			return ResultModel.build(500, ExceptionUtil.getStackTrace(e));
 		}
 	}
 

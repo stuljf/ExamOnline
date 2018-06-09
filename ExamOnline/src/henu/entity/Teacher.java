@@ -2,7 +2,7 @@ package henu.entity;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown=true, value= {"passwd"})
 public class Teacher {
     private String id;
 

@@ -1,5 +1,5 @@
 (function ($) {
-
+	
 	Date.prototype.format = function(fmt) {
 		var o = {
 				"M+" : this.getMonth()+1,                 //月份
@@ -20,7 +20,7 @@
 		return fmt;
 	}
 
-
+	timeCount();
 	
 	window.messager = function () {
 		var html = '<div id="[Id]" class="modal fade" role="dialog" aria-labelledby="modalLabel">' +
@@ -218,6 +218,15 @@ function getSelectIndex(id) {
 	return $("#table tbody tr[data-uniqueid='" + id + "']").attr("data-index");
 }
 
+function refresh() {
+	$("#table").bootstrapTable('refresh');
+}
+
 function updateRow(data) {
 	$("#table").bootstrapTable('updateRow', data);
+}
+
+function timeCount(){
+    $("#time").html((new Date()).format("HH:mm:ss"));
+    setTimeout("timeCount()", 1000);
 }

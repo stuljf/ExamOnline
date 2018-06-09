@@ -84,7 +84,7 @@ public class ExamDaoImpl implements ExamDao {
 	}
 
 	@Override
-	public void setState(String id, String status) throws SQLException {
+	public void setState(int id, String status) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql = "UPDATE exam SET state = ? WHERE id = ?;";
 		qr.update(sql, status, id);
@@ -98,11 +98,11 @@ public class ExamDaoImpl implements ExamDao {
 	}
 
 	@Override
-	public void importQues(String id, Question ques) throws SQLException {
+	public void importQues(Question ques) throws SQLException {
 		// TODO Auto-generated method stub
-		String sql="INSERT INTO question VALUES(NULL, ?, ?, ?, ?, ?, ?);";
-		qr.update(sql, ques.getNumber(), ques.getTitle(), ques.getType(), 
-				ques.getSelection(), ques.getAnswer(), ques.getE_id(), id);
+		String sql="INSERT INTO question(id,number,type,title,selection,answer,e_id) VALUES(DEFAULT, ?, ?, ?, ?, ?, ?);";
+		qr.update(sql, ques.getNumber(), ques.getType(), ques.getTitle(), 
+				ques.getSelection(), ques.getAnswer(), ques.getE_id());
 	}
 
 	@Override
@@ -124,5 +124,11 @@ public class ExamDaoImpl implements ExamDao {
 		String sql = "SELECT LAST_INSERT_ID();";
 		BigInteger t = (BigInteger) qr.query(sql, new ScalarHandler<>());
 		return t.intValue();
+	}
+
+	@Override
+	public void clearQues(int examId) throws SQLException {
+		String sql = "DELETE FROM question WHERE e_id = ?;";
+		qr.update(sql, examId);
 	}
 }

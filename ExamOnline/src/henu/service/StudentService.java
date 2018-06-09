@@ -33,7 +33,7 @@ public interface StudentService {
 	 * @param eId
 	 * @return ResultModel
 	 */
-	ResultModel displayQuestion(String eId);
+	ResultModel displayQuestion(int eId);
 	
 	/**
 	 * @Description:(考生答案保存). <br/> 
