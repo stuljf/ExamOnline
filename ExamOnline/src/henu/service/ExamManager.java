@@ -130,4 +130,6 @@ public interface ExamManager {
 	ResultModel startExam(Integer eId, String string, long timeLimit);
 
 	String getExamState(int examId);
+	
+	long getStudentCount(int examId, String type);
 }

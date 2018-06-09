@@ -5,9 +5,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class IPUtils {
+public class IPUtil {
 
-	private static Logger log = LoggerFactory.getLogger(IPUtils.class);
+	private static Logger log = LoggerFactory.getLogger(IPUtil.class);
 
 	public static String getRealIP(HttpServletRequest request) {
 			String ip = request.getHeader("x-forwarded-for");  

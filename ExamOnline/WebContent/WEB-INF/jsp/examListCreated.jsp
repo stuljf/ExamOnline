@@ -156,7 +156,7 @@
         format: "yyyy-mm-dd hh:ii",
         autoclose: true,
         todayBtn: true,
-        minuteStep: 1,
+        minuteStep: 5,
         startDate: new Date()
     });
     //考试结束时间 >= 考试开始时间
