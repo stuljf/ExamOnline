@@ -288,7 +288,8 @@
 	                        var row = getSelectRow(item);
 	                        row.state = 'canceled';
 	                        //updateRow({index: getSelectIndex(item), row:row});
-	                        removeRows(ids);
+	                        //removeRows(ids);
+	                        refresh();
                         });
                     }
                 })

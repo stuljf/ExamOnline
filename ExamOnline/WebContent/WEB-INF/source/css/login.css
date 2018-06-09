@@ -34,6 +34,7 @@
 .swidth_btn{
 	font-size:18px;
 	color:#999;
+	cursor:pointer;
 }
 
 .swidth_btn:hover{

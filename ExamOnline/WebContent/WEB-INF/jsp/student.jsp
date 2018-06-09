@@ -111,7 +111,6 @@
 		        </li>
 		    </ul>
 		</nav>
-		
 		<div class="container">
 			<div class="jumbotron text-center info">
 			    <h4 class="center-block text-danger">${bindIp }</h4>

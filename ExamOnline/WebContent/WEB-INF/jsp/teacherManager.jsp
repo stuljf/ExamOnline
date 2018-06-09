@@ -6,7 +6,7 @@ pageEncoding="UTF-8"%>
 <jsp:body>
 <tmp:pub-admin>
 <jsp:body>
-<div style="padding: auto 10px">
+<div class="container-fluid">
 
     <!--工具栏-->
     <div id="toolbar" class="btn-group">
@@ -22,8 +22,7 @@ pageEncoding="UTF-8"%>
     </div>
 
     <!--表格-->
-    <table id="table" style="margin: 10px auto 30px auto;"></table>
-    <div style="height: 30px;"></div>
+    <table id="table"></table>
     <!--新增-->
     <div class="modal fade" data-keyboard="false" id="addTeacherModel" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">

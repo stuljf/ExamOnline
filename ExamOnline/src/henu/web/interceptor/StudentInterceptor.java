@@ -1,4 +1,4 @@
-package henu.interceptor;
+package henu.web.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -7,29 +7,30 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import henu.entity.Teacher;
+import henu.entity.Student;
 
 /**
- * @Describtion: (管理员登陆拦截器). <br/> 
- * @date: 2018年5月18日 下午9:28:32 <br/> 
+ * @Describtion: (登陆拦截器). <br/> 
+ * @date: 2018年5月8日 下午6:14:08 <br/> 
  * @author Beats <br/> 
  * @version v1.0 <br/>
  * @since JDK 1.8
  */
-public class TeacherInterceptor implements HandlerInterceptor {
+public class StudentInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object arg2) throws Exception {
 		//获取用户信息
 		HttpSession session = request.getSession();
-		Teacher teacher = (Teacher) session.getAttribute("teacher");
+		Student student = (Student) session.getAttribute("student");
 		
 		//验证
-		if (teacher == null) {
+		if (student == null) {
 			//如果不合法跳转登陆页面
 			response.sendRedirect(request.getContextPath() + "/page/login");
 			return false;
 		}
+		
 		//如果合法就正常走下去
 		return true;
 	}

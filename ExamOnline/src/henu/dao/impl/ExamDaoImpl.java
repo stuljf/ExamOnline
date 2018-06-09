@@ -131,4 +131,16 @@ public class ExamDaoImpl implements ExamDao {
 		String sql = "DELETE FROM question WHERE e_id = ?;";
 		qr.update(sql, examId);
 	}
+
+	@Override
+	public long getStudentCount(int examId, String type) throws SQLException {
+		String sql = null;
+		//判断类型
+		if ("total".equals(type)) {
+			sql = "SELECT COUNT(*) FROM student WHERE e_id = ?;";
+		} else if ("absent".equals(type)) {
+			sql = "SELECT COUNT(*) FROM student WHERE e_id = ? AND ip = '0.0.0.0';";
+		}
+		return (long) qr.query(sql, new ScalarHandler<>(), examId);
+	}
 }

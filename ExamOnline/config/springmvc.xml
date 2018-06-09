@@ -12,7 +12,7 @@
         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
 	<!-- 组件扫描 -->
-	<context:component-scan base-package="henu.controller" />
+	<context:component-scan base-package="henu.web" />
 
 	<!-- 配置资源映射，对拦截的静态资源进行处理（转发器的URLPattern是“/”，会覆盖Servlet默认的映射） -->
 	<mvc:resources location="/WEB-INF/source/" mapping="/source/**" />
@@ -23,7 +23,7 @@
             <mvc:mapping path="/student/**"/>
             <mvc:exclude-mapping path="/page/student"/>
             <mvc:exclude-mapping path="/student/login"/>
-            <bean class="henu.interceptor.StudentInterceptor"/>
+            <bean class="henu.web.interceptor.StudentInterceptor"/>
         </mvc:interceptor> -->
         <mvc:interceptor>
             <mvc:mapping path="/admin/**"/>
@@ -31,7 +31,7 @@
             <mvc:mapping path="/page/examClean"/>
             <mvc:mapping path="/page/teacherManager"/>
             <mvc:exclude-mapping path="/admin/login"/>
-            <bean class="henu.interceptor.AdminInterceptor"/>
+            <bean class="henu.web.interceptor.AdminInterceptor"/>
         </mvc:interceptor>
 	</mvc:interceptors>
 

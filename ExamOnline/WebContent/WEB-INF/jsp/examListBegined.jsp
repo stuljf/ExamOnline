@@ -109,7 +109,7 @@ $(function() {
              var selects = $("#table").bootstrapTable('getSelections');
              if(selects.length>=1){
 	          var id=selects[0].id;
-	             window.location="${pageContext.request.contextPath}/teacher/exam/begined/student/show?examId="+id;
+	             window.location="${pageContext.request.contextPath}/teacher/exam/begined/details?examId="+id;
            	}
 	    });
 	
