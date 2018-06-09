@@ -156,7 +156,7 @@
         format: "yyyy-mm-dd hh:ii",
         autoclose: true,
         todayBtn: true,
-        minuteStep: 5,
+        minuteStep: 1,
         startDate: new Date()
     });
     //考试结束时间 >= 考试开始时间
@@ -288,7 +288,8 @@
 	                        var row = getSelectRow(item);
 	                        row.state = 'canceled';
 	                        //updateRow({index: getSelectIndex(item), row:row});
-	                        removeRows(ids);
+	                        //removeRows(ids);
+	                        refresh();
                         });
                     }
                 })

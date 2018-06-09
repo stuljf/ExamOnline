@@ -1,4 +1,4 @@
-package henu.interceptor;
+package henu.web.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,16 +16,16 @@ import henu.entity.Teacher;
  * @version v1.0 <br/>
  * @since JDK 1.8
  */
-public class AdminInterceptor implements HandlerInterceptor {
+public class TeacherInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object arg2) throws Exception {
 		//获取用户信息
 		HttpSession session = request.getSession();
-		Teacher admin = (Teacher) session.getAttribute("admin");
+		Teacher teacher = (Teacher) session.getAttribute("teacher");
 		
 		//验证
-		if (admin == null) {
+		if (teacher == null) {
 			//如果不合法跳转登陆页面
 			response.sendRedirect(request.getContextPath() + "/page/login");
 			return false;

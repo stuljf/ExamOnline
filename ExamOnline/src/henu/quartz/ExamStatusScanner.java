@@ -8,23 +8,25 @@ import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
-import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import henu.util.ExceptionUtil;
 
-public class ExamStatusScanner extends Thread {
+@Component
+public class ExamStatusScanner {
 
 	private Logger log = LoggerFactory.getLogger(ExamStatusScanner.class);
 	
-//	@Autowired
-	private SchedulerFactory stdSchedulerFactory = new StdSchedulerFactory();
+	@Autowired
+	private SchedulerFactory stdSchedulerFactory;
 	
-//	@Value("${crontime}")
-//	private String crontime;
+	@Value("${crontime}")
+	private String crontime;
 	
-	@Override
 	public void run() {
 		
 		try {
@@ -50,7 +52,7 @@ public class ExamStatusScanner extends Thread {
 			//支持表达式的触发器
 			Trigger trigger = TriggerBuilder.newTrigger()
 			        .withIdentity("examStatusScannerTrigger")
-			        .withSchedule(CronScheduleBuilder.cronSchedule("0/3 * * * * ?"))
+			        .withSchedule(CronScheduleBuilder.cronSchedule(crontime))
 			        .startNow()
 			        .build();
 

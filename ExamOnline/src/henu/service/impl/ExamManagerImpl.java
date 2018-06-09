@@ -36,7 +36,7 @@ public class ExamManagerImpl implements ExamManager {
 	private String STUDENT_NAME;
 	@Value("${student.clazz}")
 	private String STUDENT_CLAZZ;
-	
+
 	@Resource
 	private ExamDao examDao;
 
@@ -45,6 +45,16 @@ public class ExamManagerImpl implements ExamManager {
 
 	@Resource
 	private ExamAutoer examAutoer;
+
+	@Override
+	public String getExamState(int examId) {
+		try {
+			return examDao.queryExamsById(examId).getState();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	@Override
 	public ResultModel createExam(Exam exam) throws SQLException {
@@ -54,10 +64,10 @@ public class ExamManagerImpl implements ExamManager {
 		int id = examDao.getLastInsertID();
 		//设置id
 		exam.setId(id);
-		
+
 		examAutoer.queueBegin(id, exam.getStarttime().getTime());
 		examAutoer.queueClose(id, exam.getEndtime().getTime());
-		
+
 		return ResultModel.ok(exam);
 	}
 
@@ -65,20 +75,30 @@ public class ExamManagerImpl implements ExamManager {
 	public ResultModel editExam(Exam exam) throws SQLException {
 		//获取旧数据
 		Exam t = examDao.queryExamsById(exam.getId());
-		//填充数据
-		exam.setState(t.getState());
-		exam.setT_id(t.getT_id());
-		//修改数据
-		examDao.modify(exam);
-		
-		examAutoer.queueBegin(exam.getId(), exam.getStarttime().getTime());
-		examAutoer.queueClose(exam.getId(), exam.getEndtime().getTime());
-		
-		return ResultModel.ok();
+		if ("created".equals(exam.getState())) {
+			//填充数据
+			exam.setState(t.getState());
+			exam.setT_id(t.getT_id());
+			//修改数据
+			examDao.modify(exam);
+
+			examAutoer.queueBegin(exam.getId(), exam.getStarttime().getTime());
+			examAutoer.queueClose(exam.getId(), exam.getEndtime().getTime());
+
+			return ResultModel.ok();
+		} else {
+			return ResultModel.build(302, "考试已经开始，请刷新界面！");
+		}
 	}
 
 	@Override
 	public ResultModel setExamState(int id, String status) throws SQLException {
+		//取消考试时候出队。
+		if (status.equals("canceled")) {
+			examAutoer.dequeueBegin(id);
+			examAutoer.dequeueClose(id);
+		}
+
 		examDao.setState(id, status);
 		return ResultModel.ok();
 	}
@@ -87,13 +107,20 @@ public class ExamManagerImpl implements ExamManager {
 	public ResultModel importQues(List<Question> ques) throws SQLException {
 		//获取考试id
 		int examId = ques.get(0).getE_id();
-		//先清空试题
-		examDao.clearQues(examId);
-		//再插入新试题
-		for (Question question : ques) {
-			examDao.importQues(question);
+
+		//获取考试状态，如果没开始就可以修改
+		String state = examDao.queryExamsById(examId).getState();
+		if ("created".equals(state)) {
+			//先清空试题
+			examDao.clearQues(examId);
+			//再插入新试题
+			for (Question question : ques) {
+				examDao.importQues(question);
+			}
+			return ResultModel.ok();
+		} else {
+			return ResultModel.build(302, "考试已经开始，请刷新界面！");
 		}
-		return ResultModel.ok();
 	}
 
 	@Override
@@ -104,57 +131,70 @@ public class ExamManagerImpl implements ExamManager {
 
 	@Override
 	public ResultModel importStudents(int id, MultipartFile file) {
-		//获取ExcelReader对象
-		ExcelReader reader;
+		//获取考试状态，如果没开始就可以修改
+		String state = null;
 		try {
-			reader = ExcelReader.readFile(file.getInputStream());
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error("插入学生时，读取文件失败！");
-			return ResultModel.build(500, "系统错误");
+			state = examDao.queryExamsById(id).getState();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			return ResultModel.build(400, "考试不存在！");
 		}
-
-		//获取行列总数
-		int totalRows = reader.getTotalRows();
-		//总列数
-		int totalCols = reader.getTotalColumns();
-
-		//获取列名
-		String[] colNames = new String[totalCols];
-		for (int i = 0; i < colNames.length; i++) {
-			colNames[i] = reader.read(0, i);
-		}
-
-		//根据配置文件放置列
-		Map<String, Integer> map = new HashMap<>();
-		for (int i = 0; i < colNames.length; i++) {
-			if (colNames[i].equals(STUDENT_ID))
-				map.put(STUDENT_ID, i);
-			else if (colNames[i].equals(STUDENT_NAME))
-				map.put(STUDENT_NAME, i);
-			else if (colNames[i].equals(STUDENT_CLAZZ))
-				map.put(STUDENT_CLAZZ, i);
-		}
-
-		//开始读取
-		for (int i = 1; i < totalRows; i++) {
-			//如果id字段为空，舍弃 
-			if (reader.read(i, map.get(STUDENT_ID)).isEmpty())
-				break;
-			Student s = new Student();
-			s.setId(reader.read(i, map.get(STUDENT_ID)));
-			s.setName(reader.read(i, map.get(STUDENT_NAME)));
-			s.setClazz(reader.read(i, map.get(STUDENT_CLAZZ)));
-			s.setE_id(id);
-			//插入数据库
+		if ("created".equals(state)) {
+			//获取ExcelReader对象
+			ExcelReader reader;
 			try {
-				studentDao.save(s);
-			} catch (SQLException e) {
+				reader = ExcelReader.readFile(file.getInputStream());
+			} catch (Exception e) {
 				e.printStackTrace();
-				log.error("插入学生失败，可能原因：学生信息已存在！");
+				log.error("插入学生时，读取文件失败！");
+				return ResultModel.build(500, "系统错误");
 			}
-		}		
-		return ResultModel.ok();
+
+			//获取行列总数
+			int totalRows = reader.getTotalRows();
+			//总列数
+			int totalCols = reader.getTotalColumns();
+
+			//获取列名
+			String[] colNames = new String[totalCols];
+			for (int i = 0; i < colNames.length; i++) {
+				colNames[i] = reader.read(0, i);
+			}
+
+			//根据配置文件放置列
+			Map<String, Integer> map = new HashMap<>();
+			for (int i = 0; i < colNames.length; i++) {
+				if (colNames[i].equals(STUDENT_ID))
+					map.put(STUDENT_ID, i);
+				else if (colNames[i].equals(STUDENT_NAME))
+					map.put(STUDENT_NAME, i);
+				else if (colNames[i].equals(STUDENT_CLAZZ))
+					map.put(STUDENT_CLAZZ, i);
+			}
+
+			//开始读取
+			for (int i = 1; i < totalRows; i++) {
+				//如果id字段为空，舍弃 
+				if (reader.read(i, map.get(STUDENT_ID)).isEmpty())
+					break;
+				Student s = new Student();
+				s.setId(reader.read(i, map.get(STUDENT_ID)));
+				s.setName(reader.read(i, map.get(STUDENT_NAME)));
+				s.setClazz(reader.read(i, map.get(STUDENT_CLAZZ)));
+				s.setE_id(id);
+				//插入数据库
+				try {
+					studentDao.save(s);
+				} catch (SQLException e) {
+					e.printStackTrace();
+					log.error("插入学生失败，可能原因：学生信息已存在！");
+				}
+			}		
+			return ResultModel.ok();
+		} else {
+			return ResultModel.build(302, "考试已经开始，请刷新界面！");
+		}
+
 	}
 
 	@Override

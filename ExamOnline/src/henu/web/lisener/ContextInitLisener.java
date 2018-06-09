@@ -1,14 +1,15 @@
-package henu.interceptor;
+package henu.web.lisener;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 
 import org.dom4j.Document;
 
-import henu.quartz.ExamStatusScanner;
 import henu.util.XMLUtil;
 
+@WebListener
 public class ContextInitLisener implements ServletContextListener {
 
 	@Override
@@ -28,9 +29,5 @@ public class ContextInitLisener implements ServletContextListener {
 		//查询时间限制
 		String timeLimit = "//setting[@name='timeLimit']";
 		servletContext.setAttribute("timeLimit", XMLUtil.getByXPath(doc, timeLimit));
-		
-		//==========================================================================
-		//考试自动开始和结束任务开启
-		//new ExamStatusScanner().start();
 	}
 }
