@@ -316,18 +316,52 @@ public class TeacherController {
 		}
 	}
 
-
-	@RequestMapping("/exam/begined/student/show")
+//==========================以下是考试详情相关===============================================
+	
+	@RequestMapping("/exam/begined/details")
 	public String beginedStudentList(Integer examId, Model model) {
 		if (examId == null) {
 			return "error";
 		}
+		//总人数
+		long total = examManager.getStudentCount(examId, "total");
+		//未登录人数
+		long absent = examManager.getStudentCount(examId, "absent");
+		//登陆人数
+		long online = total - absent;
+		
+		//视图渲染
 		//jsp注入考试id
 		model.addAttribute("examId", examId);
+		model.addAttribute("total", total);
+		model.addAttribute("absent", absent);
+		model.addAttribute("online", online);
 		
-		return "examListBeginedStudent";
+		return "examDetails";
 	}
 
+	@RequestMapping(value="/exam/begined/publish", method=RequestMethod.POST)
+	@ResponseBody
+	public ResultModel beginedStudentList(Integer examId, String item) {
+		if (examId == null) {
+			return ResultModel.build(500, "发布失败，请联系管理员！");
+		}
+		
+		//获取发布历史
+		String publish = (String) servletContext.getAttribute("publish:" + examId);
+		if (publish == null) publish = "";
+		//添加新发布的公告
+		publish += item + "<<EOF>>";
+		//更新
+		servletContext.setAttribute("publish:" + examId, publish);
+		
+		return ResultModel.ok();
+	}
+	
+//================================考试结束后=========================================	
+	
+	
+//================================ip相关=========================================	
 	
 	@RequestMapping("unbindIp")
 	@ResponseBody

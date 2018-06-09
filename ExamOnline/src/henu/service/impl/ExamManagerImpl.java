@@ -22,6 +22,7 @@ import henu.entity.Student;
 import henu.service.ExamAutoer;
 import henu.service.ExamManager;
 import henu.util.ExcelReader;
+import henu.util.ExceptionUtil;
 import henu.util.PageBean;
 import henu.util.ResultModel;
 
@@ -282,6 +283,17 @@ public class ExamManagerImpl implements ExamManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResultModel.build(500, "系统错误，请联系管理员！");
+		}
+	}
+
+	@Override
+	public long getStudentCount(int examId, String type) {
+		try {
+			return examDao.getStudentCount(examId, type);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.error(ExceptionUtil.getStackTrace(e));
+			return 0;
 		}
 	}
 }

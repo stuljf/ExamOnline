@@ -79,9 +79,9 @@
     var msg=0;
     noticeCount();
     function noticeCount(){
-        $.get("${pageContext.request.contextPath }/student/exam/broadcast/list?examId=${examId }", function(data){
+        $.get("${pageContext.request.contextPath }/student/exam/broadcast/list/${examId }", function(data){
         	var msgs=data.data;
-        	var words=msgs.split(",");
+        	var words=msgs.split("<<EOF>>");
         	if(words.length>msg){
         		msg=words.length;
         		$("#msg").html("有新消息");

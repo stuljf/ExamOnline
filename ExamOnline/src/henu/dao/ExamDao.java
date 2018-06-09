@@ -93,5 +93,12 @@ public interface ExamDao {
 	 */
 	int getLastInsertID() throws SQLException;
 	
-	
+	/**
+	 * @Description:(获取学生人数). <br/> 
+	 * @param examId
+	 * @param type
+	 * @return
+	 * @throws SQLException 
+	 */
+	long getStudentCount(int examId, String type) throws SQLException;
 }
