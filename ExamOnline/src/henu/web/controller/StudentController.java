@@ -119,6 +119,7 @@ public class StudentController {
 				List<Question> ques = res.getListData(Question.class);
 				//视图渲染
 				model.addAttribute("ques", ques);
+				model.addAttribute("examId", eId);
 				//返回视图
 				return "exam";
 			} else {
@@ -135,7 +136,8 @@ public class StudentController {
 	@ResponseBody
 	public ResultModel listBroadcast(String examId) {
 		//从application中获取
-		List<String> attribute = (List<String>) servletContext.getAttribute("broadcast" + examId);
-		return null;
+		List<String> msg = (List<String>) servletContext.getAttribute("broadcast" + examId);
+		
+		return ResultModel.ok("122222222222222222222222222222222222222222222222222222222222222222222222222222222222222,2,3");
 	}
 }

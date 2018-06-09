@@ -15,23 +15,45 @@
     <jsp:body>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/source/css/student.css" />
     <nav class="navbar navbar-info top-navbar">
-		    <div class="navbar-header">
-		        <a class="navbar-brand" onclick="" href="${pageContext.request.contextPath }/page/admin">上机考试系统</a>
-		    </div>
-		    <ul class="nav navbar-nav navbar-right">
-		   	 	<li><a>时间：<span id="time"></span></a></li>
-		        <li class="dropdown">
-		            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						当前考生：${student.name }&ensp;<i class="glyphicon glyphicon-chevron-down"></i>
-		            </a>
-		            <ul class="dropdown-menu">
-		                <li><a href="#">提交试卷</a></li>
-		            </ul>
-		        </li>
-		    </ul>
-		</nav>
+	    <div class="navbar-header">
+	        <a class="navbar-brand" onclick="" href="${pageContext.request.contextPath }/page/admin">上机考试系统</a>
+	    </div>
+	    <ul class="nav navbar-nav navbar-right">
+	    	<li><a data-toggle="modal" data-target="#notice" onclick="show()" style="cursor:pointer;">
+	    		<i class="glyphicon glyphicon-bell"></i> <span id="msg">通知</span>
+	    	</a></li>
+	   	 	<li><a>时间：<span id="time"></span></a></li>
+	        <li class="dropdown">
+	            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="cursor:pointer;">
+					当前考生：${student.name }&ensp;<i class="glyphicon glyphicon-chevron-down"></i>
+	            </a>
+	            <ul class="dropdown-menu">
+	                <li><a href="#">提交试卷</a></li>
+	            </ul>
+	        </li>
+	    </ul>
+	</nav>
+	<!-- 模态框（Modal） -->
+	<div class="modal fade" id="notice" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	                    &times;
+	                </button>
+	                <h4 class="modal-title">通知详情</h4>
+	            </div>
+	            <div class="modal-body">
+	                <div class="pre-scrollable" style="height:150px;word-break:break-all">
+			    		<ul class="list-group" id="announcements"></ul>
+					</div>
+	            </div>
+	        </div><!-- /.modal-content -->
+	    </div><!-- /.modal -->
+	</div>
     <!-- 动态加载试题 -->
     <div class="container">
+    <div id="dbg"></div>
 	    <hr>
         <form class="form-horizontal" role="form">
 	        <c:forEach items="${ques }" var="q" varStatus="index">
@@ -53,5 +75,32 @@
             </c:forEach>
         </form>
     </div> 
+    <script>
+    var msg=0;
+    noticeCount();
+    function noticeCount(){
+        $.get("${pageContext.request.contextPath }/student/exam/broadcast/list?examId=${examId }", function(data){
+        	var msgs=data.data;
+        	var words=msgs.split(",");
+        	if(words.length>msg){
+        		msg=words.length;
+        		$("#msg").html("有新消息");
+        		$("#msg").css("color","red");
+        		$("#announcements").empty();
+        		for(var value in words){
+            		var li=document.createElement("li");
+	    			$(li).html(words[value]);
+	    			$(li).addClass("list-group-item");
+	    			$("#announcements").append(li);
+	        	}
+        	}
+        });
+        setTimeout("noticeCount()", 60000);
+    }
+    function show(){
+    	$("#msg").html("通知");
+		$("#msg").css("color","");
+    }
+    </script>
     </jsp:body>
 </tmp:common>

@@ -102,7 +102,7 @@
 		    <ul class="nav navbar-nav navbar-right">
 		   	 	<li><a>时间：<span id="time"></span></a></li>
 		        <li class="dropdown">
-		            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+		            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="cursor:pointer;">
 						当前考生：${student.name }&ensp;<i class="glyphicon glyphicon-chevron-down"></i>
 		            </a>
 		            <ul class="dropdown-menu">
