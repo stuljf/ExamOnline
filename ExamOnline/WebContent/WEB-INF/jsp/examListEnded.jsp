@@ -17,6 +17,9 @@
         <button id="btn_export" type="button" class="btn btn-default">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>导出考试成绩
         </button>
+        <button id="btn_exportPapers" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>导出学生试卷
+        </button>
     </div>
 
     <!--表格-->

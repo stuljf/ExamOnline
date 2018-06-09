@@ -35,9 +35,9 @@ public class StudentDaoImpl implements StudentDao {
 	}
 
 	@Override
-	public List<Student> queryStudentById(String id) throws SQLException {
-		String sql = "SELECT * FROM student WHERE id = ?;";
-		return qr.query(sql, new BeanListHandler<>(Student.class), id);
+	public Student queryStudentByIdAndExam(String studentId, int examId) throws SQLException {
+		String sql = "SELECT * FROM student WHERE id = ? and examId = ?;";
+		return qr.query(sql, new BeanHandler<>(Student.class), studentId, examId);
 	}
 
 	@Override
@@ -94,6 +94,12 @@ public class StudentDaoImpl implements StudentDao {
 		String sql = "SELECT COUNT(*) FROM (SELECT * FROM student WHERE e_id = ?) AS student_exam_tmp;";
 		return (long) qr.query(sql, new ScalarHandler<>(), examId);
 		
+	}
+
+	@Override
+	public List<Student> queryStudentById(String id) throws SQLException {
+		String sql = "SELECT * FROM student WHERE id = ?;";
+		return qr.query(sql, new BeanListHandler<>(Student.class), id);
 	}
 
 }

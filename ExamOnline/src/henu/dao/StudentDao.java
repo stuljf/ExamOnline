@@ -32,10 +32,20 @@ public interface StudentDao {
 	/**
 	 * getStudentById:(get Student info by student's id). <br/> 
 	 * @param id
+	 * @param examId
 	 * @return Student
 	 * @throws SQLException 
 	 */
-	List<Student> queryStudentById(String id) throws SQLException;
+	List<Student> queryStudentById(String id) throws SQLException;;
+	
+	/**
+	 * @Description:(get Student info by student's id and exam's id). <br/> 
+	 * @param id
+	 * @param examId
+	 * @return
+	 * @throws SQLException
+	 */
+	Student queryStudentByIdAndExam(String id, int examId) throws SQLException;
 	
 	/**
 	 * modify:(修改学生信息). <br/> 
@@ -81,4 +91,5 @@ public interface StudentDao {
 	 * @throws SQLException
 	 */
 	public void unbindIp(String id) throws SQLException;
+
 }

@@ -26,13 +26,12 @@ public class FtpUtil {
 	 * @param port FTP服务器端口 
 	 * @param username FTP登录账号 
 	 * @param password FTP登录密码 
-	 * @param basePath FTP服务器基础目录
-	 * @param filePath FTP服务器文件存放路径。例如分日期存放：/2015/01/01。文件的路径为basePath+filePath
+	 * @param filePath FTP服务器文件存放路径。文件的路径为basePath+filePath
 	 * @param filename 上传到FTP服务器上的文件名 
 	 * @param input 输入流 
 	 * @return 成功返回true，否则返回false 
 	 */  
-	public static boolean uploadFile(String host, int port, String username, String password, String basePath,
+	public static boolean uploadFile(String host, int port, String username, String password,
 			String filePath, String filename, InputStream input) {
 		boolean result = false;
 		FTPClient ftp = new FTPClient();
@@ -47,21 +46,10 @@ public class FtpUtil {
 				return result;
 			}
 			//切换到上传目录
-			if (!ftp.changeWorkingDirectory(basePath+filePath)) {
+			if (!ftp.changeWorkingDirectory(filePath)) {
 				//如果目录不存在创建目录
-				String[] dirs = filePath.split("/");
-				String tempPath = basePath;
-				for (String dir : dirs) {
-					if (null == dir || "".equals(dir)) continue;
-					tempPath += "/" + dir;
-					if (!ftp.changeWorkingDirectory(tempPath)) {
-						if (!ftp.makeDirectory(tempPath)) {
-							return result;
-						} else {
-							ftp.changeWorkingDirectory(tempPath);
-						}
-					}
-				}
+				ftp.makeDirectory(filePath);
+				ftp.changeWorkingDirectory(filePath);
 			}
 			//设置上传文件的类型为二进制类型
 			ftp.setFileType(FTP.BINARY_FILE_TYPE);
@@ -84,7 +72,7 @@ public class FtpUtil {
 		}
 		return result;
 	}
-	
+
 	/** 
 	 * Description: 从FTP服务器下载文件 
 	 * @param host FTP服务器hostname 
@@ -136,14 +124,14 @@ public class FtpUtil {
 		}
 		return result;
 	}
-	
+
 	public static void main(String[] args) {
 		try {  
-	        FileInputStream in=new FileInputStream(new File("D:\\temp\\image\\gaigeming.jpg"));  
-	        boolean flag = uploadFile("192.168.25.133", 21, "ftpuser", "ftpuser", "/home/ftpuser/www/images","/2015/01/21", "gaigeming.jpg", in);  
-	        System.out.println(flag);  
-	    } catch (FileNotFoundException e) {  
-	        e.printStackTrace();  
-	    }  
+			FileInputStream in=new FileInputStream(new File("D:/1.xlsx"));  
+			boolean flag = uploadFile("47.100.101.31", 21, "free", "free", "exams/01-java", "u.xlsx", in);  
+			System.out.println(flag);  
+		} catch (FileNotFoundException e) {  
+			e.printStackTrace();  
+		}  
 	}
 }

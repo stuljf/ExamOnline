@@ -1,5 +1,6 @@
 package henu.service.impl;
 
+import java.io.ByteArrayInputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import henu.dao.ExamDao;
@@ -17,6 +19,7 @@ import henu.entity.Question;
 import henu.entity.Student;
 import henu.service.StudentService;
 import henu.util.ExceptionUtil;
+import henu.util.FtpUtil;
 import henu.util.ResultModel;
 
 @Service //业务逻辑层注解
@@ -29,6 +32,15 @@ public class StudentServiceImpl implements StudentService {
 	
 	@Resource
 	private ExamDao examDao;
+	
+	@Value("${ftp.url}")
+	private String ftp_url;
+	@Value("${ftp.port}")
+	private int ftp_port;
+	@Value("${ftp.username}")
+	private String ftp_username;
+	@Value("${ftp.passwd}")
+	private String ftp_passwd;
 	
 	@Override
 	public ResultModel login(Student student) {
@@ -76,12 +88,6 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public ResultModel saveAsnwers(Student stu, List<String> answers) {
-		
-		return null;
-	}
-
-	@Override
 	public ResultModel bindIp(Student student) {
 		try {
 			Student stu=studentDao.query(student);
@@ -100,6 +106,32 @@ public class StudentServiceImpl implements StudentService {
 			e.printStackTrace();
 			return ResultModel.build(500, "系统错误");
 		}
+	}
+
+	@Override
+	public ResultModel saveAsnwers(int examId, String studentId, List<Question> ques) throws SQLException {
+		//获取考试详情
+		Exam exam = examDao.queryExamsById(examId);
+		//获取学生详情
+		Student stu = studentDao.queryStudentByIdAndExam(studentId, examId);
+		//按照 题号=答案 的格式保存成字符串
+		StringBuffer sb = new StringBuffer();
+		for (Question question : ques) {
+			sb.append(question.getNumber() + "=" + question.getAnswer() + System.lineSeparator());
+		}
+		String content = sb.toString();
+		//流形式
+		ByteArrayInputStream bais = new ByteArrayInputStream(content.getBytes());
+		//上传到ftp中
+		String filePath = "exams/" + examId + "-" + exam.getSubject();
+		String fileName = studentId + "-" + stu.getName();
+		boolean flag = FtpUtil.uploadFile(ftp_url, ftp_port, ftp_username, ftp_passwd, filePath, fileName, bais);
+		
+		if (flag) {
+			return ResultModel.ok();
+		}
+		
+		return ResultModel.build(400, "保存试卷失败！");
 	}
 
 }

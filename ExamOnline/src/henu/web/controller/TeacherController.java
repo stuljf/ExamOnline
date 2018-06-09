@@ -1,6 +1,7 @@
 package henu.web.controller;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -37,13 +38,13 @@ import henu.util.ResultModel;
 public class TeacherController {
 
 	private Logger log = LoggerFactory.getLogger(TeacherController.class);
-	
+
 	@Resource
 	private TeacherService teacherService;
 
 	@Resource
 	private ExamManager examManager;
-	
+
 	@Resource
 	private ServletContext servletContext;
 
@@ -67,7 +68,7 @@ public class TeacherController {
 			return ResultModel.build(500, "系统错误！");
 		}
 	}
-	
+
 	@RequestMapping("/logout/{t_id}")
 	public String login(@PathVariable String t_id, HttpServletRequest request) {
 		try {
@@ -82,7 +83,7 @@ public class TeacherController {
 			return "error";
 		}
 	}
-	
+
 	@RequestMapping(value="/changePwd", method=RequestMethod.POST)
 	@ResponseBody
 	public ResultModel changePwd(Teacher teacher, String newPasswd, HttpServletRequest request) {
@@ -110,15 +111,15 @@ public class TeacherController {
 			return ResultModel.build(500, "系统错误！");
 		}
 	}
-	
-/*******************考试相关***********************************************/
+
+	/*******************考试相关***********************************************/
 	@RequestMapping("/exam/list")
 	@ResponseBody
 	public List<Exam> getExamList(String tId, @RequestParam(defaultValue="all") String state) {
 		//判空
 		if (tId == null) 
 			return null;
-		
+
 		try {
 			List<Exam> exams = examManager.queryExamByTeacher(tId, state);
 			return exams;
@@ -127,7 +128,7 @@ public class TeacherController {
 			return null;
 		}
 	}
-	
+
 	@RequestMapping("/exam/cancel/{eId}")
 	@ResponseBody
 	public ResultModel examCancel(@PathVariable String eId) {
@@ -144,7 +145,7 @@ public class TeacherController {
 			return ResultModel.build(500, "取消考试失败！");
 		}
 	}
-	
+
 	@RequestMapping("/exam/start/{eId}")
 	@ResponseBody
 	public ResultModel examStart(@PathVariable Integer eId) {
@@ -157,7 +158,7 @@ public class TeacherController {
 			return ResultModel.build(500, "开始考试失败！");
 		}
 	}
-	
+
 	@RequestMapping(value="/exam/add", method=RequestMethod.POST)
 	@ResponseBody
 	public ResultModel examAdd(Exam exam) {
@@ -169,7 +170,7 @@ public class TeacherController {
 			return ResultModel.build(500, "创建考试失败！");
 		}
 	}
-	
+
 	@RequestMapping(value="/exam/update", method=RequestMethod.POST)
 	@ResponseBody
 	public ResultModel examUpdate(Exam exam) {
@@ -177,7 +178,7 @@ public class TeacherController {
 			if (!"created".equals(examManager.getExamState(exam.getId()))) {
 				return ResultModel.build(302, "考试已经开启，请刷新！");
 			}
-			
+
 			ResultModel res = examManager.editExam(exam);
 			return res;
 		} catch (Exception e) {
@@ -185,66 +186,66 @@ public class TeacherController {
 			return ResultModel.build(500, "编辑考试信息失败！");
 		}
 	}
-	
+
 	@RequestMapping("/exam/question/list")
 	public String questionList(Integer examId, Model model) {
 		try {
-			
+
 			if (!"created".equals(examManager.getExamState(examId))) {
 				return "examListCreated";
 			}
-			
+
 			//获取试卷信息
 			List<Question> ques = examManager.getQues(examId);
 			if (ques != null) {
 				//视图渲染
 				model.addAttribute("ques", ques);
 			}
-			
+
 			model.addAttribute("examId", examId);
 			//返回视图
 			return "importQuestion";
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "error";
 		}
 	}
-	
+
 	@RequestMapping(value="/exam/question/import", method=RequestMethod.POST)
 	@ResponseBody
 	public ResultModel testpojolist(RequestModel bean) {
 		if (bean == null || bean.getQuestions() == null) {
 			return ResultModel.build(400, "试题不能为空~！");
 		}
-		
+
 		try {
 			examManager.importQues(bean.getQuestions());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResultModel.build(500, "导入试题失败，请联系管理员！");
 		}
-	
+
 		return ResultModel.ok();
 	}
-	
+
 	/**************以下是学生管理******************/
 	@RequestMapping("/exam/created/student/show")
 	public String studentList(Integer examId, Model model) {
 		if (examId == null) {
 			return "error";
 		}
-		
+
 		if (!"created".equals(examManager.getExamState(examId))) {
 			return "examListCreated";
 		}
-		
+
 		//jsp注入考试id
 		model.addAttribute("examId", examId);
-		
+
 		return "importStudent";
 	}
-	
+
 	@RequestMapping("/exam/created/student/list")
 	@ResponseBody
 	public BootstrapPageResult<Student> studentList(Integer examId,
@@ -253,17 +254,17 @@ public class TeacherController {
 		if (examId == null) {
 			return null;
 		}
-		
+
 		//创建分页对象
 		PageBean<Student> bean = new PageBean<>(offset%limit == 0? offset/limit : offset/limit + 1, limit);
 		//query
 		examManager.queryStudent(examId, bean);
-		
+
 		BootstrapPageResult<Student> exams = new BootstrapPageResult<>(bean.getTotalCount(), bean.getPageData());
-		
+
 		return exams;
 	}
-	
+
 	@RequestMapping(value="/exam/created/student/import", method=RequestMethod.POST)
 	@ResponseBody
 	public ResultModel studentImport(Integer examId, Student student) {
@@ -275,7 +276,7 @@ public class TeacherController {
 		return res;
 	}
 
-	
+
 	@RequestMapping(value="/exam/created/student/importAll", method=RequestMethod.POST)
 	@ResponseBody
 	public ResultModel studentListImport(Integer examId, @RequestParam("file") MultipartFile multipartFile) {
@@ -297,7 +298,7 @@ public class TeacherController {
 		ResultModel res = examManager.updateStudent(examId, student);
 		return res;
 	}
-	
+
 	@RequestMapping("/exam/created/student/remove")
 	@ResponseBody
 	public ResultModel studentRemove(Integer examId, String ids) {
@@ -316,8 +317,8 @@ public class TeacherController {
 		}
 	}
 
-//==========================以下是考试详情相关===============================================
-	
+	//==========================以下是考试详情相关===============================================
+
 	@RequestMapping("/exam/begined/details")
 	public String beginedStudentList(Integer examId, Model model) {
 		if (examId == null) {
@@ -329,6 +330,11 @@ public class TeacherController {
 		long absent = examManager.getStudentCount(examId, "absent");
 		//登陆人数
 		long online = total - absent;
+
+		//获取发布历史
+		String publish = (String) servletContext.getAttribute("publish:" + examId);
+		if (publish == null) publish = "";
+		List<String> publishs = Arrays.asList(publish.split("<<EOF>>"));
 		
 		//视图渲染
 		//jsp注入考试id
@@ -336,7 +342,8 @@ public class TeacherController {
 		model.addAttribute("total", total);
 		model.addAttribute("absent", absent);
 		model.addAttribute("online", online);
-		
+		model.addAttribute("publishs", publishs);
+
 		return "examDetails";
 	}
 
@@ -346,23 +353,26 @@ public class TeacherController {
 		if (examId == null) {
 			return ResultModel.build(500, "发布失败，请联系管理员！");
 		}
-		
+
 		//获取发布历史
 		String publish = (String) servletContext.getAttribute("publish:" + examId);
-		if (publish == null) publish = "";
-		//添加新发布的公告
-		publish += item + "<<EOF>>";
+		if (publish == null)  {
+			publish = item;
+		} else {
+			//添加新发布的公告
+			publish += "<<EOF>>" + item;
+		}
 		//更新
 		servletContext.setAttribute("publish:" + examId, publish);
-		
+
 		return ResultModel.ok();
 	}
-	
-//================================考试结束后=========================================	
-	
-	
-//================================ip相关=========================================	
-	
+
+	//================================考试结束后=========================================	
+
+
+	//================================ip相关=========================================	
+
 	@RequestMapping("unbindIp")
 	@ResponseBody
 	public ResultModel unbindIp(Student student) {

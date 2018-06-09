@@ -100,6 +100,10 @@ public class ExamManagerImpl implements ExamManager {
 			examAutoer.dequeueClose(id);
 		}
 
+		if (status.equals("begined")) {
+			examAutoer.dequeueBegin(id);
+		}
+		
 		examDao.setState(id, status);
 		return ResultModel.ok();
 	}

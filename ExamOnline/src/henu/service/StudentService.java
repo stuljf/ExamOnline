@@ -1,7 +1,9 @@
 package henu.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
+import henu.entity.Question;
 import henu.entity.Student;
 import henu.util.ResultModel;
 
@@ -36,12 +38,14 @@ public interface StudentService {
 	ResultModel displayQuestion(int eId);
 	
 	/**
-	 * @Description:(考生答案保存). <br/> 
-	 * @param stu		考生信息
-	 * @param answers	考试答案
+	 * @Description:(保存考生答案). <br/> 
+	 * @param examId
+	 * @param studentId
+	 * @param ques
 	 * @return
+	 * @throws SQLException 
 	 */
-	ResultModel saveAsnwers(Student stu, List<String> answers);
+	ResultModel saveAsnwers(int examId, String studentId, List<Question> ques) throws SQLException;
 	
 	/**
 	 * bindIp(开始考试时绑定学生Ip)

@@ -22,9 +22,10 @@ import henu.dao.ExamDao;
 import henu.entity.Exam;
 import henu.entity.Question;
 import henu.entity.Student;
+import henu.service.ExamJudger;
 import henu.service.StudentService;
 import henu.util.ExceptionUtil;
-import henu.util.IPUtil;
+import henu.util.RequestModel;
 import henu.util.ResultModel;
 
 @Controller
@@ -41,6 +42,9 @@ public class StudentController {
 
 	@Autowired
 	private ServletContext servletContext;
+	
+	@Autowired
+	private ExamJudger examJudger;
 
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	@ResponseBody
@@ -118,8 +122,8 @@ public class StudentController {
 		HttpSession session = request.getSession();
 		Student student=(Student) session.getAttribute("student");
 
-		String ip=IPUtil.getRealIP(request);
-		student.setIp(ip);
+		//String ip=IPUtil.getRealIP(request);
+		//student.setIp(ip);
 		student.setE_id(eId);
 
 		ResultModel res = studentService.bindIp(student);
@@ -130,6 +134,7 @@ public class StudentController {
 				List<Question> ques = res.getListData(Question.class);
 				//视图渲染
 				model.addAttribute("ques", ques);
+				model.addAttribute("examId", eId);
 				//返回视图
 				return "exam";
 			} else {
@@ -141,6 +146,31 @@ public class StudentController {
 		}
 	}
 
+	//提交答案
+	@RequestMapping(value="/exam/submit")
+	@ResponseBody
+	public ResultModel examSubmit(Integer examId, String studentId, RequestModel bean) {
+		if (studentId == null || bean == null) {
+			return ResultModel.build(400, "参数不能为空！");
+		}
+		
+		try {
+			//提交答案后开始储存和改卷
+			//存储到ftp
+			studentService.saveAsnwers(examId, studentId, bean.getQuestions());
+			//改卷
+			int score = examJudger.judge(examId, bean.getQuestions());
+			//结果临时存储到application
+			servletContext.setAttribute("score:" + examId + ":" + studentId, score);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.error(ExceptionUtil.getStackTrace(e));
+			return ResultModel.build(500, "系统错误，改卷失败！");
+		}
+		
+		return ResultModel.ok();
+	}
+	
 	//查看老师发布的公告
 	@RequestMapping("/exam/broadcast/list/{examId}")
 	@ResponseBody

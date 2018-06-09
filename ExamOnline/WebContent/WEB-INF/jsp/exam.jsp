@@ -25,18 +25,34 @@
 						当前考生：${student.name }&ensp;<i class="glyphicon glyphicon-chevron-down"></i>
 		            </a>
 		            <ul class="dropdown-menu">
-		                <li><a href="#">提交试卷</a></li>
+		                <li><a onclick="submitAnswer()" href="#">提交试卷</a></li>
 		            </ul>
 		        </li>
 		    </ul>
 		</nav>
+		
+	<script type="text/javascript">
+	   function submitAnswer() {
+		   //获取参数信息
+		   var params = $("#quesForm").serialize();
+		   var url = "${pageContext.request.contextPath}/student/exam/submit"
+		   $.post(usr, params + "&examId=${examId}&studentId=${student.id}", function(data) {
+			   if (data.status == 200) {
+				   alert("上传成功,请安静离开考场！");
+				   window.close();
+			   } else {
+				   alert(data.msg);
+			   }
+		   })
+	   }
+	</script>
     <!-- 动态加载试题 -->
     <div class="container">
 	    <hr>
-        <form class="form-horizontal" role="form">
+        <form id="quesForm" class="form-horizontal" role="form">
 	        <c:forEach items="${ques }" var="q" varStatus="index">
 		        <div class="item">
-		            <input type="hidden" name="questions[${q.number }]number" value="${q.number }">
+		            <input type="hidden" name="questions[${q.number }].number" value="${q.number }">
 		            <div class="item_title">${index.count }、${q.title }</div>
 		            <c:if test="${q.type == 'choice'}">
 			            <div class="item_body" style="padding: 5px 20px">
@@ -46,7 +62,7 @@
 			            </div>
 		            </c:if>
 		            <div class="item_answer">
-		                <textarea class="form-control" rows="3" name="questions[${q.number }]answer" placeholder="请输入您的答案"></textarea>
+		                <textarea class="form-control" rows="3" name="questions[${q.number }].answer" placeholder="请输入您的答案"></textarea>
 		            </div>
 		        </div>
                 <hr>
