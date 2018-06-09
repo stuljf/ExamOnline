@@ -20,8 +20,8 @@
 	            <div class="col-md-5">
 	                <div class="login">
 	                    <div class="header">
-	                        <div class="swidth"><a id="student_btn" onclick="swidth(this)" class="swidth_btn" style="cursor: pointer;">学生登录</a></div>
-	                        <div class="swidth"><a id="teacher_btn" onclick="swidth(this)" class="swidth_btn" style="cursor: pointer;">教师登录</a></div>
+	                        <div class="swidth"><a id="student_btn" onclick="swidth(this)" class="swidth_btn">学生登录</a></div>
+	                        <div class="swidth"><a id="teacher_btn" onclick="swidth(this)" class="swidth_btn">教师登录</a></div>
 	                    </div>
 	                    <div id="student_login" class="login_form">
 	                        <div id="s_tip" class="tip"></div>

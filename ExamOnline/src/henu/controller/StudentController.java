@@ -57,7 +57,7 @@ public class StudentController {
 	}
 	
 	@RequestMapping("/logout")
-	public String login(String sId, HttpServletRequest request) {
+	public String logout(String sId, HttpServletRequest request) {
 		try {
 			//session
 			HttpSession session = request.getSession();
@@ -129,20 +129,6 @@ public class StudentController {
 		}
 	}
 	
-	@RequestMapping(value="/logout")
-	public String logout(String id, HttpServletRequest request) {
-		try {
-			//清空该用户session
-			HttpSession session = request.getSession();
-			session.removeAttribute("student");
-
-			//返回视图
-			return "login";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "error";
-		}
-	}
 	//查看老师发布的公告
 	@RequestMapping("/exam/broadcast/list")
 	@ResponseBody

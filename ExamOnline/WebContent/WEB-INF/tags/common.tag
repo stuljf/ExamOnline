@@ -5,6 +5,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="shortcut icon" href="${pageContext.request.contextPath }/source/images/net.ico" />
 <title>${title }</title>
 <!-- 引入bootstrap样式 -->
 <link
