@@ -20,12 +20,12 @@
 	            <div class="col-md-5">
 	                <div class="login">
 	                    <div class="header">
-	                        <div class="swidth"><a id="student_btn" onclick="swidth(this)" class="swidth_btn">学生登录</a></div>
-	                        <div class="swidth"><a id="teacher_btn" onclick="swidth(this)" class="swidth_btn">教师登录</a></div>
+	                        <div class="swidth"><a id="student_btn" onclick="swidth(this)" class="swidth_btn" style="cursor: pointer;">学生登录</a></div>
+	                        <div class="swidth"><a id="teacher_btn" onclick="swidth(this)" class="swidth_btn" style="cursor: pointer;">教师登录</a></div>
 	                    </div>
 	                    <div id="student_login" class="login_form">
 	                        <div id="s_tip" class="tip"></div>
-	                        <form id="s_form" onkeydown="if(event.keyCode==13) s_login();">
+	                        <form id="s_form" onkeydown="if(event.keyCode==13) s_login('${pageContext.request.contextPath}');">
 	                            <div class="form-group"><input class="form-control" name="id" type="text" placeholder="请输入学号"/></div>
 	                            <div class="form-group"><input class="form-control" name="name" type="text" placeholder="请输入姓名"/></div>
 	                            <div class="form-group"><input class="btn btn-info btn-block" type="button" onclick="s_login('${pageContext.request.contextPath}')" value="登录"/></div>
@@ -33,7 +33,7 @@
 	                    </div>
 	                    <div id="teacher_login" class="login_form">
 	                        <div id="t_tip" class="tip"></div>
-	                        <form id="t_form" onkeydown="if(event.keyCode==13) t_login();">
+	                        <form id="t_form" onkeydown="if(event.keyCode==13) t_login('${pageContext.request.contextPath}');">
 	                            <div class="form-group"><input class="form-control" name="id" type="text" placeholder="请输入用户名"/></div>
 	                            <div class="form-group"><input class="form-control" name="passwd" type="password" placeholder="请输入密码"/></div>
 	                            <div class="checkbox"><label><input id="is_admin" name="isAdmin" type="checkbox" />以管理员身份登录</label></div>
