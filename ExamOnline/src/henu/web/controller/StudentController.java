@@ -1,7 +1,6 @@
 package henu.web.controller;
 
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -104,21 +103,6 @@ public class StudentController {
 
 	@RequestMapping(value="/exam/start")
 	public String examStart(Integer eId, Model model, HttpServletRequest request) {
-
-		//判断是否可以进入考试
-		try {
-			Exam exam = examDao.queryExamsById(eId);
-			long timeLimit = (long) servletContext.getAttribute("tileLimit") * 60 * 1000;
-			if (new Date().getTime()  > exam.getStarttime().getTime() + timeLimit) {
-				model.addAttribute("bindIp", "考试已开始15分钟，无法进入！");
-				//返回视图
-				return "student";
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return "error";
-		}
-
 		HttpSession session = request.getSession();
 		Student student=(Student) session.getAttribute("student");
 

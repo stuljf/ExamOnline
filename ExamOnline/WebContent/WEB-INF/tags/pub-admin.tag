@@ -17,7 +17,8 @@ $(document).ready(function(){
 				当前用户：${admin.name }&ensp;<i class="glyphicon glyphicon-chevron-down"></i>
             </a>
             <ul class="dropdown-menu">
-                <li><a href="${pageContext.request.contextPath }/admin/logout">退出登录</a>
+                <li>
+                	<a href="${pageContext.request.contextPath }/admin/logout">退出登录</a>
                 </li>
             </ul>
         </li>
@@ -33,7 +34,7 @@ $(document).ready(function(){
                 <a href="${pageContext.request.contextPath }/admin/setting/list"><i class="glyphicon glyphicon-cog"></i> 全局设置</a>
             </li>
             <li>
-                <a href="${pageContext.request.contextPath }/page/examClean"><i class="glyphicon glyphicon-chevron-up"></i> 考试清理</a>
+                <a href="${pageContext.request.contextPath }/page/examClean"><i class="glyphicon glyphicon-trash"></i> 考试清理</a>
             </li>
         </ul>
     </nav>

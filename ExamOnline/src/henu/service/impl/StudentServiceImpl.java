@@ -3,13 +3,17 @@ package henu.service.impl;
 import java.io.ByteArrayInputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+//github.com/stuljf/ExamOnline.git
 import org.springframework.stereotype.Service;
 
 import henu.dao.ExamDao;
@@ -41,6 +45,9 @@ public class StudentServiceImpl implements StudentService {
 	private String ftp_username;
 	@Value("${ftp.passwd}")
 	private String ftp_passwd;
+	
+	@Autowired
+	private ServletContext servletContext;
 	
 	@Override
 	public ResultModel login(Student student) {
@@ -90,6 +97,14 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public ResultModel bindIp(Student student) {
 		try {
+			//判断是否在考试开始允许时间内开始
+			Exam exam = examDao.queryExamsById(student.getE_id());
+			String timeLimitS = (String) servletContext.getAttribute("timeLimit");
+			long timeLimit = Integer.parseInt(timeLimitS) * 60 * 1000;
+			if (new Date().getTime()  > exam.getStarttime().getTime() + timeLimit) {
+				return ResultModel.build(400, "考试已开始15分钟，无法进入！");
+			}
+			//判断IP是否已绑定
 			Student stu=studentDao.query(student);
 			if(stu.getIp().isEmpty() || stu.getIp().trim().equals("0.0.0.0")) {
 				studentDao.modifyIp(student);

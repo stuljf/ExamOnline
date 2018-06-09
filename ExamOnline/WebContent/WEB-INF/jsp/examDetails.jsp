@@ -54,7 +54,7 @@
 		<div class="panel-heading">
 			<h4 style="text-align: center;" class="text-info">考试公告</h4>
 		</div>
-		<div class="pre-scrollable" style="height: 250px" id="div">
+		<div class="pre-scrollable" style=" height: 250px; word-break: break-all;" id="div">
     		<ul class="list-group" id="announcements">
     		      <c:forEach items="${publishs}" var="item">
     		          <li class="list-group-item">${item }</li>
