@@ -18,5 +18,9 @@
 	border-bottom:1px solid #c0cdd9;
 }
 .mainpage{
-	margin:20px 200px;
+	margin:auto;
+	padding:20px;
+	border-radius:10px;
+	background-color:#f9fbfe;
+	border:1px solid #c0cdd9;
 }

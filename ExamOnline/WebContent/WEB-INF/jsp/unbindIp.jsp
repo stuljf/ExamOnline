@@ -5,8 +5,11 @@
     <jsp:body>
         <tmp:pub-teacher>
             <jsp:body>
-            	<div class="panel panel-info mainpage">
-            		<div class="panel-heading">IP解绑</div>
+            <div class="mainpage" style="width:50%;">
+            <div style="margin-bottom:20px;">
+            <h2><img src="${pageContext.request.contextPath }/source/images/unbind.png" width="60px" /> IP解绑</h2>
+            </div>
+            	<div class="panel panel-info ">
             		<div class="panel-body">
             		<form id="unbind_form">
             			<div class="form-group">
@@ -20,6 +23,7 @@
 	                    </div>
             		</form>
             		</div>
+            	</div>
             	</div>
             	<script>
             	function unbind() {
