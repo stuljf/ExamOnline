@@ -1,4 +1,4 @@
-package henu.controller;
+package henu.web.controller;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -134,7 +134,9 @@ public class TeacherController {
 		try {
 			String[] ids = eId.split(",");
 			for (String id : ids) {
-				examManager.setExamState(Integer.parseInt(id), "canceled");
+				if (!"created".equals(examManager.getExamState(Integer.parseInt(id)))) {
+					examManager.setExamState(Integer.parseInt(id), "canceled");
+				}
 			}
 			return ResultModel.ok();
 		} catch (Exception e) {
@@ -172,6 +174,10 @@ public class TeacherController {
 	@ResponseBody
 	public ResultModel examUpdate(Exam exam) {
 		try {
+			if (!"created".equals(examManager.getExamState(exam.getId()))) {
+				return ResultModel.build(302, "考试已经开启，请刷新！");
+			}
+			
 			ResultModel res = examManager.editExam(exam);
 			return res;
 		} catch (Exception e) {
@@ -183,6 +189,11 @@ public class TeacherController {
 	@RequestMapping("/exam/question/list")
 	public String questionList(Integer examId, Model model) {
 		try {
+			
+			if (!"created".equals(examManager.getExamState(examId))) {
+				return "examListCreated";
+			}
+			
 			//获取试卷信息
 			List<Question> ques = examManager.getQues(examId);
 			if (ques != null) {
@@ -223,6 +234,11 @@ public class TeacherController {
 		if (examId == null) {
 			return "error";
 		}
+		
+		if (!"created".equals(examManager.getExamState(examId))) {
+			return "examListCreated";
+		}
+		
 		//jsp注入考试id
 		model.addAttribute("examId", examId);
 		

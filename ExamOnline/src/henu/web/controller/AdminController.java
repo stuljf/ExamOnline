@@ -1,4 +1,4 @@
-package henu.controller;
+package henu.web.controller;
 
 import java.sql.SQLException;
 import java.util.List;

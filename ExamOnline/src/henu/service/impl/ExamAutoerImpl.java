@@ -58,7 +58,7 @@ public class ExamAutoerImpl implements ExamAutoer {
 	
 	@Override
 	public Tuple getRecentCloseExam() {
-		Set<Tuple> set = jedisClient.zrange(exam_auto_start, 0, 0);
+		Set<Tuple> set = jedisClient.zrange(exam_auto_close, 0, 0);
 		if (set != null && set.size() > 0) {
 			Tuple res = set.iterator().next();
 			return res;
