@@ -97,16 +97,16 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public ResultModel bindIp(Student student) {
 		try {
-			//判断是否在考试开始允许时间内开始
-			Exam exam = examDao.queryExamsById(student.getE_id());
-			String timeLimitS = (String) servletContext.getAttribute("timeLimit");
-			long timeLimit = Integer.parseInt(timeLimitS) * 60 * 1000;
-			if (new Date().getTime()  > exam.getStarttime().getTime() + timeLimit) {
-				return ResultModel.build(400, "考试已开始15分钟，无法进入！");
-			}
 			//判断IP是否已绑定
 			Student stu=studentDao.query(student);
 			if(stu.getIp().isEmpty() || stu.getIp().trim().equals("0.0.0.0")) {
+				//判断是否在考试开始允许时间内开始
+				Exam exam = examDao.queryExamsById(student.getE_id());
+				String timeLimitS = (String) servletContext.getAttribute("timeLimit");
+				long timeLimit = Integer.parseInt(timeLimitS) * 60 * 1000;
+				if (new Date().getTime()  > exam.getStarttime().getTime() + timeLimit) {
+					return ResultModel.build(400, "考试已开始15分钟，无法进入！");
+				}
 				studentDao.modifyIp(student);
 				return ResultModel.ok();
 			}else {
@@ -139,7 +139,7 @@ public class StudentServiceImpl implements StudentService {
 		ByteArrayInputStream bais = new ByteArrayInputStream(content.getBytes());
 		//上传到ftp中
 		String filePath = "exams/" + examId + "-" + exam.getSubject();
-		String fileName = studentId + "-" + stu.getName();
+		String fileName = studentId + "-" + stu.getName() + ".txt";
 		boolean flag = FtpUtil.uploadFile(ftp_url, ftp_port, ftp_username, ftp_passwd, filePath, fileName, bais);
 		
 		if (flag) {

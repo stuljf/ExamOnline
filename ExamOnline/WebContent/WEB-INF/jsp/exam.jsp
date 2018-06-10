@@ -75,7 +75,7 @@
             </c:forEach>
         </form>
     </div> 
-    <script>
+    <script type="text/javascript">
     var msg=0;
     noticeCount();
     function noticeCount(){
@@ -105,10 +105,10 @@
         //获取参数信息
         var params = $("#quesForm").serialize();
         var url = "${pageContext.request.contextPath}/student/exam/submit"
-        $.post(usr, params + "&examId=${examId}&studentId=${student.id}", function(data) {
+        $.post(url, params + "&examId=${examId}&studentId=${student.id}", function(data) {
             if (data.status == 200) {
                 alert("上传成功,请安静离开考场！");
-                window.close();
+                window.location="${pageContext.request.contextPath}"
             } else {
                 alert(data.msg);
             }

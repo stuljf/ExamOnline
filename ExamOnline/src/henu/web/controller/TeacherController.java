@@ -135,7 +135,7 @@ public class TeacherController {
 		try {
 			String[] ids = eId.split(",");
 			for (String id : ids) {
-				if (!"created".equals(examManager.getExamState(Integer.parseInt(id)))) {
+				if ("created".equals(examManager.getExamState(Integer.parseInt(id)))) {
 					examManager.setExamState(Integer.parseInt(id), "canceled");
 				}
 			}

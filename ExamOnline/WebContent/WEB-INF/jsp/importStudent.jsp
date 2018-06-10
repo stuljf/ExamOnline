@@ -161,7 +161,7 @@
                 <div class="modal-body">
                     <form id="importAllStudentForm" action="#" enctype="multipart/form-data"
                                         class="form-horizontal" role="form">
-                        <div class="text-center badge" style="background: darkgreen">文件格式：第一行必须是列名，且列名必须为"学号","姓名","班级"(可乱序)</div>
+                        <div class="text-center badge" style="background: darkgreen">文件格式：第一行必须是列名，且列名必须包含"学号","姓名","班级"三列(可乱序)</div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Excel文件</label>
                             <div class="col-sm-10">

@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -34,13 +35,18 @@ public class FtpUtil {
 	public static boolean uploadFile(String host, int port, String username, String password,
 			String filePath, String filename, InputStream input) {
 		boolean result = false;
+		//获取ftp客户端
 		FTPClient ftp = new FTPClient();
+		//设置编码
+		ftp.setControlEncoding("UTF-8");
+		ftp.setCharset(Charset.forName("UTF-8"));
 		try {
 			int reply;
 			ftp.connect(host, port);// 连接FTP服务器
 			// 如果采用默认端口，可以使用ftp.connect(host)的方式直接连接FTP服务器
 			ftp.login(username, password);// 登录
 			reply = ftp.getReplyCode();
+			//采用被动模式
 			if (!FTPReply.isPositiveCompletion(reply)) {
 				ftp.disconnect();
 				return result;

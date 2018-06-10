@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import henu.dao.ExamDao;
 import henu.entity.Exam;
 import henu.entity.Question;
 import henu.entity.Student;
 import henu.service.ExamJudger;
 import henu.service.StudentService;
 import henu.util.ExceptionUtil;
+import henu.util.IPUtil;
 import henu.util.RequestModel;
 import henu.util.ResultModel;
 
@@ -35,9 +35,6 @@ public class StudentController {
 
 	@Autowired
 	private StudentService studentService;
-
-	@Autowired
-	private ExamDao examDao;
 
 	@Autowired
 	private ServletContext servletContext;
@@ -106,8 +103,8 @@ public class StudentController {
 		HttpSession session = request.getSession();
 		Student student=(Student) session.getAttribute("student");
 
-		//String ip=IPUtil.getRealIP(request);
-		//student.setIp(ip);
+		String ip=IPUtil.getRealIP(request);
+		student.setIp(ip);
 		student.setE_id(eId);
 
 		ResultModel res = studentService.bindIp(student);
@@ -133,7 +130,7 @@ public class StudentController {
 	//提交答案
 	@RequestMapping(value="/exam/submit")
 	@ResponseBody
-	public ResultModel examSubmit(Integer examId, String studentId, RequestModel bean) {
+	public ResultModel examSubmit(Integer examId, String studentId, RequestModel bean, HttpServletRequest request) {
 		if (studentId == null || bean == null) {
 			return ResultModel.build(400, "参数不能为空！");
 		}
@@ -146,6 +143,8 @@ public class StudentController {
 			int score = examJudger.judge(examId, bean.getQuestions());
 			//结果临时存储到application
 			servletContext.setAttribute("score:" + examId + ":" + studentId, score);
+			//清空session
+			request.getSession().removeAttribute("student");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			log.error(ExceptionUtil.getStackTrace(e));
