@@ -59,6 +59,7 @@
 	        <c:forEach items="${ques }" var="q" varStatus="index">
 		        <div class="item">
 		            <input type="hidden" name="questions[${q.number }].number" value="${q.number }">
+		            <input type="hidden" name="questions[${q.number }].type" value="${q.type }">
 		            <div class="item_title">${index.count }、${q.title }</div>
 		            <c:if test="${q.type == 'choice'}">
 			            <div class="item_body" style="padding: 5px 20px">

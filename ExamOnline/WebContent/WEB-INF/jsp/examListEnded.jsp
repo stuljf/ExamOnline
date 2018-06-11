@@ -103,7 +103,16 @@
     		var row = selects[0];
 	    	messager.confirm({ message: "确认要下载[ " + row.subject + " ]的考试成绩？" }).on(function (e) {
 	            if (e) {
-	                alert('未完成')
+	            	var url = "${pageContext.request.contextPath}/teacher/exam/closed/scoer/" + row.id;
+	            	$.get(url, function(data) {
+	            		
+	            		if (data.status == 200) {
+	            			//新开窗口下载
+	            			window.open(data.data);
+	            		} else {
+	            			alert(data.msg);
+	            		}
+	            	})
 	            }
 	        });
     	}

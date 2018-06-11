@@ -61,6 +61,13 @@ public interface StudentDao {
 	 * @throws SQLException 
 	 */
 	void queryAll(int examId, PageBean<Student> stus) throws SQLException;
+	/**
+	 * @Description:(不分页). <br/> 
+	 * @param examId
+	 * @return
+	 * @throws SQLException 
+	 */
+	List<Student> queryAll(int examId) throws SQLException;
 	
 	/**
 	 * studentExists:(查询是否存在该学生). <br/> 
@@ -91,5 +98,6 @@ public interface StudentDao {
 	 * @throws SQLException
 	 */
 	public void unbindIp(String id) throws SQLException;
+
 
 }

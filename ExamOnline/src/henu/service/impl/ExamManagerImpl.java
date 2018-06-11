@@ -300,4 +300,15 @@ public class ExamManagerImpl implements ExamManager {
 			return 0;
 		}
 	}
+
+	@Override
+	public List<Student> queryStudent(int examId) {
+		try {
+			List<Student> all = studentDao.queryAll(examId);
+			return all;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

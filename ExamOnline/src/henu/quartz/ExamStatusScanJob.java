@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import henu.dao.ExamDao;
 import henu.service.ExamAutoer;
+import henu.service.ExamDisposer;
 import henu.util.ExceptionUtil;
 import henu.util.SpringUtil;
 import redis.clients.jedis.Tuple;
@@ -29,7 +30,7 @@ public class ExamStatusScanJob implements Job {
 	private ExamAutoer examAutoer;
 
 	private ExamDao examDao;
-
+	
 	public ExamStatusScanJob() {
 		examAutoer = (ExamAutoer) SpringUtil.getBean("examAutoerImpl");
 		examDao = (ExamDao) SpringUtil.getBean("examDaoImpl");
@@ -68,6 +69,8 @@ public class ExamStatusScanJob implements Job {
 				try {
 					examDao.setState(examId, "closed");
 					examAutoer.dequeueClose(examId);
+					//执行考试结束后的逻辑，比如保存并上传答案
+					new Thread(new ExamDisposer(examId)).start();
 				} catch (SQLException e) {
 					e.printStackTrace();
 					log.error("警告：自动结束考试失败......\n" + ExceptionUtil.getStackTrace(e));

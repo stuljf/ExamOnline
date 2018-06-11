@@ -25,7 +25,7 @@ public class ExamJudgerImpl implements ExamJudger {
 		int count = 0;
 		
 		for (Question q : ques) {
-			if (realQues.get(q.getNumber()).getAnswer().equals(q.getAnswer())) {
+			if (!q.getType().equals("program") && realQues.get(q.getNumber()).getAnswer().equals(q.getAnswer())) {
 				count++;
 			}
 		}

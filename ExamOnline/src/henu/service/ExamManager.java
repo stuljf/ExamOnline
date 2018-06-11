@@ -104,6 +104,13 @@ public interface ExamManager {
 	 * @throws SQLException 
 	 */
 	void queryStudent(int examId, PageBean<Student> bean);
+	
+	/**
+	 * @Description:(获取当前考试的所有学生，不分页). <br/> 
+	 * @param examId
+	 * @return
+	 */
+	List<Student> queryStudent(int examId);
 
 	/**
 	 * @Description:(学生名单，关键字查询). <br/> 

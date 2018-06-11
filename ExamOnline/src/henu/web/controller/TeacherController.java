@@ -4,13 +4,13 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import henu.dao.JedisClient;
 import henu.entity.Exam;
 import henu.entity.Question;
 import henu.entity.Student;
@@ -39,14 +40,17 @@ public class TeacherController {
 
 	private Logger log = LoggerFactory.getLogger(TeacherController.class);
 
-	@Resource
+	@Autowired
 	private TeacherService teacherService;
 
-	@Resource
+	@Autowired
 	private ExamManager examManager;
 
-	@Resource
+	@Autowired
 	private ServletContext servletContext;
+	
+	@Autowired
+	private JedisClient jedisClient;
 
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	@ResponseBody
@@ -369,11 +373,22 @@ public class TeacherController {
 	}
 
 	//================================考试结束后=========================================	
-
+	@RequestMapping("/exam/closed/scoer/{examId}")
+	@ResponseBody
+	public ResultModel exportScore(@PathVariable Integer examId) {
+		if (examId == null) {
+			return ResultModel.build(400, "考试ID不存在！");
+		}
+		
+		String path = jedisClient.get("score:" + examId + ":path");
+		path = "http://nginx.src/" + path;
+		
+		return ResultModel.ok(path);
+	}
 
 	//================================ip相关=========================================	
 
-	@RequestMapping("unbindIp")
+	@RequestMapping("/unbindIp")
 	@ResponseBody
 	public ResultModel unbindIp(Student student) {
 		if(student.getId().isEmpty()||student.getName().isEmpty()) {

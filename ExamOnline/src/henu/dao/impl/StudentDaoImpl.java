@@ -59,6 +59,14 @@ public class StudentDaoImpl implements StudentDao {
 		
 		stus.setPageData(studentList);
 	}
+	
+	@Override
+	public List<Student> queryAll(int examId) throws SQLException {
+		//查询分页信息
+		String sql = "SELECT * FROM student WHERE e_id = ?;";
+		List<Student> studentList = qr.query(sql, new BeanListHandler<>(Student.class), examId);
+		return studentList;
+	}
 
 	@Override
 	public List<Student> studentExists(Student student) throws SQLException {
