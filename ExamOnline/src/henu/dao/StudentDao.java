@@ -95,9 +95,11 @@ public interface StudentDao {
 	/**
 	 * unbindIp(解除IP绑定)
 	 * @param id
+	 * @param s_name 
+	 * @return 
 	 * @throws SQLException
 	 */
-	public void unbindIp(String id) throws SQLException;
+	public boolean unbindIp(String id, String s_name) throws SQLException;
 
 
 }

@@ -256,13 +256,16 @@ public class ExamManagerImpl implements ExamManager {
 	}
 
 	@Override
-	public ResultModel unbindIP(String s_id) {
+	public ResultModel unbindIP(String s_id, String s_name) {
 		try {
-			studentDao.unbindIp(s_id);
-			return ResultModel.ok();
+			boolean flag = studentDao.unbindIp(s_id, s_name);
+			if (flag)
+				return ResultModel.ok();
+			else
+				return ResultModel.build(400, "学号姓名不匹配！");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return ResultModel.build(500, "系统错误");
+			return ResultModel.build(500, "数据库错误！");
 		}
 	}
 

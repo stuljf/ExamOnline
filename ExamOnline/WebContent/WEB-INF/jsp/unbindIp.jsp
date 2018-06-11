@@ -28,9 +28,13 @@
             	<script>
             	function unbind() {
             		//do post
-            		$.post("${pageContext.request.contextPath }/student/login", $("#unbind_form").serialize(), function(data) {
+            		$.post("${pageContext.request.contextPath }/teacher/unbindIP", $("#unbind_form").serialize(), function(data) {
             			/*optional stuff to do after success */
-            			alert(data.msg);
+            			if (data.status == 200) {
+            				alert("IP解绑成功！");
+            			} else {
+            			    alert(data.msg);
+            			}
             		}, "json");
             	}
             	</script>

@@ -388,13 +388,13 @@ public class TeacherController {
 
 	//================================ip相关=========================================	
 
-	@RequestMapping("/unbindIp")
+	@RequestMapping("/unbindIP")
 	@ResponseBody
 	public ResultModel unbindIp(Student student) {
 		if(student.getId().isEmpty()||student.getName().isEmpty()) {
 			return ResultModel.build(400, "请填写完整信息");
 		}else {
-			return examManager.unbindIP(student.getId());
+			return examManager.unbindIP(student.getId(), student.getName());
 		}
 	}
 }

@@ -87,9 +87,10 @@ public class StudentDaoImpl implements StudentDao {
 	}
 	
 	@Override
-	public void unbindIp(String id) throws SQLException {
-		String sql = "UPDATE student SET ip = DEFAULT WHERE id = ?;";
-		qr.update(sql, id);
+	public boolean unbindIp(String id, String name) throws SQLException {
+		String sql = "UPDATE student SET ip = DEFAULT WHERE id = ? AND name = ?;";
+		int update = qr.update(sql, id, name);
+		return update > 0 ? true : false;
 	}
 	
 	/**

@@ -123,9 +123,10 @@ public interface ExamManager {
 	/**
 	 * @Description:(IP解绑). <br/> 
 	 * @param s_id
+	 * @param s_name 
 	 * @return
 	 */
-	ResultModel unbindIP(String s_id);
+	ResultModel unbindIP(String s_id, String s_name);
 
 	/**
 	 * @Description:(手动开启一场考试). <br/> 
