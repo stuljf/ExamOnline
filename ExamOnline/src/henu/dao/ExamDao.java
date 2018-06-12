@@ -102,4 +102,6 @@ public interface ExamDao {
 	 * @throws SQLException 
 	 */
 	long getStudentCount(int examId, String type) throws SQLException;
+
+	Exam getLastInsert(String subject, String t_id) throws SQLException;
 }
