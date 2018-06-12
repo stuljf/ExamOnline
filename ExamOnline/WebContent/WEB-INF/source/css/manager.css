@@ -1,7 +1,7 @@
 .top-navbar{
 	padding-right:15px;
 	border-radius:0px;
-	background-color:#f9fbfe;
+	background-color:#e8edf3;
 	margin-bottom:0px;
 	border-bottom:1px solid #c0cdd9;
 }
@@ -10,7 +10,7 @@
 }
 .side-navbar{
 	padding:0px;
-	background-color:#f9fbfe;
+	background-color:#e8edf3;
 	border-right:1px solid #c0cdd9;
 }
 .side-navbar .nav > li > a {
@@ -21,6 +21,6 @@
 	margin:auto;
 	padding:20px;
 	border-radius:10px;
-	background-color:#f9fbfe;
+	background-color:#e8edf3;
 	border:1px solid #c0cdd9;
 }

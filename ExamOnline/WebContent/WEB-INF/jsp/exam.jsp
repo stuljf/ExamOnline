@@ -2,18 +2,25 @@
     pageEncoding="UTF-8"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tmp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<style type="text/css">
-    .item_title {
-        font-size: 18px;
-        font-weight: 700;
-    }
-    .item_selection {
-        font-size: 15px;
-    }
-</style>
 <tmp:common title="Student">
     <jsp:body>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/source/css/student.css" />
+	<style type="text/css">
+	    .item_title {
+	        font-size: 18px;
+	        font-weight: 700;
+	    }
+	    .item_selection {
+	        font-size: 15px;
+	    }
+	    .top-navbar {
+		    position: fixed;
+		    top: 0px;
+		    left: 0px;
+		    width: 100%;
+		    z-index: 5;
+	    }
+	</style>
     <nav class="navbar navbar-info top-navbar">
 	    <div class="navbar-header">
 	        <a class="navbar-brand" onclick="" href="${pageContext.request.contextPath }/page/admin">上机考试系统</a>
@@ -52,8 +59,7 @@
 	    </div><!-- /.modal -->
 	</div>
     <!-- 动态加载试题 -->
-    <div class="container">
-    <div id="dbg"></div>
+    <div class="container" style="margin:40px auto">
 	    <hr>
         <form id="quesForm" class="form-horizontal" role="form">
 	        <c:forEach items="${ques }" var="q" varStatus="index">
