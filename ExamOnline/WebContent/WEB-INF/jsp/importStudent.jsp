@@ -273,13 +273,15 @@
                 $.each(selects, function(index, item) {
                     ids.push(item.id);
                 })
-
+                
                 // 请求服务器删除数据
                 var url = "${pageContext.request.contextPath}/teacher/exam/created/student/remove";
                 $.get(url, "examId=${examId}&ids=" + ids, function(data) {
                     if (data.status == 200) {
                         //删除本地表格对应的行
                     	refresh();
+                        //提示
+                        alert("删除成功！");
                     } else {
                     	alert(data.msg)
                     }
@@ -376,7 +378,7 @@
                 	 refresh();
                      $('#importAllStudentModel').modal('toggle');
                 } else {
-                    alert(data.msg);
+                    alert(e.msg);
                 }
             }
         })

@@ -56,18 +56,21 @@ public class ExamManagerImpl implements ExamManager {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public ResultModel createExam(Exam exam) throws SQLException {
 		//插入
-		examDao.save(exam);
+		int update = examDao.save(exam);
+//		int id = examDao.getLastInsertID();
 		//获取自增主键
-		int id = examDao.getLastInsertID();
-		//设置id
-		exam.setId(id);
+		if (update > 0) {
+			int id = examDao.getLastInsertID();   //可能出现获取到自增主键为0的现象
+			//设置id
+			exam.setId(id);
 
-		examAutoer.queueBegin(id, exam.getStarttime().getTime());
-		examAutoer.queueClose(id, exam.getEndtime().getTime());
+			examAutoer.queueBegin(id, exam.getStarttime().getTime());
+			examAutoer.queueClose(id, exam.getEndtime().getTime());
+		}
 
 		return ResultModel.ok(exam);
 	}
@@ -103,7 +106,7 @@ public class ExamManagerImpl implements ExamManager {
 		if (status.equals("begined")) {
 			examAutoer.dequeueBegin(id);
 		}
-		
+
 		examDao.setState(id, status);
 		return ResultModel.ok();
 	}

@@ -11,9 +11,10 @@ public interface ExamDao {
 	/**
 	 * save:(新建一场考试)
 	 * @param exam
+	 * @return 
 	 * @throws SQLException
 	 */
-	void save(Exam exam) throws SQLException;
+	int save(Exam exam) throws SQLException;
 	
 	/**
 	 * remove:(移除一场考试)

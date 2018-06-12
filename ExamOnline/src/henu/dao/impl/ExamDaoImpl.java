@@ -23,11 +23,12 @@ public class ExamDaoImpl implements ExamDao {
 	private QueryRunner qr;
 
 	@Override
-	public void save(Exam exam) throws SQLException {
+	public int save(Exam exam) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql="INSERT INTO exam VALUES(NULL, ?, ?, ?, DEFAULT, ?);";
-		qr.update(sql, exam.getSubject(), exam.getStarttime(), 
+		int update = qr.update(sql, exam.getSubject(), exam.getStarttime(), 
 				exam.getEndtime(), exam.getT_id());
+		return update;
 	}
 
 	@Override
