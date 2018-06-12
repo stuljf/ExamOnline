@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import henu.dao.ExamDao;
+import henu.dao.JedisClient;
 import henu.entity.Exam;
 import henu.entity.Teacher;
 import henu.service.SysManager;
@@ -37,6 +39,9 @@ public class AdminController {
 
 	@Resource
 	private TeacherManager teacherManager;
+	
+	@Autowired
+	private JedisClient jedisClient;
 	
 	//	@Resource
 	//	private ExamManager examManager;
@@ -220,9 +225,14 @@ public class AdminController {
 	public ResultModel exanClean(String ids) {
 		try {
 			//把id分割出来
-			String[] examIds = ids.trim().split(" +");
+			String[] examIds = ids.trim().split(",");
 			for (String id : examIds) {
 				examManager.remove(Integer.parseInt(id));
+				//清除redis相关缓存
+				//答案路径
+				jedisClient.del("score:" + id + ":path");
+				//考生答卷路径
+				jedisClient.del("paper:" + id + ":path");
 			}
 			return ResultModel.ok();
 		} catch (SQLException e) {

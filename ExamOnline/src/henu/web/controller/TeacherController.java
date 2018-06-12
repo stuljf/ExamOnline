@@ -381,6 +381,19 @@ public class TeacherController {
 
 		return ResultModel.ok(path);
 	}
+	
+	@RequestMapping("/exam/closed/paper/{examId}")
+	@ResponseBody
+	public ResultModel exportPaper(@PathVariable Integer examId) {
+		if (examId == null) {
+			return ResultModel.build(400, "考试ID不存在！");
+		}
+
+		String path = jedisClient.get("paper:" + examId + ":path");
+		path = "http://nginx.src/" + path;
+
+		return ResultModel.ok(path);
+	}
 
 	//================================ip相关=========================================	
 

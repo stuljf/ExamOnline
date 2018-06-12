@@ -86,6 +86,7 @@
 	<!-- 自定义配置文件获取 -->
 	<bean id="propertyConfigurer" class="henu.util.PropertyUtil" scope="singleton">
 		<property name="location" value="classpath:res.properties"/>
+		<property name="fileEncoding" value="UTF-8"/>
 	</bean>
 
 

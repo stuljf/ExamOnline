@@ -65,15 +65,12 @@ public class ExamManagerImpl implements ExamManager {
 		//获取自增主键
 		if (update > 0) {
 			Exam lastInsert = examDao.getLastInsert(exam.getSubject(), exam.getT_id());
-			//设置id
-			int id = lastInsert.getId();
-			exam.setId(id);
 			
+			examAutoer.queueBegin(lastInsert.getId(), lastInsert.getStarttime().getTime());
+			examAutoer.queueClose(lastInsert.getId(), lastInsert.getEndtime().getTime());
+			return ResultModel.ok(lastInsert);
 		}
-
-		examAutoer.queueBegin(exam.getId(), exam.getStarttime().getTime());
-		examAutoer.queueClose(exam.getId(), exam.getEndtime().getTime());
-		return ResultModel.ok(exam);
+		throw new RuntimeException();
 	}
 
 	@Override
@@ -106,6 +103,10 @@ public class ExamManagerImpl implements ExamManager {
 
 		if (status.equals("begined")) {
 			examAutoer.dequeueBegin(id);
+		}
+		
+		if (status.equals("closed")) {
+			examAutoer.dequeueClose(id);
 		}
 
 		examDao.setState(id, status);
