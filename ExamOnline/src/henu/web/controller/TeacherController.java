@@ -1,6 +1,7 @@
 package henu.web.controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -333,9 +334,12 @@ public class TeacherController {
 
 		//获取发布历史
 		String publish = (String) servletContext.getAttribute("publish:" + examId);
-		if (publish == null) publish = "";
-		List<String> publishs = Arrays.asList(publish.split("<<EOF>>"));
-
+		List<String> publishs;
+		if (publish == null) {
+			publishs=new ArrayList<String>();
+		}else {
+			publishs = Arrays.asList(publish.split("<<EOF>>"));
+		}
 		//视图渲染
 		//jsp注入考试id
 		model.addAttribute("examId", examId);

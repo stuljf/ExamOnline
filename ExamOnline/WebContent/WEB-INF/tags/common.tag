@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<link rel="shortcut icon" href="${pageContext.request.contextPath }/source/images/timg.jpg" />
+<link rel="shortcut icon" href="${pageContext.request.contextPath }/source/images/job.ico" />
 <title>${title }</title>
 <!-- 引入bootstrap样式 -->
 <link
