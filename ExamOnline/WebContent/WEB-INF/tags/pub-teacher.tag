@@ -4,7 +4,9 @@
 <script type="text/javascript" >
 $(document).ready(function(){
 	var h=$(window).height();
-	$(".side-navbar").css("min-height", h);
+	$(".side-navbar").css("min-height", h-92);
+	$(".scroll").css("height", h-92);
+	$(".scroll").css("max-height", h-92);
 });
 </script>
 <nav class="navbar navbar-info top-navbar" style="margin: 0">
@@ -121,8 +123,8 @@ $(document).ready(function(){
             </li>
         </ul>
     </nav>
-    <div class="col-md-10">
-        <div style="margin:20px 0px 50px;">
+    <div class="col-md-10 pre-scrollable scroll">
+        <div style="margin:10px">
         <jsp:doBody />
         </div>
     </div>

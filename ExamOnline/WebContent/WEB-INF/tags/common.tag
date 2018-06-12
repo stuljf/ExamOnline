@@ -35,6 +35,7 @@
     bottom: 0px;
     left: 0px;
     width: 100%;
+    z-index: 5;
 }
 </style>
 </head>
