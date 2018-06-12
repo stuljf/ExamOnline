@@ -38,16 +38,73 @@ public class ExamStatusScanJob implements Job {
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		//		System.out.println("-----------------job start ........");
+		
 		//监控是否有考试要开启
-		Tuple isStart = examAutoer.getRecentBeginExam();
+		System.out.println("startExam...");
+		startExam();
+		
+		//监控是否有考试要结束
+		System.out.println("closeExam...");
+		closeExam();
+		
+/*	可以执行线程内的	
+ * System.out.println("sdhfkjdsfdskjf");
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				System.out.println("job's  thread ....");
+			}
+		}).start();*/
+	}
 
+	private void closeExam() {
+		//获取最近一个将要关闭的考试
+		Tuple isClose = examAutoer.getRecentCloseExam();
+		System.out.println(isClose);
+		//如果不为空
+		if (isClose != null) {
+			//获取考试ID和结束时间
+			long closeTime = (long) isClose.getScore();
+			String examIdInt = isClose.getElement();
+			System.out.println(closeTime);
+			System.out.println(examIdInt);
+			//如果时间到了，就结束考试//以下的输出和日志都不会打印，
+			long now = new Date().getTime();
+			if (now >= closeTime) {
+				int examId = Integer.parseInt(examIdInt);
+				System.out.println(examId);
+				try {
+					examDao.setState(examId, "closed");
+					log.error("考试结束。。。" + examId);
+					System.out.println("exam is closing....");
+					examAutoer.dequeueClose(examId);
+					log.error("考试出队。。。" + examId);
+					System.out.println("exam is dequeuing...");
+					//执行考试结束后的逻辑，比如保存并上传答案
+					log.error("开始保存考试成绩...");
+					System.out.println("preparing to save the scores...");
+					new Thread(new ExamDisposer(examId)).start();
+					System.out.println("upload the scores success...");
+					log.error("线程正在运行中...");
+				} catch (SQLException e) {
+					e.printStackTrace();
+					log.error("警告：自动结束考试失败......\n" + ExceptionUtil.getStackTrace(e));
+				}
+			}
+		}
+	}
+
+	private void startExam() {
+		Tuple isStart = examAutoer.getRecentBeginExam();
 		if (isStart != null) { 
 
 			long startTime = (long) isStart.getScore();
 			String examIdInt = isStart.getElement();
 			//如果时间到了，就开启考试
-			if (new Date().getTime() + 60000 >= startTime) {
+			long now = new Date().getTime();
+			if (now + 60000 >= startTime) {
 				int examId = Integer.parseInt(examIdInt);
 				try {
 					examDao.setState(examId, "begined");
@@ -55,25 +112,6 @@ public class ExamStatusScanJob implements Job {
 				} catch (SQLException e) {
 					e.printStackTrace();
 					log.error("警告：自动开启考试失败......\n" + ExceptionUtil.getStackTrace(e));
-				}
-			}
-		}
-		//监控是否有考试要结束
-		Tuple isClose = examAutoer.getRecentCloseExam();
-		if (isClose != null) {
-			long closeTime = (long) isClose.getScore();
-			String examIdInt2 = isClose.getElement();
-			//如果时间到了，就开启考试
-			if (new Date().getTime() >= closeTime) {
-				int examId = Integer.parseInt(examIdInt2);
-				try {
-					examDao.setState(examId, "closed");
-					examAutoer.dequeueClose(examId);
-					//执行考试结束后的逻辑，比如保存并上传答案
-					new Thread(new ExamDisposer(examId)).start();
-				} catch (SQLException e) {
-					e.printStackTrace();
-					log.error("警告：自动结束考试失败......\n" + ExceptionUtil.getStackTrace(e));
 				}
 			}
 		}

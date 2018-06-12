@@ -46,7 +46,6 @@ public class StudentController {
 	@ResponseBody
 	public ResultModel login(Student student, Model model, HttpServletRequest request) {
 		try {
-			log.error(student.getId() + student.getName());
 			//登陆
 			ResultModel res = studentService.login(student);
 

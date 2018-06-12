@@ -48,7 +48,7 @@ public class TeacherController {
 
 	@Autowired
 	private ServletContext servletContext;
-	
+
 	@Autowired
 	private JedisClient jedisClient;
 
@@ -179,10 +179,6 @@ public class TeacherController {
 	@ResponseBody
 	public ResultModel examUpdate(Exam exam) {
 		try {
-			if (!"created".equals(examManager.getExamState(exam.getId()))) {
-				return ResultModel.build(302, "考试已经开启，请刷新！");
-			}
-
 			ResultModel res = examManager.editExam(exam);
 			return res;
 		} catch (Exception e) {
@@ -339,7 +335,7 @@ public class TeacherController {
 		String publish = (String) servletContext.getAttribute("publish:" + examId);
 		if (publish == null) publish = "";
 		List<String> publishs = Arrays.asList(publish.split("<<EOF>>"));
-		
+
 		//视图渲染
 		//jsp注入考试id
 		model.addAttribute("examId", examId);
@@ -379,10 +375,10 @@ public class TeacherController {
 		if (examId == null) {
 			return ResultModel.build(400, "考试ID不存在！");
 		}
-		
+
 		String path = jedisClient.get("score:" + examId + ":path");
 		path = "http://nginx.src/" + path;
-		
+
 		return ResultModel.ok(path);
 	}
 

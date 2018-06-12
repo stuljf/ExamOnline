@@ -101,16 +101,11 @@
                 <div class="modal-body">
                     <form id="updateExamForm" action="#"
 										class="form-horizontal" role="form">
-                        <div class="form-group" style="display: none;">
-                            <label class="col-sm-2 control-label">ID</label>
-                            <div class="col-sm-10">
-                                <input name="id" type="text"
-													class="form-control" placeholder="请输入考试科目">
-                            </div>
-                        </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">科目</label>
                             <div class="col-sm-10">
+                                <input name="id" type="hidden"
+													class="form-control">
                                 <input name="subject" type="text"
 													class="form-control" placeholder="请输入考试科目">
                             </div>
@@ -156,7 +151,7 @@
         format: "yyyy-mm-dd hh:ii",
         autoclose: true,
         todayBtn: true,
-        minuteStep: 5,
+        minuteStep: 1,
         startDate: new Date()
     });
     //考试结束时间 >= 考试开始时间

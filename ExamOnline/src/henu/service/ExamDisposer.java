@@ -39,17 +39,19 @@ public class ExamDisposer implements Runnable {
 		this.jedisClient = (JedisClient) SpringUtil.getBean("jedisClientSingle");
 	}
 	
-	@Override
+//	@Override
 	public void run() {
+		
+		log.error("进入线程...");
 		
 		//结束考试后把成绩写入Excel并保存到ftp
 		ExcelWriter writer = new ExcelWriter();
 		//写入第一行
 		writer.write(0, 0, PropertyUtil.getProperty("student.id"));
-		writer.write(0, 0, PropertyUtil.getProperty("student.name"));
-		writer.write(0, 0, PropertyUtil.getProperty("student.clazz"));
-		writer.write(0, 0, PropertyUtil.getProperty("student.subject"));
-		writer.write(0, 0, PropertyUtil.getProperty("student.score"));
+		writer.write(0, 1, PropertyUtil.getProperty("student.name"));
+		writer.write(0, 2, PropertyUtil.getProperty("student.clazz"));
+		writer.write(0, 3, PropertyUtil.getProperty("student.subject"));
+		writer.write(0, 4, PropertyUtil.getProperty("student.score"));
 		//写入数据
 		//获取学生信息
 		List<Student> list = examManager.queryStudent(examId);
@@ -68,6 +70,8 @@ public class ExamDisposer implements Runnable {
 				writer.write(i + 1, 2, s.getClazz());
 				writer.write(i + 1, 3, exam.getSubject());
 				writer.write(i + 1, 4, score+"");
+				
+				servletContext.removeAttribute("score:" + examId + ":" + s.getId());
 			}
 			
 			//保存excel到流中
@@ -92,6 +96,7 @@ public class ExamDisposer implements Runnable {
 			if (!flag) {
 				log.error("上传考试答案失败，考试信息：" + "科目_" + exam.getSubject() + ", 时间_" + exam.getStarttime());
 			} else {
+				log.error("保存数据成功...");
 				jedisClient.set("score:" + examId + ":path", filePath + "/" + fileName);
 			}
 		} catch (NumberFormatException e) {
