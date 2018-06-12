@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import henu.dao.JedisClient;
 import henu.entity.Exam;
 import henu.entity.Question;
 import henu.entity.Student;
@@ -41,6 +42,9 @@ public class StudentController {
 	
 	@Autowired
 	private ExamJudger examJudger;
+	
+	@Autowired
+	private JedisClient jedisClient;
 
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	@ResponseBody
@@ -140,8 +144,8 @@ public class StudentController {
 			studentService.saveAsnwers(examId, studentId, bean.getQuestions());
 			//改卷
 			int score = examJudger.judge(examId, bean.getQuestions());
-			//结果临时存储到application
-			servletContext.setAttribute("score:" + examId + ":" + studentId, score);
+			//结果临时存储到redis
+			jedisClient.set("score:" + examId + ":" + studentId, score+"");
 			//清空session
 			request.getSession().removeAttribute("student");
 		} catch (SQLException e) {

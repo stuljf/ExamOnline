@@ -117,6 +117,28 @@
 	        });
     	}
     })
+    
+    
+     $("#btn_exportPapers").click(function () {
+        var selects = getSelectRows();
+        if (selects.length > 0) {
+            var row = selects[0];
+            messager.confirm({ message: "确认要下载[ " + row.subject + " ]的考生答卷？" }).on(function (e) {
+                if (e) {
+                    var url = "${pageContext.request.contextPath}/teacher/exam/closed/paper/" + row.id;
+                    $.get(url, function(data) {
+                        
+                        if (data.status == 200) {
+                            //新开窗口
+                            window.open(data.data);
+                        } else {
+                            alert(data.msg);
+                        }
+                    })
+                }
+            });
+        }
+    })
 </script>
 </jsp:body>
 </tmp:pub-teacher>
