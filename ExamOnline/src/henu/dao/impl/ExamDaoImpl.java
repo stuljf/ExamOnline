@@ -126,7 +126,13 @@ public class ExamDaoImpl implements ExamDao {
 		BigInteger t = (BigInteger) qr.query(sql, new ScalarHandler<>());
 		return t.intValue();
 	}
-
+	
+	@Override
+	public Exam getLastInsert(String subject, String t_id) throws SQLException {
+		String sql = "SELECT * FROM exam WHERE subject = ? AND t_id = ?;";
+		return qr.query(sql, new BeanHandler<>(Exam.class), subject, t_id);
+	}
+	
 	@Override
 	public void clearQues(int examId) throws SQLException {
 		String sql = "DELETE FROM question WHERE e_id = ?;";

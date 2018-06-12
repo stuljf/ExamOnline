@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation=" 
@@ -15,24 +16,41 @@
 	<context:component-scan base-package="henu.web" />
 
 	<!-- 配置资源映射，对拦截的静态资源进行处理（转发器的URLPattern是“/”，会覆盖Servlet默认的映射） -->
-	<mvc:resources location="/WEB-INF/source/" mapping="/source/**" />
+	<mvc:resources location="/WEB-INF/source/"
+		mapping="/source/**" />
 	<!-- MVC相关配置 -->
 	<!-- 学生操作拦截器 -->
 	<mvc:interceptors>
-        <!-- <mvc:interceptor>
-            <mvc:mapping path="/student/**"/>
-            <mvc:exclude-mapping path="/page/student"/>
-            <mvc:exclude-mapping path="/student/login"/>
-            <bean class="henu.web.interceptor.StudentInterceptor"/>
-        </mvc:interceptor> -->
-        <mvc:interceptor>
-            <mvc:mapping path="/admin/**"/>
-            <mvc:mapping path="/page/admin"/>
-            <mvc:mapping path="/page/examClean"/>
-            <mvc:mapping path="/page/teacherManager"/>
-            <mvc:exclude-mapping path="/admin/login"/>
-            <bean class="henu.web.interceptor.AdminInterceptor"/>
-        </mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/student/**" />
+			<mvc:mapping path="/page/student" />
+			<mvc:mapping path="/page/exam" />
+			<mvc:exclude-mapping path="/student/login" />
+			<bean class="henu.web.interceptor.StudentInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/teacher/**" />
+			<mvc:mapping path="/page/teacher" />
+			<mvc:mapping path="/page/examDetails" />
+			<mvc:mapping path="/page/examList" />
+			<mvc:mapping path="/page/examListBegined" />
+			<mvc:mapping path="/page/examListCreated" />
+			<mvc:mapping path="/page/examListEnded" />
+			<mvc:mapping path="/page/importQuestion" />
+			<mvc:mapping path="/page/importStudent" />
+			<mvc:mapping path="/page/unbindIp" />
+			<mvc:exclude-mapping path="/teacher/login" />
+			<bean class="henu.web.interceptor.TeacherInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/admin/**" />
+			<mvc:mapping path="/page/admin" />
+			<mvc:mapping path="/page/examClean" />
+			<mvc:mapping path="/page/sysConfig" />
+			<mvc:mapping path="/page/teacherManager" />
+			<mvc:exclude-mapping path="/admin/login" />
+			<bean class="henu.web.interceptor.AdminInterceptor" />
+		</mvc:interceptor>
 	</mvc:interceptors>
 
 	<!-- 文件上传 -->
@@ -52,7 +70,8 @@
 	<!-- 处理请求返回json字符串的中文乱码问题 以及映射器、适配器的自动配置 -->
 	<mvc:annotation-driven>
 		<mvc:message-converters>
-			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+			<bean
+				class="org.springframework.http.converter.StringHttpMessageConverter">
 				<property name="supportedMediaTypes">
 					<list>
 						<value>application/json;charset=UTF-8</value>
