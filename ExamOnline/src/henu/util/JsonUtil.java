@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.JavaType;
-import org.junit.Test;
 
 import henu.entity.Exam;
+import org.junit.Test;
 
 /**
  * @ClassName: JsonUtil <br/> 

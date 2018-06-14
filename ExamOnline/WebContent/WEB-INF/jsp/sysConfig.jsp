@@ -21,8 +21,8 @@
 		                    	<input class="form-control" name="timeLimit" type="text" value="${timeLimit }"/>
 		                    </div>
 		                    <div class="form-group">
-		                    	后台任务的时间周期：（秒）
-		                    	<input class="form-control" name="" type="text" value="15" readonly="true"/>
+		                    	后台任务扫描周期，重启服务器方可生效：（秒）
+		                    	<input class="form-control" name="interval" type="text" value="${interval }"/>
 		                    </div>
 		                    <div class="form-group">
 		                    	学生上传文件大小的有效范围：

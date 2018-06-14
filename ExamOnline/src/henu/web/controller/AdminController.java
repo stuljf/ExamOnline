@@ -1,13 +1,13 @@
 package henu.web.controller;
 
-import java.sql.SQLException;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import henu.dao.ExamDao;
+import henu.dao.JedisClient;
+import henu.entity.Exam;
+import henu.entity.Teacher;
+import henu.service.SysManager;
+import henu.service.TeacherManager;
+import henu.util.ExceptionUtil;
+import henu.util.ResultModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import henu.dao.ExamDao;
-import henu.dao.JedisClient;
-import henu.entity.Exam;
-import henu.entity.Teacher;
-import henu.service.SysManager;
-import henu.service.TeacherManager;
-import henu.util.ExceptionUtil;
-import henu.util.ResultModel;
+import javax.annotation.Resource;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
+import java.util.List;
 
 @Controller //控制器注释
 @RequestMapping("/admin")
@@ -101,15 +99,16 @@ public class AdminController {
 	}
 
 	@RequestMapping(value="/setting/update", method=RequestMethod.POST)
-	public String updateSettings(String pageCount, String timeLimit) {
+	public String updateSettings(String pageCount, String timeLimit, String interval) {
 		//判空
-		if (pageCount == null || timeLimit == null) {
+		if (pageCount == null || timeLimit == null || interval == null) {
 			return "sysConfig";
 		} else {
-			sysManager.setting(pageCount, timeLimit);
+			sysManager.setting(pageCount, timeLimit, interval);
 			//同步内存
 			servletContext.setAttribute("pageCount", pageCount);
 			servletContext.setAttribute("timeLimit", timeLimit);
+			servletContext.setAttribute("interval", interval);
 			return "sysConfig";
 		}
 	}

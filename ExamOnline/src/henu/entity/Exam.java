@@ -1,12 +1,13 @@
 package henu.entity;
 
-import java.util.Date;
-
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
+import java.util.Date;
+
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Exam {
+public class Exam implements Serializable {
     private Integer id;
 
     private String subject;

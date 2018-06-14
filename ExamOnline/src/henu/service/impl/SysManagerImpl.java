@@ -1,17 +1,5 @@
 package henu.service.impl;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.dom4j.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import henu.dao.ExamDao;
 import henu.dao.TeacherDao;
 import henu.entity.Exam;
@@ -20,6 +8,16 @@ import henu.service.SysManager;
 import henu.util.ExceptionUtil;
 import henu.util.ResultModel;
 import henu.util.XMLUtil;
+import org.dom4j.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SysManagerImpl implements SysManager {
@@ -72,7 +70,7 @@ public class SysManagerImpl implements SysManager {
 	}
 
 	@Override
-	public ResultModel setting(String pageCount, String timeLimit) {
+	public ResultModel setting(String pageCount, String timeLimit, String interval) {
 		String path = this.getClass().getResource("/settings.xml").getPath();
 		//读取
 		Document doc = XMLUtil.loadXML(path);
@@ -81,7 +79,9 @@ public class SysManagerImpl implements SysManager {
 		boolean flag1 = XMLUtil.setElementText(doc, pageCountRegex, pageCount);
 		String timeLimitRegex = "//setting[@name='timeLimit']";
 		boolean flag2 = XMLUtil.setElementText(doc, timeLimitRegex, timeLimit);
-		if (flag1 && flag2) {
+		String intervalRegex = "//setting[@name='interval']";
+		boolean flag3 = XMLUtil.setElementText(doc, intervalRegex, interval);
+		if (flag1 && flag2 && flag3) {
 			XMLUtil.storeXML(doc, path);
 			return ResultModel.ok();
 		}
