@@ -1,13 +1,12 @@
 package henu.web.lisener;
 
+import henu.util.XMLUtil;
+import org.dom4j.Document;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-
-import org.dom4j.Document;
-
-import henu.util.XMLUtil;
 
 @WebListener
 public class ContextInitLisener implements ServletContextListener {
@@ -29,5 +28,8 @@ public class ContextInitLisener implements ServletContextListener {
 		//查询时间限制
 		String timeLimit = "//setting[@name='timeLimit']";
 		servletContext.setAttribute("timeLimit", XMLUtil.getByXPath(doc, timeLimit));
+		//查询examScanner interval
+		String interval = "//setting[@name='interval']";
+		servletContext.setAttribute("interval", XMLUtil.getByXPath(doc, interval));
 	}
 }

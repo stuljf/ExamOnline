@@ -25,5 +25,5 @@ public interface SysManager {
 	 * @param time
 	 * @return
 	 */
-	ResultModel	setting(String pageCount, String timeLimit);
+	ResultModel	setting(String pageCount, String timeLimit, String interval);
 }

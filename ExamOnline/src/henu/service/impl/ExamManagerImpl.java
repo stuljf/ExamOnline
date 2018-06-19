@@ -64,24 +64,20 @@ public class ExamManagerImpl implements ExamManager {
 //		int id = examDao.getLastInsertID();
 		//获取自增主键
 		if (update > 0) {
-			int ttttid = examDao.getLastInsertID();   //可能出现获取到自增主键为0的现象
 			Exam lastInsert = examDao.getLastInsert(exam.getSubject(), exam.getT_id());
-			//设置id
-			int id = lastInsert.getId();
-			exam.setId(id);
-
-			examAutoer.queueBegin(id, exam.getStarttime().getTime());
-			examAutoer.queueClose(id, exam.getEndtime().getTime());
+			
+			examAutoer.queueBegin(lastInsert.getId(), lastInsert.getStarttime().getTime());
+			examAutoer.queueClose(lastInsert.getId(), lastInsert.getEndtime().getTime());
+			return ResultModel.ok(lastInsert);
 		}
-
-		return ResultModel.ok(exam);
+		throw new RuntimeException();
 	}
 
 	@Override
 	public ResultModel editExam(Exam exam) throws SQLException {
 		//获取旧数据
 		Exam t = examDao.queryExamsById(exam.getId());
-		if ("created".equals(exam.getState())) {
+		if ("created".equals(t.getState())) {
 			//填充数据
 			exam.setState(t.getState());
 			exam.setT_id(t.getT_id());
@@ -107,6 +103,10 @@ public class ExamManagerImpl implements ExamManager {
 
 		if (status.equals("begined")) {
 			examAutoer.dequeueBegin(id);
+		}
+		
+		if (status.equals("closed")) {
+			examAutoer.dequeueClose(id);
 		}
 
 		examDao.setState(id, status);

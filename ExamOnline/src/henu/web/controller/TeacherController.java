@@ -1,26 +1,5 @@
 package henu.web.controller;
 
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-
 import henu.dao.JedisClient;
 import henu.entity.Exam;
 import henu.entity.Question;
@@ -28,11 +7,23 @@ import henu.entity.Student;
 import henu.entity.Teacher;
 import henu.service.ExamManager;
 import henu.service.TeacherService;
-import henu.util.BootstrapPageResult;
-import henu.util.ExceptionUtil;
-import henu.util.PageBean;
-import henu.util.RequestModel;
-import henu.util.ResultModel;
+import henu.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 @RequestMapping("/teacher")
@@ -48,7 +39,7 @@ public class TeacherController {
 
 	@Autowired
 	private ServletContext servletContext;
-	
+
 	@Autowired
 	private JedisClient jedisClient;
 
@@ -179,10 +170,6 @@ public class TeacherController {
 	@ResponseBody
 	public ResultModel examUpdate(Exam exam) {
 		try {
-			if (!"created".equals(examManager.getExamState(exam.getId()))) {
-				return ResultModel.build(302, "考试已经开启，请刷新！");
-			}
-
 			ResultModel res = examManager.editExam(exam);
 			return res;
 		} catch (Exception e) {
@@ -337,9 +324,12 @@ public class TeacherController {
 
 		//获取发布历史
 		String publish = (String) servletContext.getAttribute("publish:" + examId);
-		if (publish == null) publish = "";
-		List<String> publishs = Arrays.asList(publish.split("<<EOF>>"));
-		
+		List<String> publishs;
+		if (publish == null) {
+			publishs=new ArrayList<String>();
+		}else {
+			publishs = Arrays.asList(publish.split("<<EOF>>"));
+		}
 		//视图渲染
 		//jsp注入考试id
 		model.addAttribute("examId", examId);
@@ -379,10 +369,23 @@ public class TeacherController {
 		if (examId == null) {
 			return ResultModel.build(400, "考试ID不存在！");
 		}
-		
+
 		String path = jedisClient.get("score:" + examId + ":path");
 		path = "http://nginx.src/" + path;
-		
+
+		return ResultModel.ok(path);
+	}
+	
+	@RequestMapping("/exam/closed/paper/{examId}")
+	@ResponseBody
+	public ResultModel exportPaper(@PathVariable Integer examId) {
+		if (examId == null) {
+			return ResultModel.build(400, "考试ID不存在！");
+		}
+
+		String path = jedisClient.get("paper:" + examId + ":path");
+		path = "http://nginx.src/" + path;
+
 		return ResultModel.ok(path);
 	}
 

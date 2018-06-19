@@ -2,4 +2,5 @@
 <settings>
     <setting name="pageCount">10</setting>
     <setting name="timeLimit">15</setting>
+    <setting name="interval">30</setting>
 </settings>

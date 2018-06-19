@@ -2,8 +2,10 @@ package henu.entity;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import java.io.Serializable;
+
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Question {
+public class Question  implements Serializable {
 	
     private Integer id;
     private Integer number;

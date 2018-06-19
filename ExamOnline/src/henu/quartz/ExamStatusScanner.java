@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 
 import henu.util.ExceptionUtil;
 
+import javax.servlet.ServletContext;
+
 @Component
 public class ExamStatusScanner {
 
@@ -26,6 +28,9 @@ public class ExamStatusScanner {
 	
 	@Value("${crontime}")
 	private String crontime;
+
+	@Autowired
+	private ServletContext servletContext;
 	
 	public void run() {
 		
@@ -50,9 +55,17 @@ public class ExamStatusScanner {
 			        .startNow()
 			        .build();*/
 			//支持表达式的触发器
-			Trigger trigger = TriggerBuilder.newTrigger()
+
+			//查看后台更新时间间隔
+            String interval = (String) servletContext.getAttribute("interval");
+            if (interval != null && !interval.isEmpty()) {
+                crontime = crontime.replaceAll("/\\d+ +", "/" + interval + " ");
+                System.err.println(crontime);
+            }
+
+            Trigger trigger = TriggerBuilder.newTrigger()
 			        .withIdentity("examStatusScannerTrigger")
-			        .withSchedule(CronScheduleBuilder.cronSchedule(crontime))
+			        .withSchedule(CronScheduleBuilder.cronSchedule(this.crontime))
 			        .startNow()
 			        .build();
 

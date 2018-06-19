@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -41,6 +42,7 @@ public class ExcelWriter {
 		
 		//写入数据
 		Cell cell = row.createCell(c);
+		cell.setCellType(CellType.STRING);
 		cell.setCellValue(value);
 	}
 	

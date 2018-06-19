@@ -26,7 +26,6 @@ public class IPUtil {
 			if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
 				ip = request.getRemoteAddr();  
 			}  
-			log.error("All the IP address string is: " + ip);  
 			return ip;  
 		}  
 	}
