@@ -56,7 +56,7 @@ public class SysManagerImpl implements SysManager {
 	}
 
 	@Override
-	public ResultModel examClean() {
+	public ResultModel examClosed() {
 		try {
 			List<Exam> exams = new ArrayList<>();
 			// 删除已经结束的考试信息
@@ -66,6 +66,19 @@ public class SysManagerImpl implements SysManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResultModel.build(500, "查询考试状态信息失败，请修改bug！");
+		}
+	}
+	
+	@Override
+	public ResultModel examClean(String[] examIds) {
+		try {
+			for(String id : examIds) {
+				examDao.remove(Integer.parseInt(id));
+			}
+			return ResultModel.ok();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return ResultModel.build(500, "清理考试失败！");
 		}
 	}
 

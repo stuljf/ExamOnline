@@ -1,10 +1,13 @@
 package henu.service.impl;
 
-import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
@@ -13,17 +16,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-//github.com/stuljf/ExamOnline.git
 import org.springframework.stereotype.Service;
 
+import henu.auto.ExamScore;
 import henu.dao.ExamDao;
 import henu.dao.StudentDao;
 import henu.entity.Exam;
 import henu.entity.Question;
 import henu.entity.Student;
 import henu.service.StudentService;
+import henu.util.ExcelWriter;
 import henu.util.ExceptionUtil;
-import henu.util.FtpUtil;
 import henu.util.ResultModel;
 
 @Service //业务逻辑层注解
@@ -48,6 +51,9 @@ public class StudentServiceImpl implements StudentService {
 	
 	@Autowired
 	private ServletContext servletContext;
+	
+	@Autowired
+	private ExamScore examScore;
 	
 	@Override
 	public ResultModel login(Student student) {
@@ -127,26 +133,64 @@ public class StudentServiceImpl implements StudentService {
 	public ResultModel saveAsnwers(int examId, String studentId, List<Question> ques) throws SQLException {
 		//获取考试详情
 		Exam exam = examDao.queryExamsById(examId);
+		if(exam.getState().equals("closed")) {
+			return ResultModel.build(200, "考试已经结束，提交答案失败");
+		}
 		//获取学生详情
 		Student stu = studentDao.queryStudentByIdAndExam(studentId, examId);
-		//按照 题号=答案 的格式保存成字符串
-		StringBuffer sb = new StringBuffer();
-		for (Question question : ques) {
-			sb.append(question.getNumber() + "=" + question.getAnswer() + System.lineSeparator());
-		}
-		String content = sb.toString();
-		//流形式
-		ByteArrayInputStream bais = new ByteArrayInputStream(content.getBytes());
-		//上传到ftp中
-		String filePath = "exams/" + examId + "-" + exam.getSubject();
-		String fileName = studentId + "-" + stu.getName() + ".txt";
-		boolean flag = FtpUtil.uploadFile(ftp_url, ftp_port, ftp_username, ftp_passwd, filePath, fileName, bais);
 		
-		if (flag) {
+		ExcelWriter writer = new ExcelWriter();
+		writer.write(0, 0, "题号");
+		writer.write(0, 1, "答案");
+		writer.write(0, 2, "得分");
+		
+		//统计总成绩
+		int count=0;
+		List<Question> realQues = examDao.getQues(examId);
+		Map<Integer, String> answers = new HashMap<Integer, String>();
+		for(Question q:ques) {
+			answers.put(q.getNumber(), q.getAnswer());
+		}
+		
+		//将答案和得分保存到excel
+		for (Question question : realQues) {
+			Integer num=question.getNumber();
+			int score;
+			if(question.getAnswer().equals(answers.get(num))) {
+				score=question.getScore();
+				count+=score;
+			}else {
+				score=0;
+			}
+			
+			writer.write(num, 0, num.toString());
+			writer.write(num, 1, answers.get(num));
+			writer.write(num, 2, Integer.toString(score));
+			
+		}
+		//总分保存到成绩缓存中
+		examScore.set(examId+":"+studentId, count+"");
+		
+		//保存excel
+		String path=servletContext.getRealPath("exam")+"/"+examId+"-"+exam.getSubject();
+		File dir = new File(path);
+		if(!dir.exists()) {
+			dir.mkdir();
+		}
+		String name="/"+stu.getId()+"-"+stu.getName();
+		
+		try {
+			FileOutputStream out = new FileOutputStream(path+name);
+			writer.saveToFile(out);
+			writer.close();
+			out.close();
 			return ResultModel.ok();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultModel.build(400, "保存答案失败！");
 		}
 		
-		return ResultModel.build(400, "保存试卷失败！");
+		
 	}
 
 }

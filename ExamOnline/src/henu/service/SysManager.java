@@ -14,12 +14,17 @@ public interface SysManager {
 	 * @return 
 	 */
 	public ResultModel login(Teacher teacher);
-
+	/**
+	 * @Description:(查询可清理考试). <br/> 
+	 * @return
+	 */
+	ResultModel examClosed();
+	
 	/**
 	 * @Description:(考试清理). <br/> 
 	 * @return
 	 */
-	ResultModel examClean();
+	ResultModel examClean(String[] examIds);
 	/**
 	 * @param Page
 	 * @param time

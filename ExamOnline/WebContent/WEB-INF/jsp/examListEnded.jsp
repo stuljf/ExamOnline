@@ -22,6 +22,10 @@
         </button>
     </div>
 
+	<!-- 提交导出请求的表单 -->
+    <form id="importScore" method="get"></form>
+    <form id="importPaper" method="get"></form>
+    
     <!--表格-->
     <table id="table"></table>
     <div style="height: 30px;"></div>
@@ -104,15 +108,9 @@
 	    	messager.confirm({ message: "确认要下载[ " + row.subject + " ]的考试成绩？" }).on(function (e) {
 	            if (e) {
 	            	var url = "${pageContext.request.contextPath}/teacher/exam/closed/scoer/" + row.id;
-	            	$.get(url, function(data) {
-	            		
-	            		if (data.status == 200) {
-	            			//新开窗口下载
-	            			window.open(data.data);
-	            		} else {
-	            			alert(data.msg);
-	            		}
-	            	})
+	            	var form = $("#importScore");
+	            	form.attr("action",url);
+	            	form.submit();
 	            }
 	        });
     	}
@@ -126,15 +124,9 @@
             messager.confirm({ message: "确认要下载[ " + row.subject + " ]的考生答卷？" }).on(function (e) {
                 if (e) {
                     var url = "${pageContext.request.contextPath}/teacher/exam/closed/paper/" + row.id;
-                    $.get(url, function(data) {
-                        
-                        if (data.status == 200) {
-                            //新开窗口
-                            window.open(data.data);
-                        } else {
-                            alert(data.msg);
-                        }
-                    })
+                    var form = $("#importPaper");
+	            	form.attr("action",url);
+	            	form.submit();
                 }
             });
         }

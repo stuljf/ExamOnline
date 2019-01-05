@@ -16,7 +16,7 @@
 	<!-- 组件扫描 -->
 	<context:component-scan base-package="henu.dao" />
 	<context:component-scan base-package="henu.service" />
-	<context:component-scan base-package="henu.quartz" />
+	<context:component-scan base-package="henu.auto" />
 
 	<!-- 加载配置文件 -->
 	<context:property-placeholder
@@ -88,9 +88,5 @@
 		<property name="location" value="classpath:res.properties"/>
 		<property name="fileEncoding" value="UTF-8"/>
 	</bean>
-
-
-
-	<import resource="classpath:springredis.xml" />
 
 </beans>      

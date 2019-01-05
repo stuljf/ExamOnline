@@ -10,16 +10,18 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import henu.auto.ExamQueue;
 import henu.dao.ExamDao;
 import henu.dao.StudentDao;
 import henu.entity.Exam;
 import henu.entity.Question;
 import henu.entity.Student;
-import henu.service.ExamAutoer;
+//import henu.service.ExamAutoer;
 import henu.service.ExamManager;
 import henu.util.ExcelReader;
 import henu.util.ExceptionUtil;
@@ -44,9 +46,9 @@ public class ExamManagerImpl implements ExamManager {
 	@Resource
 	private StudentDao studentDao;
 
-	@Resource
-	private ExamAutoer examAutoer;
-
+	@Autowired
+	private ExamQueue examQueue;
+	
 	@Override
 	public String getExamState(int examId) {
 		try {
@@ -58,6 +60,16 @@ public class ExamManagerImpl implements ExamManager {
 	}
 
 	@Override
+	public Exam getExamById(int id) {
+		try {
+			return examDao.queryExamsById(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@Override
 	public ResultModel createExam(Exam exam) throws SQLException {
 		//插入
 		int update = examDao.save(exam);
@@ -66,8 +78,12 @@ public class ExamManagerImpl implements ExamManager {
 		if (update > 0) {
 			Exam lastInsert = examDao.getLastInsert(exam.getSubject(), exam.getT_id());
 			
-			examAutoer.queueBegin(lastInsert.getId(), lastInsert.getStarttime().getTime());
-			examAutoer.queueClose(lastInsert.getId(), lastInsert.getEndtime().getTime());
+			//examAutoer.queueBegin(lastInsert.getId(), lastInsert.getStarttime().getTime());
+			//examAutoer.queueClose(lastInsert.getId(), lastInsert.getEndtime().getTime());
+			
+			examQueue.pushBegin(lastInsert.getId(), lastInsert.getStarttime());
+			examQueue.pushClose(lastInsert.getId(), lastInsert.getEndtime());
+			
 			return ResultModel.ok(lastInsert);
 		}
 		throw new RuntimeException();
@@ -84,9 +100,10 @@ public class ExamManagerImpl implements ExamManager {
 			//修改数据
 			examDao.modify(exam);
 
-			examAutoer.queueBegin(exam.getId(), exam.getStarttime().getTime());
-			examAutoer.queueClose(exam.getId(), exam.getEndtime().getTime());
-
+			//examAutoer.queueBegin(exam.getId(), exam.getStarttime().getTime());
+			//examAutoer.queueClose(exam.getId(), exam.getEndtime().getTime());
+			examQueue.pushBegin(exam.getId(), exam.getStarttime());
+			examQueue.pushClose(exam.getId(), exam.getEndtime());
 			return ResultModel.ok();
 		} else {
 			return ResultModel.build(302, "考试已经开始，请刷新界面！");
@@ -97,16 +114,20 @@ public class ExamManagerImpl implements ExamManager {
 	public ResultModel setExamState(int id, String status) throws SQLException {
 		//取消考试时候出队。
 		if (status.equals("canceled")) {
-			examAutoer.dequeueBegin(id);
-			examAutoer.dequeueClose(id);
+			//examAutoer.dequeueBegin(id);
+			//examAutoer.dequeueClose(id);
+			examQueue.popBegin(id);
+			examQueue.popClose(id);
 		}
 
 		if (status.equals("begined")) {
-			examAutoer.dequeueBegin(id);
+			//examAutoer.dequeueBegin(id);
+			examQueue.popBegin(id);
 		}
 		
 		if (status.equals("closed")) {
-			examAutoer.dequeueClose(id);
+			//examAutoer.dequeueClose(id);
+			examQueue.popClose(id);
 		}
 
 		examDao.setState(id, status);

@@ -38,6 +38,11 @@ public interface ExamManager {
 	 * @throws SQLException 
 	 */
 	ResultModel setExamState(int id, String status) throws SQLException;
+	
+	/**
+	 * @Description:(获得考试信息). <br/> 
+	 */
+	Exam getExamById(int id);
 
 	/**
 	 * @Description:(根据教师和考试状态查询). <br/> 

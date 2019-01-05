@@ -102,7 +102,7 @@
 	        	}
         	}
         });
-        setTimeout("noticeCount()", 60000);
+        setTimeout("noticeCount()", 5000);
     }
     function show(){
     	$("#msg").html("通知");

@@ -3,8 +3,8 @@ package henu.web.lisener;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import henu.quartz.ExamStatusScanner;
+import henu.auto.ExamQueue;
+import henu.auto.ExamScanner;
 
 /**
  * @Describtion: (执行考试任务调度). <br/> 
@@ -16,12 +16,17 @@ import henu.quartz.ExamStatusScanner;
 @Component
 public class SpringContextLisener implements InitializingBean {
 
-	@Autowired ExamStatusScanner examStatusScanner;
+	@Autowired
+	private ExamScanner examScanner;
+	
+	@Autowired
+	private ExamQueue examQueue;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		//启动
-		examStatusScanner.run();
+		examQueue.initQueue();
+		examScanner.run();
 	}
 
 }

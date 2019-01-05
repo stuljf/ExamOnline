@@ -101,9 +101,9 @@ public class ExamDaoImpl implements ExamDao {
 	@Override
 	public void importQues(Question ques) throws SQLException {
 		// TODO Auto-generated method stub
-		String sql="INSERT INTO question(id,number,type,title,selection,answer,e_id) VALUES(DEFAULT, ?, ?, ?, ?, ?, ?);";
+		String sql="INSERT INTO question(id,number,type,title,selection,answer,e_id,score) VALUES(DEFAULT, ?, ?, ?, ?, ?, ?, ?);";
 		qr.update(sql, ques.getNumber(), ques.getType(), ques.getTitle(), 
-				ques.getSelection(), ques.getAnswer(), ques.getE_id());
+				ques.getSelection(), ques.getAnswer(), ques.getE_id(), ques.getScore());
 	}
 
 	@Override

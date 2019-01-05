@@ -2,7 +2,6 @@ package henu.web.lisener;
 
 import henu.util.XMLUtil;
 import org.dom4j.Document;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -31,5 +30,6 @@ public class ContextInitLisener implements ServletContextListener {
 		//查询examScanner interval
 		String interval = "//setting[@name='interval']";
 		servletContext.setAttribute("interval", XMLUtil.getByXPath(doc, interval));
+		
 	}
 }

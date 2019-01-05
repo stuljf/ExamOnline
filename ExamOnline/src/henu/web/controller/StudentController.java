@@ -17,11 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import henu.dao.JedisClient;
 import henu.entity.Exam;
 import henu.entity.Question;
 import henu.entity.Student;
-import henu.service.ExamJudger;
 import henu.service.StudentService;
 import henu.util.ExceptionUtil;
 import henu.util.IPUtil;
@@ -39,12 +37,6 @@ public class StudentController {
 
 	@Autowired
 	private ServletContext servletContext;
-	
-	@Autowired
-	private ExamJudger examJudger;
-	
-	@Autowired
-	private JedisClient jedisClient;
 
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	@ResponseBody
@@ -134,27 +126,24 @@ public class StudentController {
 	@RequestMapping(value="/exam/submit")
 	@ResponseBody
 	public ResultModel examSubmit(Integer examId, String studentId, RequestModel bean, HttpServletRequest request) {
-		if (studentId == null || bean == null) {
+		if (studentId == null || bean == null || bean.getQuestions() == null) {
 			return ResultModel.build(400, "参数不能为空！");
 		}
 		
 		try {
 			//提交答案后开始储存和改卷
-			//存储到ftp
-			studentService.saveAsnwers(examId, studentId, bean.getQuestions());
-			//改卷
-			int score = examJudger.judge(examId, bean.getQuestions());
-			//结果临时存储到redis
-			jedisClient.set("score:" + examId + ":" + studentId, score+"");
-			//清空session
-			request.getSession().removeAttribute("student");
+			ResultModel rm = studentService.saveAsnwers(examId, studentId, bean.getQuestions());
+			if(rm.getStatus()==200) {
+				//清空session
+				request.getSession().removeAttribute("student");
+			}
+			return rm;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			log.error(ExceptionUtil.getStackTrace(e));
 			return ResultModel.build(500, "系统错误，改卷失败！");
 		}
 		
-		return ResultModel.ok();
 	}
 	
 	//查看老师发布的公告

@@ -14,6 +14,9 @@
 
 	<!-- 组件扫描 -->
 	<context:component-scan base-package="henu.web" />
+	
+	<!-- 默认的注解映射的支持，自动注册DefaultAnnotationHandlerMapping和AnnotationMethodHandlerAdapter -->
+    <mvc:annotation-driven />
 
 	<!-- 配置资源映射，对拦截的静态资源进行处理（转发器的URLPattern是“/”，会覆盖Servlet默认的映射） -->
 	<mvc:resources location="/WEB-INF/source/"

@@ -17,6 +17,7 @@
     </error-page>
 
 	<!-- 加载spring容器 -->
+	<!-- spring配置文件随服务器启动而加载 -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:spring.xml</param-value>

@@ -1,6 +1,5 @@
 package henu.web.controller;
 
-import henu.dao.JedisClient;
 import henu.entity.Exam;
 import henu.entity.Question;
 import henu.entity.Student;
@@ -8,9 +7,15 @@ import henu.entity.Teacher;
 import henu.service.ExamManager;
 import henu.service.TeacherService;
 import henu.util.*;
+
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
@@ -20,14 +25,20 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Controller
 @RequestMapping("/teacher")
-public class TeacherController {
+public class TeacherController{
 
 	private Logger log = LoggerFactory.getLogger(TeacherController.class);
 
@@ -39,10 +50,7 @@ public class TeacherController {
 
 	@Autowired
 	private ServletContext servletContext;
-
-	@Autowired
-	private JedisClient jedisClient;
-
+	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	@ResponseBody
 	public ResultModel login(Teacher teacher, HttpServletRequest request) {
@@ -65,7 +73,7 @@ public class TeacherController {
 	}
 
 	@RequestMapping("/logout/{t_id}")
-	public String login(@PathVariable String t_id, HttpServletRequest request) {
+	public String logout(@PathVariable String t_id, HttpServletRequest request) {
 		try {
 			//session
 			HttpSession session = request.getSession();
@@ -205,7 +213,7 @@ public class TeacherController {
 
 	@RequestMapping(value="/exam/question/import", method=RequestMethod.POST)
 	@ResponseBody
-	public ResultModel testpojolist(RequestModel bean) {
+	public ResultModel quesImport(RequestModel bean) {
 		if (bean == null || bean.getQuestions() == null) {
 			return ResultModel.build(400, "试题不能为空~！");
 		}
@@ -365,28 +373,74 @@ public class TeacherController {
 	//================================考试结束后=========================================	
 	@RequestMapping("/exam/closed/scoer/{examId}")
 	@ResponseBody
-	public ResultModel exportScore(@PathVariable Integer examId) {
-		if (examId == null) {
-			return ResultModel.build(400, "考试ID不存在！");
+	public ResponseEntity<byte[]> exportScore(@PathVariable Integer examId) {
+		//考试成绩下载
+		if (examId != null) {
+			//获取文件路径
+			Exam exam=examManager.getExamById(examId);
+			String name = examId+"-"+exam.getSubject()+"-成绩.xlsx";
+	        File file = new File(servletContext.getRealPath("exam")+"/"+name);
+			try {
+				//构造http头
+				HttpHeaders headers = new HttpHeaders();
+				//设置下载时显示的文件名，避免乱码
+				String dname = new String(name.getBytes("UTF-8"),"iso-8859-1");
+		        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);    
+		        headers.setContentDispositionFormData("attachment", dname); 
+		        //返回下载文件
+				return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}   
 		}
-
-		String path = jedisClient.get("score:" + examId + ":path");
-		path = "http://nginx.src/" + path;
-
-		return ResultModel.ok(path);
+        return null;
 	}
 	
 	@RequestMapping("/exam/closed/paper/{examId}")
 	@ResponseBody
-	public ResultModel exportPaper(@PathVariable Integer examId) {
-		if (examId == null) {
-			return ResultModel.build(400, "考试ID不存在！");
+	public ResponseEntity<byte[]> exportPaper(@PathVariable Integer examId) {
+		//学生答案打包下载
+		if(examId!=null) {
+			//获取学生答案所在目录
+			Exam exam=examManager.getExamById(examId);
+			String name=examId+"-"+exam.getSubject();
+			String path=servletContext.getRealPath("exam")+"/"+name;
+			File dir = new File(path);
+			//判断目录是否存在
+			if(dir.isDirectory()) {
+				//获取目录下的所有文件
+				File[] files = dir.listFiles();
+				if(files!=null && files.length!=0) {
+					try {
+						ByteArrayOutputStream out = new ByteArrayOutputStream();
+						ZipOutputStream zout = new ZipOutputStream(out);
+						//将这些文件都压缩到zip
+						for(File file:files) {
+							if(file.isFile()) {
+								zout.putNextEntry(new ZipEntry(file.getName()));
+								zout.write(FileUtils.readFileToByteArray(file));
+								zout.closeEntry();
+							}
+						}
+						//构造http头
+						HttpHeaders headers = new HttpHeaders();
+						//设置下载时显示的文件名，避免乱码
+						String dname = new String((name+".zip").getBytes("UTF-8"),"iso-8859-1");
+				        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);    
+				        headers.setContentDispositionFormData("attachment", dname);  
+				        //返回下载文件
+				        ResponseEntity<byte[]> re = new ResponseEntity<byte[]>(out.toByteArray(), headers, HttpStatus.CREATED);
+				        zout.close();
+				        out.close();
+				        return re;
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 		}
-
-		String path = jedisClient.get("paper:" + examId + ":path");
-		path = "http://nginx.src/" + path;
-
-		return ResultModel.ok(path);
+		return null;
+				
 	}
 
 	//================================ip相关=========================================	
@@ -400,5 +454,6 @@ public class TeacherController {
 			return examManager.unbindIP(student.getId(), student.getName());
 		}
 	}
+
 }
 

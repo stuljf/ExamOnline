@@ -70,7 +70,7 @@ public class ExcelReader {
 			row = sheet.getRow(0);
 			rows.put(0, row);
 		}
-		 return row.getLastCellNum();
+		 return row.getLastCellNum() + 1;
 	}
 	
 	public void close() throws IOException {
